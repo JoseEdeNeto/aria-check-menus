@@ -1,7 +1,7 @@
 (function () {
     var fixtures_dir = casper.cli.get("fixtures");
     casper.test.begin("sanity test for functional environment with fixture", 2, function (test) {
-        casper.start("file://" + fixtures_dir + "sanity_check01.html", function () {
+        casper.start(fixtures_dir + "sanity_check01.html", function () {
             var self = this, tooltip_id;
             test.assertTitle("Index");
             tooltip_id = self.evaluate(function () {

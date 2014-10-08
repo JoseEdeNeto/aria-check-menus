@@ -13,7 +13,7 @@ tests-unit:
 	casperjs test tests/unit/*
 
 tests-functional:
-	casperjs test tests/functional/* --fixtures=`pwd`/tests/fixture/
+	casperjs test tests/functional/* --fixtures=file://`pwd`/tests/fixture/
 
 tests-all: tests-unit tests-functional
 
