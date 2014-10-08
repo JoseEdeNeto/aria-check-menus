@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Hover_elements01</title>
+        <script type="text/javascript" charset="utf-8">
+            window.onload = function () {
+                document.getElementById("interactive1").addEventListener("mouseover", function () {
+                    this.style.backgroundColor = "red";
+                });
+            };
+        </script>
+    </head>
+    <body>
+        <div onmouseover="this.style.backgroundColor='red'">on1</div>
+        <a onmouseover="this.style.backgroundColor='blue'">on2</a>
+        <span onmouseover="this.style.backgroundColor='yellow'">on3</span>
+
+        <div id="interactive1">addEventListener1</div>
+        <a id="interactive2">addEventListener2</a>
+        <span id="interactive3">addEventListener3</span>
+		<script type="text/javascript" charset="utf-8">
+			document.getElementById("interactive2").addEventListener("mouseover", function () {
+				this.style.backgroundColor = "blue";
+			});
+			document.getElementById("interactive3").addEventListener("mouseover", function () {
+				this.style.backgroundColor = "yellow";
+			});
+		</script>
+    </body>
+</html>

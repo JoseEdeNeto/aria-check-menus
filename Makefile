@@ -10,7 +10,7 @@ dev:
 	@if [ "$(CASPERJS_SET)" ]; then echo "casperjs... \033[32mOK\033[0m"; else echo "casperjs... \033[31mNOT ok\033[0m"; fi
 
 tests-unit:
-	casperjs test tests/unit/*
+	casperjs test tests/unit/* --fixtures=file://`pwd`/tests/fixture/
 
 tests-functional:
 	casperjs test tests/functional/* --fixtures=file://`pwd`/tests/fixture/
