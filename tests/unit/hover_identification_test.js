@@ -1,6 +1,5 @@
 (function () {
     var fixtures_url = casper.cli.get("fixtures");
-    casper.echo(fixtures_url);
     casper.test.begin("OnMouseOver events set to HTML can be counted for each element", 1, function (test) {
         casper.options.clientScripts = ["lib/OnMouseOverObserver.js"];
         casper.start(fixtures_url + "hover_elements01.html", function () {
