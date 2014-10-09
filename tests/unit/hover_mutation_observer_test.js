@@ -7,7 +7,7 @@
                 result = "";
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
-                return window.OverMutationRecorder.popLastEvent();
+                return window.OverMutationRecorder.popLastEvent().target.textContent.trim();
             });
             test.assertEquals(result, "Useful message 2");
         });
@@ -22,7 +22,7 @@
                 result = "";
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
-                return OverMutationRecorder.popLastEvent();
+                return OverMutationRecorder.popLastEvent().target.textContent.trim();
             });
             test.assertEquals(result, "Useful message33");
         });
