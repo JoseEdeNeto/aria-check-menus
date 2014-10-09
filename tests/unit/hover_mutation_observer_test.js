@@ -30,4 +30,19 @@
             test.done();
         });
     });
+
+    casper.test.begin("OverMutationRecorder should record className mutations in targets", 1, function (test) {
+        casper.start(fixture_url + "mouseover_mutation_observer03.html", function () {
+            var self = this,
+                result = "";
+            self.mouseEvent("mouseover", "#link2");
+            result = self.evaluate(function () {
+                return OverMutationRecorder.popLastEvent().target.textContent.trim();
+            });
+            test.assertEquals(result, "Useful message for className changes");
+        });
+        casper.run(function () {
+            test.done();
+        });
+    });
 }());
