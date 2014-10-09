@@ -1,6 +1,6 @@
 (function () {
     var fixture_url = casper.cli.get("fixtures");
-    casper.options.clientScripts = ["lib/OverMutationRecorder.js"];
+    casper.options.clientScripts = ["lib/mutationrecorder/OverMutationRecorder.js"];
     casper.test.begin("OverMutationRecorder should record CSS change mutations in target", 1, function (test) {
         casper.start(fixture_url + "mouseover_mutation_observer01.html", function () {
             var self = this,
