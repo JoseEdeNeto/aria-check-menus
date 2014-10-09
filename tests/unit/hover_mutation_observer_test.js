@@ -5,9 +5,10 @@
         casper.start(fixture_url + "mouseover_mutation_observer01.html", function () {
             var self = this,
                 result = "";
+            self.evaluate(function () { window.recorder = OverMutationRecorder(); })
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
-                return window.OverMutationRecorder.popLastEvent().target.textContent.trim();
+                return recorder.popLastEvent().target.textContent.trim();
             });
             test.assertEquals(result, "Useful message 2");
         });
@@ -20,9 +21,10 @@
         casper.start(fixture_url + "mouseover_mutation_observer02.html", function () {
             var self = this,
                 result = "";
+            self.evaluate(function () { window.recorder = OverMutationRecorder(); })
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
-                return OverMutationRecorder.popLastEvent().target.textContent.trim();
+                return recorder.popLastEvent().target.textContent.trim();
             });
             test.assertEquals(result, "Useful message33");
         });
@@ -35,9 +37,10 @@
         casper.start(fixture_url + "mouseover_mutation_observer03.html", function () {
             var self = this,
                 result = "";
+            self.evaluate(function () { window.recorder = OverMutationRecorder(); })
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
-                return OverMutationRecorder.popLastEvent().target.textContent.trim();
+                return recorder.popLastEvent().target.textContent.trim();
             });
             test.assertEquals(result, "Useful message for className changes");
         });
