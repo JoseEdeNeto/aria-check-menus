@@ -8,12 +8,33 @@
                 selector = self.evaluate(function () {
                     return Utils.getSelector(document.querySelector("h1"));
                 });
-            test.assertEquals(selector, "body:nth-child(2) > h1:nth-child(1)");
+            test.assertEquals(selector, "#aria-check-menus1");
         });
         casper.run(function () {
             test.done();
         });
     });
+
+    casper.test.begin("SelectorFinder must not conflict the generation of IDs", 2, function (test) {
+        casper.start(fixtures_url + "selector_finder01.html", function () {
+            var self = this,
+                selector = self.evaluate(function () {
+                    var selector = Utils.getSelector(document.querySelectorAll("h1")[0]);
+                    return document.querySelectorAll(selector)[0].textContent;
+                });
+            test.assertEquals(selector, "heading");
+
+            selector = self.evaluate(function () {
+                var selector = Utils.getSelector(document.querySelectorAll("h1")[1]);
+                return document.querySelectorAll(selector)[0].textContent;
+            });
+            test.assertEquals(selector, "Heading 2");
+        });
+        casper.run(function () {
+            test.done();
+        });
+    });
+
     casper.test.begin("SelectorFinder must return complex CSS selector", 1, function (test) {
         casper.start(fixtures_url + "selector_finder01.html", function () {
             var self = this,
@@ -65,6 +86,22 @@
                     // return document.querySelectorAll(selector)[0].textContent;
                 });
             test.assertEquals(selector, "procurar 4");
+        });
+        casper.run(function () {
+            test.done();
+        });
+    });
+
+    casper.test.begin("SelectorFinder whether the selector actually resolves inside PhantomJS", 1, function (test) {
+        casper.start(fixtures_url + "selector_finder02.html", function () {
+            var self = this,
+                selector = self.evaluate(function () {
+                    return Utils.getSelector(document.querySelector("#procurar4"));
+                });
+            self.click(selector);
+            test.assertEquals(self.evaluate(function () {
+                return document.querySelector("#new_element").textContent;
+            }), "Abobrinha mor");
         });
         casper.run(function () {
             test.done();

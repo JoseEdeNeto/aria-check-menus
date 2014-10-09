@@ -6,7 +6,6 @@
     </head>
     <body>
         <h1>heading</h1>
-        <h1>Heading 2</h1>
         <div>
             <div>
                 <div id="procurar1">procurar 1</div>
@@ -20,5 +19,14 @@
                 <div id="procurar4">procurar 4</div>
             </div>
         </div>
+        <script type="text/javascript" charset="utf-8">
+            document.querySelector("#procurar4").addEventListener("click", function () {
+                var new_element = document.createElement("div");
+                new_element.id = "new_element";
+                new_element.innerHTML = "Abobrinha mor";
+                document.body.appendChild(new_element);
+            });
+        </script>
     </body>
 </html>
+
