@@ -92,19 +92,4 @@
         });
     });
 
-    casper.test.begin("SelectorFinder whether the selector actually resolves inside PhantomJS", 1, function (test) {
-        casper.start(fixtures_url + "selector_finder02.html", function () {
-            var self = this,
-                selector = self.evaluate(function () {
-                    return Utils.getSelector(document.querySelector("#procurar4"));
-                });
-            self.click(selector);
-            test.assertEquals(self.evaluate(function () {
-                return document.querySelector("#new_element").textContent;
-            }), "Abobrinha mor");
-        });
-        casper.run(function () {
-            test.done();
-        });
-    });
 }());
