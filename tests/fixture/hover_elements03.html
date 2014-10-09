@@ -5,11 +5,9 @@
         <title>Hover_elements01</title>
         <script type="text/javascript" charset="utf-8">
             window.onload = function () {
-                setTimeout(function () {
-                    document.getElementById("interactive1").addEventListener("mouseover", function () {
-                        this.style.backgroundColor = "red";
-                    });
-                }, 0);
+                document.getElementById("interactive1").addEventListener("mouseover", function () {
+                    this.style.backgroundColor = "red";
+                });
             };
         </script>
     </head>
@@ -17,11 +15,9 @@
         <div id="interactive1">addEventListener1</div>
         <a id="interactive2">addEventListener2</a>
 		<script type="text/javascript" charset="utf-8">
-            setTimeout(function () {
-                document.getElementById("interactive2").addEventListener("mouseover", function () {
-                    this.style.backgroundColor = "blue";
-                });
-            }, 0);
+            document.getElementById("interactive2").addEventListener("mouseover", function () {
+                this.style.backgroundColor = "blue";
+            });
 		</script>
     </body>
 </html>
