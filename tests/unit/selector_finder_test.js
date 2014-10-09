@@ -53,7 +53,16 @@
             var self = this,
                 selector = self.evaluate(function () {
                     var selector = Utils.getSelector(document.querySelector("#procurar4"));
-                    return document.querySelectorAll(selector)[0].textContent;
+
+                    /* small issue that appears in PhantomJS only */
+                    var selectors = selector.split(" > "),
+                        target_element = document;
+                    for (var i = 0; i < selectors.length; i++) {
+                        target_element = target_element.querySelectorAll(selectors[i])[0];
+                    };
+                    return target_element.textContent;
+                    /* END small issue */
+                    // return document.querySelectorAll(selector)[0].textContent;
                 });
             test.assertEquals(selector, "procurar 4");
         });
