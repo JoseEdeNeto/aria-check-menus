@@ -1,11 +1,16 @@
 (function () {
     var fixture_url = casper.cli.get("fixtures");
-    casper.options.clientScripts = ["lib/mutationrecorder/OverMutationRecorder.js"];
+    casper.options.clientScripts = [
+        "lib/mutationrecorder/OverMutationRecorder.js",
+        "lib/mutationrecorder/ClassNameVerifier.js"
+    ];
     casper.test.begin("OverMutationRecorder should record CSS change mutations in target", 1, function (test) {
         casper.start(fixture_url + "mouseover_mutation_observer01.html", function () {
             var self = this,
                 result = "";
-            self.evaluate(function () { window.recorder = OverMutationRecorder(); })
+            self.evaluate(function () {
+                window.recorder = OverMutationRecorder([ClassNameVerifier]);
+            })
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
                 return recorder.popLastEvent().target.textContent.trim();
@@ -21,7 +26,9 @@
         casper.start(fixture_url + "mouseover_mutation_observer02.html", function () {
             var self = this,
                 result = "";
-            self.evaluate(function () { window.recorder = OverMutationRecorder(); })
+            self.evaluate(function () {
+                window.recorder = OverMutationRecorder([ClassNameVerifier]);
+            })
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
                 return recorder.popLastEvent().target.textContent.trim();
@@ -37,7 +44,9 @@
         casper.start(fixture_url + "mouseover_mutation_observer03.html", function () {
             var self = this,
                 result = "";
-            self.evaluate(function () { window.recorder = OverMutationRecorder(); })
+            self.evaluate(function () {
+                window.recorder = OverMutationRecorder([ClassNameVerifier]);
+            })
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
                 return recorder.popLastEvent().target.textContent.trim();
