@@ -1,7 +1,8 @@
-var casperInstance = null, observers = [], recorder = null;
+var casperInstance = null, observers = [], recorder = null, wait = 1;
 
 exports.init = function (params) {
     casperInstance = params.casper;
+    wait = params.wait ? params.wait : 1;
     casperInstance = casperInstance.create({
         clientScripts: [
             "lib/mutationrecorder/OverMutationRecorder.js",
@@ -22,29 +23,37 @@ exports.init = function (params) {
 };
 exports.captureWidgets = function (url, folder) {
     casperInstance.start(url, function () {
-        var tooltip_selector = "",
+        var self = this,
+            tooltip_selector = "",
             activator_selector, widgets_activator_number;
 
-        widgets_activator_number = this.evaluate(function () {
+        widgets_activator_number = self.evaluate(function () {
             return MouseOverEventListenerObserver.size() + OnMouseOverObserver.size();
         });
 
         for (var i = 1; i <= widgets_activator_number; i++) {
-            activator_selector = this.evaluate(function () {
-                var target = OnMouseOverObserver.popActivator();
-                window.recorder = OverMutationRecorder(
-                    [ClassNameVerifier, CSSStyleVerifier, InnerHTMLVerifier]);
-                if (target)
-                    return Utils.getSelector(target);
-                return Utils.getSelector(MouseOverEventListenerObserver.popActivator());
-            });
-            this.captureSelector(folder + "widget_activator0" + i + ".png", activator_selector);
-            this.mouseEvent("mouseover", activator_selector);
-            tooltip_selector = this.evaluate(function () {
-                recorder.trackChanges();
-                return recorder.popLastEvent().target.id;
-            });
-            this.captureSelector(folder + "widget0" + i + ".png", "#" + tooltip_selector);
+            (function () {
+                var index = i;
+                self.wait(wait * index + 5, function () {
+                    activator_selector = self.evaluate(function () {
+                        var target = OnMouseOverObserver.popActivator();
+                        window.recorder = OverMutationRecorder(
+                            [ClassNameVerifier, CSSStyleVerifier, InnerHTMLVerifier]);
+                        if (target)
+                            return Utils.getSelector(target);
+                        return Utils.getSelector(MouseOverEventListenerObserver.popActivator());
+                    });
+                    self.captureSelector(folder + "widget_activator0" + index + ".png", activator_selector);
+                    self.mouseEvent("mouseover", activator_selector);
+                    tooltip_selector = self.evaluate(function () {
+                        recorder.trackChanges();
+                        return recorder.popLastEvent().target.id;
+                    });
+                    self.wait(wait, function () {
+                        self.captureSelector(folder + "widget0" + index + ".png", "#" + tooltip_selector);
+                    });
+                });
+            }());
         };
     });
     casperInstance.run();
