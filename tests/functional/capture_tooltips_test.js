@@ -22,6 +22,7 @@
             test.assertEquals(activator_selector, "#link2");
             this.mouseEvent("mouseover", activator_selector);
             tooltip_selector = this.evaluate(function () {
+                recorder.trackChanges();
                 return recorder.popLastEvent().target.id;
             });
             test.assertEquals(tooltip_selector, "useful2");
@@ -41,6 +42,7 @@
             test.assertEquals(activator_selector, "#link2");
             this.mouseEvent("mouseover", activator_selector);
             tooltip_selector = this.evaluate(function () {
+                recorder.trackChanges();
                 return recorder.popLastEvent().target.id;
             });
             test.assertEquals(tooltip_selector, "useful2");

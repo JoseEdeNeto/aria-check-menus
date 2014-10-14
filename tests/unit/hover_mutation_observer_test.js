@@ -15,6 +15,7 @@
             });
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
+                recorder.trackChanges();
                 return recorder.popLastEvent().target.textContent.trim();
             });
             test.assertEquals(result, "Useful message 2");
@@ -33,6 +34,7 @@
             });
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
+                recorder.trackChanges();
                 return recorder.popLastEvent().target.textContent.trim();
             });
             test.assertEquals(result, "Useful message33");
@@ -51,6 +53,7 @@
             });
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
+                recorder.trackChanges();
                 return recorder.popLastEvent().target.textContent.trim();
             });
             test.assertEquals(result, "Useful message for className changes");
@@ -69,11 +72,34 @@
             });
             self.mouseEvent("mouseover", "#link2");
             result = self.evaluate(function () {
-                var target = recorder.popLastEvent().target;
+                var target;
+                recorder.trackChanges();
+                target = recorder.popLastEvent().target;
                 return [target.tagName, target.innerHTML];
             });
             test.assertEquals(result[0], "DIV");
             test.assertEquals(result[1], "<span>abobrinha</span>");
+        });
+        casper.run(function () {
+            test.done();
+        });
+    });
+
+    casper.test.begin("OverMutationRecorder should implement clean mutations strategy", 1, function (test) {
+        casper.start(fixture_url + "mouseover_mutation_observer04.html", function () {
+            var self = this,
+                result = "";
+            self.evaluate(function () {
+                window.recorder = OverMutationRecorder([InnerHTMLVerifier]);
+            });
+            self.mouseEvent("mouseover", "#link2");
+            result = self.evaluate(function () {
+                recorder.trackChanges();
+                if (recorder.clean)
+                    return recorder.clean();
+                return recorder.popLastEvent();
+            });
+            test.assertEquals(result, null);
         });
         casper.run(function () {
             test.done();
