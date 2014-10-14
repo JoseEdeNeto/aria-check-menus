@@ -23,18 +23,19 @@
                     test.assertEquals(params.clientScripts[4], "lib/OnMouseOverObserver.js");
                     test.assertEquals(params.clientScripts[5], "lib/Utils.js");
                     casperCreateCalled = true;
+                    return this;
                 },
                 start: function () {
                     var self = this, start_arguments = arguments;
                     casperStartCalled = start_arguments[0];
                     casper.start(fixtures_url + "capture_tooltips_test01.html", function () {
-                        this.captureScreen = function () {
-                            self.captureScreen.apply(self, arguments);
+                        this.captureSelector = function () {
+                            self.captureSelector.apply(self, arguments);
                         };
                         start_arguments[1].apply(this, arguments);
                     });
                 },
-                captureScreen: function () {
+                captureSelector: function () {
                     captureScreenParams.push(arguments);
                 },
                 run: function () {
@@ -57,17 +58,17 @@
     casper.test.begin("App should capture screen for multiple widgets", 13, function (test) {
         var captureScreenParams = [],
             fakeCasper = {
-                create: function (params) {},
+                create: function (params) { return this; },
                 start: function () {
                     var self = this, start_arguments = arguments;
                     casper.start(fixtures_url + "capture_tooltips_test03.html", function () {
-                        this.captureScreen = function () {
-                            self.captureScreen.apply(self, arguments);
+                        this.captureSelector = function () {
+                            self.captureSelector.apply(self, arguments);
                         };
                         start_arguments[1].apply(this, arguments);
                     });
                 },
-                captureScreen: function () {
+                captureSelector: function () {
                     captureScreenParams.push(arguments);
                 },
                 run: function () {

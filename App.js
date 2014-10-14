@@ -2,7 +2,7 @@ var casperInstance = null, observers = [], recorder = null;
 
 exports.init = function (params) {
     casperInstance = params.casper;
-    casperInstance.create({
+    casperInstance = casperInstance.create({
         clientScripts: [
             "lib/mutationrecorder/OverMutationRecorder.js",
             "lib/mutationrecorder/ClassNameVerifier.js",
@@ -15,6 +15,7 @@ exports.init = function (params) {
             page.injectJs("lib/MouseOverEventListenerObserver.js");
         }
     });
+    return casperInstance;
 };
 exports.captureWidgets = function (url, folder) {
     casperInstance.start(url, function () {
@@ -34,13 +35,13 @@ exports.captureWidgets = function (url, folder) {
                     return Utils.getSelector(target);
                 return Utils.getSelector(MouseOverEventListenerObserver.popActivator());
             });
-            this.captureScreen(folder + "widget_activator0" + i + ".png", activator_selector);
+            this.captureSelector(folder + "widget_activator0" + i + ".png", activator_selector);
             this.mouseEvent("mouseover", activator_selector);
             tooltip_selector = this.evaluate(function () {
                 recorder.trackChanges();
                 return recorder.popLastEvent().target.id;
             });
-            this.captureScreen(folder + "widget0" + i + ".png", "#" + tooltip_selector);
+            this.captureSelector(folder + "widget0" + i + ".png", "#" + tooltip_selector);
         };
     });
     casperInstance.run();
