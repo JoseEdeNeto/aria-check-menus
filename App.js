@@ -31,7 +31,7 @@ exports.captureWidgets = function (url, folder) {
             return MouseOverEventListenerObserver.size() + OnMouseOverObserver.size();
         });
 
-        for (var i = 1; i <= widgets_activator_number; i++) {
+        for (var i = 0; i < widgets_activator_number; i++) {
             (function () {
                 var index = i;
                 self.wait(wait * index + 5, function () {
@@ -43,14 +43,14 @@ exports.captureWidgets = function (url, folder) {
                             return Utils.getSelector(target);
                         return Utils.getSelector(MouseOverEventListenerObserver.popActivator());
                     });
-                    self.captureSelector(folder + "widget_activator0" + index + ".png", activator_selector);
+                    self.captureSelector(folder + "widget_activator0" + (index + 1) + ".png", activator_selector);
                     self.mouseEvent("mouseover", activator_selector);
                     tooltip_selector = self.evaluate(function () {
                         recorder.trackChanges();
                         return recorder.popLastEvent().target.id;
                     });
                     self.wait(wait, function () {
-                        self.captureSelector(folder + "widget0" + index + ".png", "#" + tooltip_selector);
+                        self.captureSelector(folder + "widget0" + (index + 1) + ".png", "#" + tooltip_selector);
                     });
                 });
             }());
