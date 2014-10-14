@@ -16,21 +16,32 @@ exports.init = function (params) {
         }
     });
 };
-exports.captureWidgets = function (url) {
+exports.captureWidgets = function (url, folder) {
     casperInstance.start(url, function () {
         var tooltip_selector = "",
+            activator_selector, widgets_activator_number;
+
+        widgets_activator_number = this.evaluate(function () {
+            return MouseOverEventListenerObserver.size() + OnMouseOverObserver.size();
+        });
+
+        for (var i = 1; i <= widgets_activator_number; i++) {
             activator_selector = this.evaluate(function () {
+                var target = OnMouseOverObserver.popActivator();
                 window.recorder = OverMutationRecorder(
                     [ClassNameVerifier, CSSStyleVerifier, InnerHTMLVerifier]);
+                if (target)
+                    return Utils.getSelector(target);
                 return Utils.getSelector(MouseOverEventListenerObserver.popActivator());
             });
-        this.captureScreen("widget_activator01.png", activator_selector);
-        this.mouseEvent("mouseover", activator_selector);
-        tooltip_selector = this.evaluate(function () {
-            recorder.trackChanges();
-            return recorder.popLastEvent().target.id;
-        });
-        this.captureScreen("widget01.png", "#" + tooltip_selector);
+            this.captureScreen(folder + "widget_activator0" + i + ".png", activator_selector);
+            this.mouseEvent("mouseover", activator_selector);
+            tooltip_selector = this.evaluate(function () {
+                recorder.trackChanges();
+                return recorder.popLastEvent().target.id;
+            });
+            this.captureScreen(folder + "widget0" + i + ".png", "#" + tooltip_selector);
+        };
     });
     casperInstance.run();
 };
