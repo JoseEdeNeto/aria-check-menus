@@ -15,8 +15,28 @@
         casper.start(fixtures_url + "capture_tooltips_test01.html", function () {
             var tooltip_selector = "",
                 activator_selector = this.evaluate(function () {
-                    window.recorder = OverMutationRecorder([ClassNameVerifier, CSSStyleVerifier]);
+                    window.recorder = OverMutationRecorder(
+                        [ClassNameVerifier, CSSStyleVerifier, InnerHTMLVerifier]);
                     return Utils.getSelector(MouseOverEventListenerObserver.popActivator());
+                });
+            test.assertEquals(activator_selector, "#link2");
+            this.mouseEvent("mouseover", activator_selector);
+            tooltip_selector = this.evaluate(function () {
+                return recorder.popLastEvent().target.id;
+            });
+            test.assertEquals(tooltip_selector, "useful2");
+        });
+        casper.run(function () {
+            test.done();
+        });
+    });
+    casper.test.begin("Capture activation link and tooltip element via OnMouseOver", 2, function (test) {
+        casper.start(fixtures_url + "capture_tooltips_test02.html", function () {
+            var tooltip_selector = "",
+                activator_selector = this.evaluate(function () {
+                    window.recorder = OverMutationRecorder(
+                        [ClassNameVerifier, CSSStyleVerifier, InnerHTMLVerifier]);
+                    return Utils.getSelector(OnMouseOverObserver.popActivator());
                 });
             test.assertEquals(activator_selector, "#link2");
             this.mouseEvent("mouseover", activator_selector);
