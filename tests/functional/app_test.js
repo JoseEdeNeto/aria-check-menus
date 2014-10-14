@@ -12,12 +12,18 @@
     casper.options.onPageInitialized = function (page) {
         page.injectJs("lib/MouseOverEventListenerObserver.js");
     };
-    casper.test.begin("App should retrieve activation elements and identify mutations", 7, function (test) {
+    casper.test.begin("App should retrieve activation elements and identify mutations", 13, function (test) {
         var casperStartCalled = "", casperCreateCalled = false,
             pageInjectJS = "", captureScreenParams = [],
             casperThis = null,
             fakeCasper = {
                 create: function (params) {
+                    test.assertEquals(params.clientScripts[0], "lib/mutationrecorder/OverMutationRecorder.js");
+                    test.assertEquals(params.clientScripts[1], "lib/mutationrecorder/ClassNameVerifier.js");
+                    test.assertEquals(params.clientScripts[2], "lib/mutationrecorder/InnerHTMLVerifier.js");
+                    test.assertEquals(params.clientScripts[3], "lib/mutationrecorder/CSSStyleVerifier.js");
+                    test.assertEquals(params.clientScripts[4], "lib/OnMouseOverObserver.js");
+                    test.assertEquals(params.clientScripts[5], "lib/Utils.js");
                     casperCreateCalled = true;
                 },
                 start: function () {
