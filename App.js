@@ -11,6 +11,9 @@ exports.init = function (params) {
             "lib/OnMouseOverObserver.js",
             "lib/Utils.js"
         ],
+        viewportSize: {
+            width: 1024, height: 768
+        },
         onPageInitialized: function (page) {
             page.injectJs("lib/MouseOverEventListenerObserver.js");
         }
