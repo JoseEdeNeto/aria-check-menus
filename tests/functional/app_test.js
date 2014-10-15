@@ -55,6 +55,42 @@
         test.assertEquals(casperStartCalled, "http://abobrinha.com");
         test.assert(casperCreateCalled, "casper.create should be called");
     });
+
+    casper.test.begin("App should capture screenshots of elements with no ID", 5, function (test) {
+        var casperStartCalled = "", casperCreateCalled = false, captureScreenParams = [],
+            fakeCasper = {
+                create: function (params) {
+                    return this;
+                },
+                start: function () {
+                    var self = this, start_arguments = arguments;
+                    casperStartCalled = start_arguments[0];
+                    casper.start(fixtures_url + "capture_tooltips_test05.html", function () {
+                        this.captureSelector = function () {
+                            self.captureSelector.apply(self, arguments);
+                        };
+                        start_arguments[1].apply(this, arguments);
+                    });
+                },
+                captureSelector: function () {
+                    captureScreenParams.push(arguments);
+                },
+                run: function () {
+                    casper.run(function () {
+                        test.assertEquals(captureScreenParams.length, 2);
+                        test.assertEquals(captureScreenParams[0][0], "captured_widgets/widget_activator01.png");
+                        test.assertEquals(captureScreenParams[0][1], "#link2");
+                        test.assertEquals(captureScreenParams[1][0], "captured_widgets/widget01.png");
+                        test.assertEquals(captureScreenParams[1][1], "#aria-check-menus1");
+
+                        test.done();
+                    });
+                }
+            };
+        app.init({ casper: fakeCasper });
+        app.captureWidgets("http://abobrinha.com", "captured_widgets/");
+    });
+
     casper.test.begin("App should capture screen for multiple widgets", 13, function (test) {
         var captureScreenParams = [],
             fakeCasper = {

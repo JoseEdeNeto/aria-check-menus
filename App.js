@@ -47,10 +47,10 @@ exports.captureWidgets = function (url, folder) {
                     self.mouseEvent("mouseover", activator_selector);
                     tooltip_selector = self.evaluate(function () {
                         recorder.trackChanges();
-                        return recorder.popLastEvent().target.id;
+                        return Utils.getSelector(recorder.popLastEvent().target);
                     });
                     self.wait(wait, function () {
-                        self.captureSelector(folder + "widget0" + (index + 1) + ".png", "#" + tooltip_selector);
+                        self.captureSelector(folder + "widget0" + (index + 1) + ".png", tooltip_selector);
                     });
                 });
             }());
