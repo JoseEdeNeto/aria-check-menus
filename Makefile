@@ -17,4 +17,7 @@ tests-functional:
 
 tests-all: tests-unit tests-functional
 
-.PHONY: dev tests-unit tests-functional tests-all
+clean:
+	rm captured_widgets/*.png
+
+.PHONY: dev tests-unit tests-functional tests-all clean
