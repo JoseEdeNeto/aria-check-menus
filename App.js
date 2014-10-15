@@ -46,11 +46,17 @@ exports.captureWidgets = function (url, folder) {
                     self.captureSelector(folder + "widget_activator0" + (index + 1) + ".png", activator_selector);
                     self.mouseEvent("mouseover", activator_selector);
                     tooltip_selector = self.evaluate(function () {
+                        var mutation, selectors = [];
                         recorder.trackChanges();
-                        return Utils.getSelector(recorder.popLastEvent().target);
+                        while ((mutation = recorder.popLastEvent()) != null)
+                            selectors.push(Utils.getSelector(mutation.target));
+                        return selectors;
                     });
                     self.wait(wait, function () {
-                        self.captureSelector(folder + "widget0" + (index + 1) + ".png", tooltip_selector);
+                        for (var i = 0; i < tooltip_selector.length; i++) {
+                            self.captureSelector(folder + "widget0" + (index + 1) +
+                                                 "-" + (i + 1) + ".png", tooltip_selector[i]);
+                        };
                     });
                 });
             }());

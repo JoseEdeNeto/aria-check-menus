@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <title>Index</title>
+    </head>
+    <body>
+        <h1 style="background-color: red">Testing</h1>
+        <span id="useful2" class="tooltip" style="display:none">
+            <span class="arrow"></span>
+            Useful message 2
+        </span>
+        <a id="link2" href="#">
+            Tooltip 2
+        </a>
+        <script type="text/javascript" charset="utf-8">
+            var dialog2 = document.querySelector("#useful2");
+            document.querySelector("#link2").addEventListener("mouseover", function () {
+                dialog2.style.display = "block";
+            });
+            document.querySelector("#link2").addEventListener("mouseout", function () {
+                dialog2.style.display = "none";
+            });
+            document.querySelector("#link2").addEventListener("mouseover", function () {
+                this.style.backgroundColor = "red";
+            });
+            document.querySelector("#link2").addEventListener("mouseout", function () {
+                this.style.backgroundColor = "white";
+            });
+        </script>
+    </body>
+</html>
