@@ -17,4 +17,4 @@ tests-functional:
 
 tests-all: tests-unit tests-functional
 
-.PHONY: dev test
+.PHONY: dev tests-unit tests-functional tests-all
