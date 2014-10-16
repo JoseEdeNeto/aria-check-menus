@@ -143,7 +143,7 @@
         app.captureWidgets("http://abobrinha.com", "captured_widget/");
     });
 
-    casper.test.begin("App should capture screen for each possibility of widget renderization", 13, function (test) {
+    casper.test.begin("App should capture screen for each possibility of widget renderization", 11, function (test) {
         var captureScreenParams = [],
             fakeCasper = {
                 create: function (params) { return this; },
@@ -161,7 +161,7 @@
                 },
                 run: function () {
                     casper.run(function () {
-                        test.assertEquals(captureScreenParams.length, 6);
+                        test.assertEquals(captureScreenParams.length, 5);
                         test.assertEquals(captureScreenParams[0][0], "captured_widget/widget_activator01.png");
                         test.assertEquals(captureScreenParams[0][1], "#link2");
                         test.assertEquals(captureScreenParams[1][0], "captured_widget/widget01-1.png");
@@ -172,8 +172,6 @@
                         test.assertEquals(captureScreenParams[3][1], "#aria-check-menus1");
                         test.assertEquals(captureScreenParams[4][0], "captured_widget/widget01-4.png");
                         test.assertEquals(captureScreenParams[4][1], "#aria-check-menus2");
-                        test.assertEquals(captureScreenParams[5][0], "captured_widget/widget_activator02.png");
-                        test.assertEquals(captureScreenParams[5][1], "#link2");
                         test.done();
                     });
                 }

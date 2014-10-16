@@ -24,7 +24,7 @@ exports.init = function (params) {
 exports.captureWidgets = function (url, folder) {
     casperInstance.start(url, function () {
         var self = this,
-            tooltip_selector = "",
+            tooltip_selector = "", captured_selectors = [],
             activator_selector, widgets_activator_number;
 
         widgets_activator_number = self.evaluate(function () {
@@ -43,21 +43,24 @@ exports.captureWidgets = function (url, folder) {
                             return Utils.getSelector(target);
                         return Utils.getSelector(MouseOverEventListenerObserver.popActivator());
                     });
-                    self.captureSelector(folder + "widget_activator0" + (index + 1) + ".png", activator_selector);
-                    self.mouseEvent("mouseover", activator_selector);
-                    tooltip_selector = self.evaluate(function () {
-                        var mutation, selectors = [];
-                        recorder.trackChanges();
-                        while ((mutation = recorder.popLastEvent()) != null)
-                            selectors.push(Utils.getSelector(mutation.target));
-                        return selectors;
-                    });
-                    self.wait(wait, function () {
-                        for (var i = 0; i < tooltip_selector.length; i++) {
-                            self.captureSelector(folder + "widget0" + (index + 1) +
-                                                 "-" + (i + 1) + ".png", tooltip_selector[i]);
-                        };
-                    });
+                    if (captured_selectors.indexOf(activator_selector) === -1) {
+                        self.captureSelector(folder + "widget_activator0" + (index + 1) + ".png", activator_selector);
+                        captured_selectors.push(activator_selector);
+                        self.mouseEvent("mouseover", activator_selector);
+                        tooltip_selector = self.evaluate(function () {
+                            var mutation, selectors = [];
+                            recorder.trackChanges();
+                            while ((mutation = recorder.popLastEvent()) != null)
+                                selectors.push(Utils.getSelector(mutation.target));
+                            return selectors;
+                        });
+                        self.wait(wait, function () {
+                            for (var i = 0; i < tooltip_selector.length; i++) {
+                                self.captureSelector(folder + "widget0" + (index + 1) +
+                                                     "-" + (i + 1) + ".png", tooltip_selector[i]);
+                            };
+                        });
+                    }
                 });
             }());
         };
