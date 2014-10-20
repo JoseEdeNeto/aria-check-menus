@@ -85,6 +85,32 @@
         });
     });
 
+    casper.test.begin("OverMutationRecorder should only the mostly inner element changed even when insertbefore is used", 2, function (test) {
+        casper.start(fixture_url + "mouseover_mutation_observer07.html", function () {
+            var self = this,
+                result = "";
+            self.evaluate(function () {
+                window.recorder = OverMutationRecorder([InnerHTMLVerifier]);
+            });
+            self.mouseEvent("mouseover", "#link2");
+            result = self.evaluate(function () {
+                var targets = [], aux = "something";
+                recorder.trackChanges();
+                aux = recorder.popLastEvent();
+                while (aux) {
+                    targets.push(aux.target.tagName);
+                    aux = recorder.popLastEvent();
+                }
+                return targets;
+            });
+            test.assertEquals(result.length, 1);
+            test.assertEquals(result[0], "DIV");
+        });
+        casper.run(function () {
+            test.done();
+        });
+    });
+
     casper.test.begin("OverMutationRecorder should only the mostly inner element changed", 2, function (test) {
         casper.start(fixture_url + "mouseover_mutation_observer04.html", function () {
             var self = this,
