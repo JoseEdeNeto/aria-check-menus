@@ -34,7 +34,7 @@ exports.captureWidgets = function (url, folder) {
         for (var i = 0; i < widgets_activator_number; i++) {
             (function () {
                 var index = i;
-                self.wait(wait * index + 5, function () {
+                self.wait(wait * (index + 1) + 5, function () {
                     activator_selector = self.evaluate(function () {
                         var target = OnMouseOverObserver.popActivator();
                         window.recorder = OverMutationRecorder(

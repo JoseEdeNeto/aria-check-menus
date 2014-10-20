@@ -131,4 +131,23 @@
             test.done();
         });
     });
+
+    casper.test.begin("OverMutationRecorder should record CSSText change mutations in target", 1, function (test) {
+        casper.start(fixture_url + "mouseover_mutation_observer06.html", function () {
+            var self = this,
+                result = "";
+            self.evaluate(function () {
+                window.recorder = OverMutationRecorder([ClassNameVerifier, CSSStyleVerifier, InnerHTMLVerifier]);
+            });
+            self.mouseEvent("mouseover", "#link2");
+            result = self.evaluate(function () {
+                recorder.trackChanges();
+                return recorder.popLastEvent().target.textContent.trim();
+            });
+            test.assertEquals(result, "Useful message 2");
+        });
+        casper.run(function () {
+            test.done();
+        });
+    });
 }());
