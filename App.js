@@ -56,8 +56,8 @@ exports.captureWidgets = function (url, folder) {
                         });
                         self.wait(wait, function () {
                             for (var i = 0; i < tooltip_selector.length; i++) {
-                                self.captureSelector(folder + "widget0" + (index + 1) +
-                                                     "-" + (i + 1) + ".png", tooltip_selector[i]);
+                                self.captureSelector(folder + "activator0" + (index + 1) +
+                                                     "-widget0" + (i + 1) + ".png", tooltip_selector[i]);
                             };
                         });
                     }

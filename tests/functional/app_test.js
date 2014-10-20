@@ -43,7 +43,7 @@
                         test.assertEquals(captureScreenParams.length, 2);
                         test.assertEquals(captureScreenParams[0][0], "captured_widgets/activator01.png");
                         test.assertEquals(captureScreenParams[0][1], "#link2");
-                        test.assertEquals(captureScreenParams[1][0], "captured_widgets/widget01-1.png");
+                        test.assertEquals(captureScreenParams[1][0], "captured_widgets/activator01-widget01.png");
                         test.assertEquals(captureScreenParams[1][1], "#useful2");
 
                         test.done();
@@ -80,7 +80,7 @@
                         test.assertEquals(captureScreenParams.length, 2);
                         test.assertEquals(captureScreenParams[0][0], "captured_widgets/activator01.png");
                         test.assertEquals(captureScreenParams[0][1], "#link2");
-                        test.assertEquals(captureScreenParams[1][0], "captured_widgets/widget01-1.png");
+                        test.assertEquals(captureScreenParams[1][0], "captured_widgets/activator01-widget01.png");
                         test.assertEquals(captureScreenParams[1][1], "#aria-check-menus1");
 
                         test.done();
@@ -112,15 +112,15 @@
                         test.assertEquals(captureScreenParams.length, 6);
                         test.assertEquals(captureScreenParams[0][0], "captured_widget/activator01.png");
                         test.assertEquals(captureScreenParams[0][1], "#link2");
-                        test.assertEquals(captureScreenParams[1][0], "captured_widget/widget01-1.png");
+                        test.assertEquals(captureScreenParams[1][0], "captured_widget/activator01-widget01.png");
                         test.assertEquals(captureScreenParams[1][1], "#useful2");
                         test.assertEquals(captureScreenParams[2][0], "captured_widget/activator02.png");
                         test.assertEquals(captureScreenParams[2][1], "#link4");
-                        test.assertEquals(captureScreenParams[3][0], "captured_widget/widget02-1.png");
+                        test.assertEquals(captureScreenParams[3][0], "captured_widget/activator02-widget01.png");
                         test.assertEquals(captureScreenParams[3][1], "#useful4");
                         test.assertEquals(captureScreenParams[4][0], "captured_widget/activator03.png");
                         test.assertEquals(captureScreenParams[4][1], "#link3");
-                        test.assertEquals(captureScreenParams[5][0], "captured_widget/widget03-1.png");
+                        test.assertEquals(captureScreenParams[5][0], "captured_widget/activator03-widget01.png");
                         test.assertEquals(captureScreenParams[5][1], "#useful3");
                         test.done();
                     });
@@ -151,9 +151,9 @@
                         test.assertEquals(captureScreenParams.length, 3);
                         test.assertEquals(captureScreenParams[0][0], "captured_widget/activator01.png");
                         test.assertEquals(captureScreenParams[0][1], "#link2");
-                        test.assertEquals(captureScreenParams[1][0], "captured_widget/widget01-1.png");
+                        test.assertEquals(captureScreenParams[1][0], "captured_widget/activator01-widget01.png");
                         test.assertEquals(captureScreenParams[1][1], "#link2");
-                        test.assertEquals(captureScreenParams[2][0], "captured_widget/widget01-2.png");
+                        test.assertEquals(captureScreenParams[2][0], "captured_widget/activator01-widget02.png");
                         test.assertEquals(captureScreenParams[2][1], "#useful2");
                         test.done();
                     });
