@@ -44,7 +44,7 @@ exports.captureWidgets = function (url, folder) {
                         return Utils.getSelector(MouseOverEventListenerObserver.popActivator());
                     });
                     if (captured_selectors.indexOf(activator_selector) === -1) {
-                        self.captureSelector(folder + "widget_activator0" + (index + 1) + ".png", activator_selector);
+                        self.captureSelector(folder + "activator0" + (index + 1) + ".png", activator_selector);
                         captured_selectors.push(activator_selector);
                         self.mouseEvent("mouseover", activator_selector);
                         tooltip_selector = self.evaluate(function () {
