@@ -77,8 +77,8 @@
                 target = recorder.popLastEvent().target;
                 return [target.tagName, target.innerHTML];
             });
-            test.assertEquals(result[0], "DIV");
-            test.assertEquals(result[1], "<span>abobrinha</span>");
+            test.assertEquals(result[0], "SPAN");
+            test.assertEquals(result[1], "abobrinha");
         });
         casper.run(function () {
             test.done();
@@ -104,7 +104,7 @@
                 return targets;
             });
             test.assertEquals(result.length, 1);
-            test.assertEquals(result[0], "DIV");
+            test.assertEquals(result[0], "SPAN");
         });
         casper.run(function () {
             test.done();
@@ -130,7 +130,7 @@
                 return targets;
             });
             test.assertEquals(result.length, 1);
-            test.assertEquals(result[0], "<span>abobrinha</span>");
+            test.assertEquals(result[0], "abobrinha");
         });
         casper.run(function () {
             test.done();
