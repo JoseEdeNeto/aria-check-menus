@@ -6,4 +6,4 @@ Initially, the tool will solely identify the widgets using JavaScript DOM analys
 
 TODO
 ====
-- Everything
+- Migrating to SeleniumJS API, since not all websites implement support for CasperJS functionalities.
