@@ -14,6 +14,6 @@ clean:
 
 tests:
 	@echo "testing something cool..."
-	@mocha tests/
+	@mocha --require should tests/
 
 .PHONY: dev tests clean
