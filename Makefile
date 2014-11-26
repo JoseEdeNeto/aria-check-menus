@@ -21,4 +21,7 @@ tests-unit:
 tests-functional:
 	@mocha --require should --timeout 10000 tests/functional
 
+coverage:
+	@mocha --require should --reporter html-cov tests/unit > coverage.html; open coverage.html
+
 .PHONY: dev tests clean

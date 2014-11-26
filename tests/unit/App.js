@@ -1,3 +1,4 @@
+require("blanket")({pattern: "aria-check-menus/lib/"});
 var App = require("../../lib/App");
 
 describe("App", function () {
