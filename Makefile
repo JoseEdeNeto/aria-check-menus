@@ -8,6 +8,8 @@ dev:
 	if [ "$$?" -eq 0 ]; then echo "selenium-webdriver... \033[32mOK\033[0m"; else echo "selenium-webdriver for nodejs... \033[31mNOT ok\033[0m"; fi
 	@node -p "var should = require(\"should\");\"\"";\
 	if [ "$$?" -eq 0 ]; then echo "mocha should... \033[32mOK\033[0m"; else echo "mocha should... \033[31mNOT ok\033[0m"; fi
+	@node -p "var blanket = require(\"blanket\")();\"\"" optional_argument;\
+	if [ "$$?" -eq 0 ]; then echo "blanket... \033[32mOK\033[0m"; else echo "blanket... \033[31mNOT ok\033[0m"; fi
 
 clean:
 	rm captured_widgets/*.png
