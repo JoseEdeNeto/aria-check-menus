@@ -18,4 +18,7 @@ tests-unit:
 	@echo "testing something cool..."
 	@mocha --require should tests/unit
 
+tests-functional:
+	@mocha --require should --timeout 10000 tests/functional
+
 .PHONY: dev tests clean
