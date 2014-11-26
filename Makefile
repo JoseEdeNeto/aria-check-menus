@@ -14,8 +14,8 @@ dev:
 clean:
 	rm captured_widgets/*.png
 
-tests:
+tests-unit:
 	@echo "testing something cool..."
-	@mocha --require should tests/
+	@mocha --require should tests/unit
 
 .PHONY: dev tests clean
