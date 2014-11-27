@@ -12,7 +12,7 @@ describe("App", function () {
             driver.get(["file://", process.env["PWD"], "/tests/fixture/sanity_check01.html"].join(""))
                   .then(function () {
                       app = App(driver);
-                      app.get_invisibles().length.should.be.equal(2);
+                      app.get_invisibles().should.be.an.instanceOf(Array).and.have.lengthOf(2);
                       driver.quit();
                   });
 
