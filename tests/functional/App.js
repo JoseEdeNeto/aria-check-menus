@@ -12,8 +12,12 @@ describe("App", function () {
             driver.get(["file://", process.env["PWD"], "/tests/fixture/sanity_check01.html"].join(""))
                   .then(function () {
                       app = App(driver);
-                      app.get_invisibles().should.be.an.instanceOf(Array).and.have.lengthOf(2);
-                      driver.quit();
+                      app.get_invisibles().then(function (promise) {
+                          promise.then(function (invisibles) {
+                              should.be.an.instanceOf(Array).and.have.lengthOf(2);
+                              driver.quit();
+                          });
+                      });
                   });
 
         });
