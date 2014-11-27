@@ -34,15 +34,15 @@ describe("App", function () {
         });
 
         it("should find invisible elements in the list", function (done) {
-            var driver_mock = {},
-                app = App(driver_mock),
+            var driver_mock = {}, webdriver = {},
+                app = App(driver_mock, webdriver),
                 expected_elements = [],
                 result_promise;
             driver_mock.findElements = function () {
                 return Promise(expected_elements);
             };
-            driver_mock.promise = {};
-            driver_mock.promise.all = function () {
+            webdriver.promise = {};
+            webdriver.promise.all = function () {
                 arguments.should.have.lengthOf(1);
                 arguments[0].should.have.lengthOf(2);
                 arguments[0][0].should.have.property("id", "p1");
