@@ -5,6 +5,8 @@ var App = require("../../lib/App");
 var Promise = function () {
     var self_args = arguments,
         self = this;
+    if (self_args[0] && self_args[0].then)
+        return self_args[0];
     return {
         then: function (callback) {
             return Promise(callback.apply(self, self_args));
@@ -15,7 +17,7 @@ var Promise = function () {
 describe("App", function () {
 
     describe("#get_invisible", function () {
-        it.skip("should look for elements using driver", function (done) {
+        it("should look for elements using driver", function (done) {
             var driver_mock = {},
                 app = App(driver_mock),
                 expected_elements = [],
@@ -55,12 +57,10 @@ describe("App", function () {
                 id: "element2", isDisplayed: function () { var p = Promise(false); p.id = "p2"; return p;} };
             result_promise = app.get_invisibles();
             result_promise.then(function (result) {
-                result.then(function (result) {
-                    result.should.have.length(1);
-                    result.should.containEql(expected_elements[1]);
-                    result.should.not.containEql(expected_elements[0]);
-                    done();
-                });
+                result.should.have.length(1);
+                result.should.containEql(expected_elements[1]);
+                result.should.not.containEql(expected_elements[0]);
+                done();
             });
         });
     });
