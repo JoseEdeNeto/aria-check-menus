@@ -30,8 +30,10 @@ describe("App", function () {
                           });
                       });
                   });
-
         });
+    });
+
+    describe("#find_visible", function () {
 
         it("should find visible elements as well", function (done) {
             var driver,
@@ -57,6 +59,33 @@ describe("App", function () {
                       });
                   });
 
+        });
+    });
+
+    describe("#hover", function () {
+        it("should find a tooltip presented on mouse over in an specific element", function (done) {
+            var driver,
+                app;
+            driver = new webdriver.Builder()
+                                  .withCapabilities(webdriver.Capabilities.firefox())
+                                  .build();
+            driver.get(["file://", process.env["PWD"], "/tests/fixture/sanity_check01.html"].join(""))
+                  .then(function () {
+                      var hover_target;
+                      app = App(driver, webdriver);
+                      hover_target = driver.findElement({css: "#link1"});
+                      app.hover(hover_target).then(function (widgets) {
+                          var promises;
+                          widgets.should.have.lengthOf(2);
+                          promises = [widgets[0].getTagName(), widgets[1].getTagName()];
+                          webdriver.promise.all(promises).then(function (htmls) {
+                              htmls[0].should.be.equal("span");
+                              htmls[1].should.be.equal("span");
+                              driver.quit();
+                              done();
+                          });
+                      });
+                  });
         });
     });
 });
