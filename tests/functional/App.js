@@ -32,5 +32,31 @@ describe("App", function () {
                   });
 
         });
+
+        it("should find visible elements as well", function (done) {
+            var driver,
+                app;
+            driver = new webdriver.Builder()
+                                  .withCapabilities(webdriver.Capabilities.firefox())
+                                  .build();
+            driver.get(["file://", process.env["PWD"], "/tests/fixture/sanity_check01.html"].join(""))
+                  .then(function () {
+                      app = App(driver, webdriver);
+                      app.get_visibles().then(function (visibles) {
+                          visibles.should.be.an.instanceOf(Array).and.have.lengthOf(3);
+                          var promises = [ visibles[0].getTagName(),
+                                           visibles[1].getTagName(),
+                                           visibles[2].getTagName() ];
+                          webdriver.promise.all(promises).then(function (htmls) {
+                              htmls[0].should.be.equal("h1");
+                              htmls[1].should.be.equal("a");
+                              htmls[2].should.be.equal("a");
+                              driver.quit();
+                              done();
+                          });
+                      });
+                  });
+
+        });
     });
 });
