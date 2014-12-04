@@ -62,7 +62,7 @@ describe("App", function () {
         });
     });
 
-    describe("#_hover", function () {
+    describe("#find_widget", function () {
         it("should find a tooltip presented on mouse over in an specific element", function (done) {
             var driver,
                 app;
@@ -74,7 +74,7 @@ describe("App", function () {
                       var hover_target;
                       app = App(driver, webdriver);
                       hover_target = driver.findElement({css: "#link1"});
-                      app._hover(hover_target).then(function (widgets) {
+                      app.find_widget(hover_target).then(function (widgets) {
                           var promises;
                           widgets.should.have.lengthOf(2);
                           promises = [widgets[0].getTagName(), widgets[1].getTagName()];
