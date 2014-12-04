@@ -16,7 +16,7 @@ var Promise = function () {
 
 describe("App", function () {
 
-    describe("#get_invisible", function () {
+    describe("#_get_invisible", function () {
         it("should look for elements using driver", function (done) {
             var driver_mock = {},
                 app = App(driver_mock),
@@ -27,7 +27,7 @@ describe("App", function () {
                 arguments[0].should.be.eql({css: "body *"});
                 return Promise(expected_elements);
             };
-            result_promise = app.get_invisibles();
+            result_promise = app._get_invisibles();
             result_promise.then(function (result) {
                 result.should.have.length(0);
                 result.should.be.equal(expected_elements);
@@ -55,7 +55,7 @@ describe("App", function () {
                 id: "element1", isDisplayed: function () { var p = Promise(true); p.id = "p1"; return p;} };
             expected_elements[1] = {
                 id: "element2", isDisplayed: function () { var p = Promise(false); p.id = "p2"; return p;} };
-            result_promise = app.get_invisibles();
+            result_promise = app._get_invisibles();
             result_promise.then(function (result) {
                 result.should.have.length(1);
                 result.should.containEql(expected_elements[1]);
@@ -65,7 +65,7 @@ describe("App", function () {
         });
     });
 
-    describe("#get_visible", function () {
+    describe("#_get_visible", function () {
         it("should look for elements using driver", function (done) {
             var driver_mock = {},
                 app = App(driver_mock),
@@ -76,7 +76,7 @@ describe("App", function () {
                 arguments[0].should.be.eql({css: "body *"});
                 return Promise(expected_elements);
             };
-            result_promise = app.get_visibles();
+            result_promise = app._get_visibles();
             result_promise.then(function (result) {
                 result.should.have.length(0);
                 result.should.be.equal(expected_elements);
@@ -104,7 +104,7 @@ describe("App", function () {
                 id: "element1", isDisplayed: function () { var p = Promise(true); p.id = "p1"; return p;} };
             expected_elements[1] = {
                 id: "element2", isDisplayed: function () { var p = Promise(false); p.id = "p2"; return p;} };
-            result_promise = app.get_visibles();
+            result_promise = app._get_visibles();
             result_promise.then(function (result) {
                 result.should.have.length(1);
                 result.should.containEql(expected_elements[0]);
@@ -114,7 +114,7 @@ describe("App", function () {
         });
     });
 
-    describe("#hover", function () {
+    describe("#_hover", function () {
         it("should call hover in an ActionSequence", function () {
             var driver_mock, webdriver_mock, ActionSequenceMock, body_element_stub,
                 web_element_stub, app, hover_target, methods_arguments = [];
@@ -137,7 +137,7 @@ describe("App", function () {
             };
             web_element_stub = { id: "some_target_element" };
             app = App(driver_mock, webdriver_mock);
-            app.hover(web_element_stub);
+            app._hover(web_element_stub);
             methods_arguments.should.have.lengthOf(4);
             methods_arguments[0].method.should.be.equal("constructor");
             methods_arguments[0].arguments[0].should.be.equal(driver_mock);
