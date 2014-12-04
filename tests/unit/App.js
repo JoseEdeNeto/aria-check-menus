@@ -113,4 +113,41 @@ describe("App", function () {
             });
         });
     });
+
+    describe("#hover", function () {
+        it("should call hover in an ActionSequence", function () {
+            var driver_mock, webdriver_mock, ActionSequenceMock, body_element_stub,
+                web_element_stub, app, hover_target, methods_arguments = [];
+            body_element_stub = {"id": "stub body"};
+            driver_mock = {
+                id: "driver_mock",
+                findElement: function (selector) {
+                    selector.should.be.eql({css: "body"});
+                    return body_element_stub;
+                }
+            };
+            ActionSequenceMock = function (){ methods_arguments.push(
+                {method: "constructor", arguments: arguments}); };
+            ActionSequenceMock.prototype.mouseMove = function () { methods_arguments.push(
+                {method: "mouseMove", arguments: arguments}); return this; }
+            ActionSequenceMock.prototype.perform = function () { methods_arguments.push(
+                {method: "perform", arguments: arguments}); return this; }
+            webdriver_mock = {
+                ActionSequence: ActionSequenceMock
+            };
+            web_element_stub = { id: "some_target_element" };
+            app = App(driver_mock, webdriver_mock);
+            app.hover(web_element_stub);
+            methods_arguments.should.have.lengthOf(4);
+            methods_arguments[0].method.should.be.equal("constructor");
+            methods_arguments[0].arguments[0].should.be.equal(driver_mock);
+            methods_arguments[1].method.should.be.equal("mouseMove");
+            methods_arguments[1].arguments[0].should.be.equal(body_element_stub);
+            methods_arguments[2].method.should.be.equal("mouseMove");
+            methods_arguments[2].arguments[0].should.be.equal(web_element_stub);
+            methods_arguments[3].method.should.be.equal("perform");
+            methods_arguments[3].arguments.should.have.lengthOf(0);
+        });
+    });
+
 });
