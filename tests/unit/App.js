@@ -150,19 +150,42 @@ describe("App", function () {
         });
     });
 
-    xdescribe("#find_widget", function () {
+    describe("#find_widget", function () {
         it("should _hover an element and check for invisibles which became visible", function (done) {
-            var app, driver_stub, webdriver_mock, target_stub = {id: "abobrinha1"}
-                method_calls = [];
+            var app, driver_stub, webdriver_mock = { promise: {} }, target_stub = {id: "abobrinha1"},
+                method_calls = [], invisibles_stub = [], result_promise;
+
+            invisibles_stub[0] = { id: "1", isDisplayed: function () { return { fakePromise: 1 } }};
+            invisibles_stub[1] = { id: "2", isDisplayed: function () { return { fakePromise: 2 } }};
+            invisibles_stub[2] = { id: "3", isDisplayed: function () { return { fakePromise: 3 } }};
+            invisibles_stub[3] = { id: "4", isDisplayed: function () { return { fakePromise: 4 } }};
 
             app = App(driver_stub, webdriver_mock);
 
+            webdriver_mock.promise.all = function (promises) {
+                promises.should.have.lengthOf(4);
+                promises[0].fakePromise.should.be.equal(1);
+                promises[1].fakePromise.should.be.equal(2);
+                promises[2].fakePromise.should.be.equal(3);
+                promises[3].fakePromise.should.be.equal(4);
+                return Promise([false, true, true, false]);
+            };
+
             // mocking private methods
             app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
-            app._get_invisibles = function () { };
+            app._get_invisibles = function () { return Promise(invisibles_stub); };
 
-            app.find_widget(target_stub);
+            result_promise = app.find_widget(target_stub);
             method_calls.should.have.lengthOf(1);
+            method_calls[0].method.should.be.equal("_hover");
+            method_calls[0].should.have.property("arguments").with.length(1);
+            method_calls[0].arguments[0].should.be.equal(target_stub);
+            result_promise.then(function (widgets) {
+                widgets.should.have.lengthOf(2);
+                widgets[0].should.have.property("id", "2");
+                widgets[1].should.have.property("id", "3");
+                done();
+            });
         });
     });
 
