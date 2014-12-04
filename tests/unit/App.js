@@ -150,4 +150,20 @@ describe("App", function () {
         });
     });
 
+    xdescribe("#find_widget", function () {
+        it("should _hover an element and check for invisibles which became visible", function (done) {
+            var app, driver_stub, webdriver_mock, target_stub = {id: "abobrinha1"}
+                method_calls = [];
+
+            app = App(driver_stub, webdriver_mock);
+
+            // mocking private methods
+            app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
+            app._get_invisibles = function () { };
+
+            app.find_widget(target_stub);
+            method_calls.should.have.lengthOf(1);
+        });
+    });
+
 });
