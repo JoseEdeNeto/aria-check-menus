@@ -44,7 +44,7 @@ describe("App", function () {
             driver.get(["file://", process.env["PWD"], "/tests/fixture/sanity_check01.html"].join(""))
                   .then(function () {
                       app = App(driver, webdriver);
-                      app._get_visibles().then(function (visibles) {
+                      app.get_visibles().then(function (visibles) {
                           visibles.should.be.an.instanceOf(Array).and.have.lengthOf(3);
                           var promises = [ visibles[0].getTagName(),
                                            visibles[1].getTagName(),

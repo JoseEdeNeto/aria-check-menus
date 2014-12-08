@@ -65,7 +65,7 @@ describe("App", function () {
         });
     });
 
-    describe("#_get_visible", function () {
+    describe("#get_visible", function () {
         it("should look for elements using driver", function (done) {
             var driver_mock = {},
                 app = App(driver_mock),
@@ -76,7 +76,7 @@ describe("App", function () {
                 arguments[0].should.be.eql({css: "body *"});
                 return Promise(expected_elements);
             };
-            result_promise = app._get_visibles();
+            result_promise = app.get_visibles();
             result_promise.then(function (result) {
                 result.should.have.length(0);
                 result.should.be.equal(expected_elements);
@@ -104,7 +104,7 @@ describe("App", function () {
                 id: "element1", isDisplayed: function () { var p = Promise(true); p.id = "p1"; return p;} };
             expected_elements[1] = {
                 id: "element2", isDisplayed: function () { var p = Promise(false); p.id = "p2"; return p;} };
-            result_promise = app._get_visibles();
+            result_promise = app.get_visibles();
             result_promise.then(function (result) {
                 result.should.have.length(1);
                 result.should.containEql(expected_elements[0]);
