@@ -245,6 +245,39 @@ describe("App", function () {
                 done();
             });
         });
+
+        it("should break if no widget elements are found", function (done) {
+            var app, driver_mock = {}, webdriver_mock = { promise: {}, WebElement: {} },
+                target_stub = {id: "abobrinha1"}, method_calls = [], invisibles_stub = [],
+                result_promise, visible_stubs_stack = [], promise_all_stack = [],
+                visible_stub_1 = [
+                    {id: 1},
+                    {id: 2}
+                ], visible_stub_2 = [
+                    {id: 1},
+                    {id: 2}
+                ];
+
+            app = App(driver_mock, webdriver_mock);
+
+            promise_all_stack = [Promise("abobrinha"),
+                                 Promise([true, false, false, true]),
+                                 Promise([])];
+            visible_stubs_stack = [visible_stub_2, visible_stub_1];
+            webdriver_mock.promise.all = function (promises) { return promise_all_stack.pop(); };
+            webdriver_mock.WebElement.equals = function (a, b) { return Promise(a.id === b.id); };
+            driver_mock.findElements = function () { return Promise(visible_stubs_stack.pop()); };
+
+            // mocking private methods
+            app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
+            app._get_invisibles = function () { return Promise(invisibles_stub); };
+
+            result_promise = app.find_widget(target_stub);
+            result_promise.then(function (widgets) {
+                widgets.should.have.lengthOf(0);
+                done();
+            });
+        });
     });
 
 });
