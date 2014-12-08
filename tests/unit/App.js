@@ -152,7 +152,7 @@ describe("App", function () {
 
     describe("#find_widget", function () {
         it("should _hover an element and check for invisibles which became visible", function (done) {
-            var app, driver_stub, webdriver_mock = { promise: {} }, target_stub = {id: "abobrinha1"},
+            var app, driver_mock = {}, webdriver_mock = { promise: {} }, target_stub = {id: "abobrinha1"},
                 method_calls = [], invisibles_stub = [], result_promise;
 
             invisibles_stub[0] = { id: "1", isDisplayed: function () { return { fakePromise: 1 } }};
@@ -160,7 +160,7 @@ describe("App", function () {
             invisibles_stub[2] = { id: "3", isDisplayed: function () { return { fakePromise: 3 } }};
             invisibles_stub[3] = { id: "4", isDisplayed: function () { return { fakePromise: 4 } }};
 
-            app = App(driver_stub, webdriver_mock);
+            app = App(driver_mock, webdriver_mock);
 
             webdriver_mock.promise.all = function (promises) {
                 promises.should.have.lengthOf(4);
@@ -171,11 +171,11 @@ describe("App", function () {
                 webdriver_mock.promise.all = function () {return [];}
                 return Promise([false, true, true, false]);
             };
+            driver_mock.findElements = function () { return Promise([]); };
 
             // mocking private methods
             app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
             app._get_invisibles = function () { return Promise(invisibles_stub); };
-            app._get_visibles = function () { return Promise([]); };
 
             result_promise = app.find_widget(target_stub);
             method_calls.should.have.lengthOf(1);
@@ -191,7 +191,7 @@ describe("App", function () {
         });
 
         it("should _hover an element and look for elements which did not exist before", function (done) {
-            var app, driver_stub, webdriver_mock = { promise: {}, WebElement: {} },
+            var app, driver_mock = {}, webdriver_mock = { promise: {}, WebElement: {} },
                 target_stub = {id: "abobrinha1"}, method_calls = [], invisibles_stub = [],
                 result_promise, visible_stubs_stack = [], promise_all_stack = [],
                 visible_stub_1 = [
@@ -203,29 +203,32 @@ describe("App", function () {
                     {id: 3}
                 ];
 
-            app = App(driver_stub, webdriver_mock);
-
+            app = App(driver_mock, webdriver_mock);
 
             promise_all_stack = [Promise([true, false, false, true, false, false]), Promise([])];
             webdriver_mock.promise.all = function (promises) { return promise_all_stack.pop(); };
             webdriver_mock.WebElement.equals = function (a, b) { return Promise(a.id === b.id); };
+            driver_mock.findElements = function () {
+                method_calls.push({method: "driver.findElements", arguments: arguments});
+                return Promise(visible_stubs_stack.pop());
+            };
 
             // mocking private methods
             app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
             app._get_invisibles = function () { return Promise(invisibles_stub); };
             visible_stubs_stack = [visible_stub_2, visible_stub_1];
-            app._get_visibles = function () {
-                method_calls.push({method: "_get_visibles"});
-                return Promise(visible_stubs_stack.pop());
-            };
 
             result_promise = app.find_widget(target_stub);
             method_calls.should.have.lengthOf(3);
-            method_calls[0].should.have.property("method", "_get_visibles");
+            method_calls[0].should.have.property("method", "driver.findElements");
+            method_calls[0].should.have.property("arguments").with.lengthOf(1);
+            method_calls[0].arguments[0].should.have.property("css", "body *");
             method_calls[1].method.should.be.equal("_hover");
             method_calls[1].should.have.property("arguments").with.length(1);
             method_calls[1].arguments[0].should.be.equal(target_stub);
-            method_calls[2].should.have.property("method", "_get_visibles");
+            method_calls[2].should.have.property("method", "driver.findElements");
+            method_calls[2].should.have.property("arguments").with.lengthOf(1);
+            method_calls[2].arguments[0].should.have.property("css", "body *");
             result_promise.then(function (widgets) {
                 widgets.should.have.lengthOf(1);
                 widgets[0].should.have.property("id", 3);
