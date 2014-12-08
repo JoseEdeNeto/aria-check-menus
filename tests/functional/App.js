@@ -87,5 +87,31 @@ describe("App", function () {
                       });
                   });
         });
+
+        it("should find a tooltip on mouse over even if the element does not priorly exists", function (done) {
+            var driver,
+                app;
+            driver = new webdriver.Builder()
+                                  .withCapabilities(webdriver.Capabilities.firefox())
+                                  .build();
+            driver.get(["file://", process.env["PWD"],
+                        "/tests/fixture/menu_element_just_shows_on_hover01.html"].join(""))
+                  .then(function () {
+                      var hover_target;
+                      app = App(driver, webdriver);
+                      hover_target = driver.findElement({css: "#link2"});
+                      app.find_widget(hover_target).then(function (widgets) {
+                          var promises;
+                          widgets.should.have.lengthOf(2);
+                          promises = [widgets[0].getTagName(), widgets[1].getTagName()];
+                          webdriver.promise.all(promises).then(function (htmls) {
+                              htmls[0].should.be.equal("span");
+                              htmls[1].should.be.equal("span");
+                              driver.quit();
+                              done();
+                          });
+                      });
+                  });
+        });
     });
 });
