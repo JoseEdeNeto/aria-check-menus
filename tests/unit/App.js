@@ -155,10 +155,14 @@ describe("App", function () {
             var app, driver_mock = {}, webdriver_mock = { promise: {} }, target_stub = {id: "abobrinha1"},
                 method_calls = [], invisibles_stub = [], result_promise;
 
-            invisibles_stub[0] = { id: "1", isDisplayed: function () { return { fakePromise: 1 } }};
-            invisibles_stub[1] = { id: "2", isDisplayed: function () { return { fakePromise: 2 } }};
-            invisibles_stub[2] = { id: "3", isDisplayed: function () { return { fakePromise: 3 } }};
-            invisibles_stub[3] = { id: "4", isDisplayed: function () { return { fakePromise: 4 } }};
+            invisibles_stub[0] = { id: "1", isDisplayed: function () { return { fakePromise: 1 } },
+                getOuterHtml: function () { return Promise("<span></span>"); } };
+            invisibles_stub[1] = { id: "2", isDisplayed: function () { return { fakePromise: 2 } },
+                getOuterHtml: function () { return Promise("<span></span>"); } };
+            invisibles_stub[2] = { id: "3", isDisplayed: function () { return { fakePromise: 3 } },
+                getOuterHtml: function () { return Promise("<span>bigger one should be returned</span>"); } };
+            invisibles_stub[3] = { id: "4", isDisplayed: function () { return { fakePromise: 4 } },
+                getOuterHtml: function () { return Promise("<span></span>"); } };
 
             app = App(driver_mock, webdriver_mock);
 
@@ -168,7 +172,12 @@ describe("App", function () {
                 promises[1].fakePromise.should.be.equal(2);
                 promises[2].fakePromise.should.be.equal(3);
                 promises[3].fakePromise.should.be.equal(4);
-                webdriver_mock.promise.all = function () {return [];}
+                webdriver_mock.promise.all = function () {
+                    webdriver_mock.promise.all = function () {
+                        return Promise(["<span></span>", "<span>bigger one should be returned</span>"]);
+                    };
+                    return [];
+                }
                 return Promise([false, true, true, false]);
             };
             driver_mock.findElements = function () { return Promise([]); };
@@ -183,9 +192,8 @@ describe("App", function () {
             method_calls[0].should.have.property("arguments").with.length(1);
             method_calls[0].arguments[0].should.be.equal(target_stub);
             result_promise.then(function (widgets) {
-                widgets.should.have.lengthOf(2);
-                widgets[0].should.have.property("id", "2");
-                widgets[1].should.have.property("id", "3");
+                widgets.should.have.lengthOf(1);
+                widgets[0].should.have.property("id", "3");
                 done();
             });
         });
@@ -200,12 +208,14 @@ describe("App", function () {
                 ], visible_stub_2 = [
                     {id: 1},
                     {id: 2},
-                    {id: 3}
+                    {id: 3, getOuterHtml: function () { return Promise("false promise (abobrinha)"); } }
                 ];
 
             app = App(driver_mock, webdriver_mock);
 
-            promise_all_stack = [Promise([true, false, false, true, false, false]), Promise([])];
+            promise_all_stack = [Promise("abobrinha"),
+                                 Promise([true, false, false, true, false, false]),
+                                 Promise([])];
             webdriver_mock.promise.all = function (promises) { return promise_all_stack.pop(); };
             webdriver_mock.WebElement.equals = function (a, b) { return Promise(a.id === b.id); };
             driver_mock.findElements = function () {

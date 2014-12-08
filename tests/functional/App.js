@@ -76,12 +76,10 @@ describe("App", function () {
                       hover_target = driver.findElement({css: "#link1"});
                       app.find_widget(hover_target).then(function (widgets) {
                           var promises;
-                          widgets.length.should.be.equal(2);
-                          widgets.should.have.lengthOf(2);
-                          promises = [widgets[0].getTagName(), widgets[1].getTagName()];
-                          webdriver.promise.all(promises).then(function (htmls) {
-                              htmls[0].should.be.equal("span");
-                              htmls[1].should.be.equal("span");
+                          widgets.should.have.lengthOf(1);
+                          widgets[0].getOuterHtml().then(function (html) {
+                              html.should.containDeep("Useful message 1")
+                                  .and.containDeep("tooltip");
                               driver.quit();
                               done();
                           });
@@ -103,12 +101,10 @@ describe("App", function () {
                       hover_target = driver.findElement({css: "#link2"});
                       app.find_widget(hover_target).then(function (widgets) {
                           var promises;
-                          widgets.length.should.be.equal(2);
-                          widgets.should.have.lengthOf(2);
-                          promises = [widgets[0].getTagName(), widgets[1].getTagName()];
-                          webdriver.promise.all(promises).then(function (htmls) {
-                              htmls[0].should.be.equal("span");
-                              htmls[1].should.be.equal("span");
+                          widgets.should.have.lengthOf(1);
+                          widgets[0].getOuterHtml().then(function (html) {
+                              html.should.containDeep("Useful").and
+                                         .containDeep("tooltip open");
                               driver.quit();
                               done();
                           });
