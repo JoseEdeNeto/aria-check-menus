@@ -118,7 +118,7 @@ describe("App", function () {
     });
 
     describe("#find_all_widgets", function () {
-        it("should find all tooltips in the webpage", function (done) {
+        xit("should find all tooltips in the webpage", function (done) {
             var driver,
                 app;
             driver = new webdriver.Builder()
