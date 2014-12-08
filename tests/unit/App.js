@@ -174,6 +174,7 @@ describe("App", function () {
             // mocking private methods
             app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
             app._get_invisibles = function () { return Promise(invisibles_stub); };
+            app._get_visibles = function () { return Promise([]); };
 
             result_promise = app.find_widget(target_stub);
             method_calls.should.have.lengthOf(1);
@@ -184,6 +185,45 @@ describe("App", function () {
                 widgets.should.have.lengthOf(2);
                 widgets[0].should.have.property("id", "2");
                 widgets[1].should.have.property("id", "3");
+                done();
+            });
+        });
+
+        it("should _hover an element and look for elements which did not exist before", function (done) {
+            var app, driver_stub, webdriver_mock = { promise: {} }, target_stub = {id: "abobrinha1"},
+                method_calls = [], invisibles_stub = [], result_promise, visible_stubs_stack = [],
+                visible_stub_1 = [
+                    {id: 1},
+                    {id: 2}
+                ], visible_stub_2 = [
+                    visible_stub_1[0],
+                    visible_stub_1[1],
+                    {id: 3}
+                ];
+
+            app = App(driver_stub, webdriver_mock);
+
+            webdriver_mock.promise.all = function (promises) { return Promise([]); };
+
+            // mocking private methods
+            app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
+            app._get_invisibles = function () { return Promise(invisibles_stub); };
+            visible_stubs_stack = [visible_stub_2, visible_stub_1];
+            app._get_visibles = function () {
+                method_calls.push({method: "_get_visibles"});
+                return Promise(visible_stubs_stack.pop());
+            };
+
+            result_promise = app.find_widget(target_stub);
+            method_calls.should.have.lengthOf(3);
+            method_calls[0].should.have.property("method", "_get_visibles");
+            method_calls[1].method.should.be.equal("_hover");
+            method_calls[1].should.have.property("arguments").with.length(1);
+            method_calls[1].arguments[0].should.be.equal(target_stub);
+            method_calls[2].should.have.property("method", "_get_visibles");
+            result_promise.then(function (widgets) {
+                widgets.should.have.lengthOf(1);
+                widgets[0].should.have.property("id", 3);
                 done();
             });
         });

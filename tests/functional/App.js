@@ -76,6 +76,7 @@ describe("App", function () {
                       hover_target = driver.findElement({css: "#link1"});
                       app.find_widget(hover_target).then(function (widgets) {
                           var promises;
+                          widgets.length.should.be.equal(2);
                           widgets.should.have.lengthOf(2);
                           promises = [widgets[0].getTagName(), widgets[1].getTagName()];
                           webdriver.promise.all(promises).then(function (htmls) {
@@ -102,6 +103,7 @@ describe("App", function () {
                       hover_target = driver.findElement({css: "#link2"});
                       app.find_widget(hover_target).then(function (widgets) {
                           var promises;
+                          widgets.length.should.be.equal(2);
                           widgets.should.have.lengthOf(2);
                           promises = [widgets[0].getTagName(), widgets[1].getTagName()];
                           webdriver.promise.all(promises).then(function (htmls) {
