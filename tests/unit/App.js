@@ -168,6 +168,7 @@ describe("App", function () {
                 promises[1].fakePromise.should.be.equal(2);
                 promises[2].fakePromise.should.be.equal(3);
                 promises[3].fakePromise.should.be.equal(4);
+                webdriver_mock.promise.all = function () {return [];}
                 return Promise([false, true, true, false]);
             };
 
@@ -190,20 +191,24 @@ describe("App", function () {
         });
 
         it("should _hover an element and look for elements which did not exist before", function (done) {
-            var app, driver_stub, webdriver_mock = { promise: {} }, target_stub = {id: "abobrinha1"},
-                method_calls = [], invisibles_stub = [], result_promise, visible_stubs_stack = [],
+            var app, driver_stub, webdriver_mock = { promise: {}, WebElement: {} },
+                target_stub = {id: "abobrinha1"}, method_calls = [], invisibles_stub = [],
+                result_promise, visible_stubs_stack = [], promise_all_stack = [],
                 visible_stub_1 = [
                     {id: 1},
                     {id: 2}
                 ], visible_stub_2 = [
-                    visible_stub_1[0],
-                    visible_stub_1[1],
+                    {id: 1},
+                    {id: 2},
                     {id: 3}
                 ];
 
             app = App(driver_stub, webdriver_mock);
 
-            webdriver_mock.promise.all = function (promises) { return Promise([]); };
+
+            promise_all_stack = [Promise([true, false, false, true, false, false]), Promise([])];
+            webdriver_mock.promise.all = function (promises) { return promise_all_stack.pop(); };
+            webdriver_mock.WebElement.equals = function (a, b) { return Promise(a.id === b.id); };
 
             // mocking private methods
             app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
