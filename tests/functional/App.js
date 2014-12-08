@@ -116,4 +116,37 @@ describe("App", function () {
                   });
         });
     });
+
+    describe("#find_all_widgets", function () {
+        it("should find all tooltips in the webpage", function (done) {
+            var driver,
+                app;
+            driver = new webdriver.Builder()
+                                  .withCapabilities(webdriver.Capabilities.firefox())
+                                  .build();
+            driver.get(["file://", process.env["PWD"], "/tests/fixture/sanity_check02.html"].join(""))
+                  .then(function () {
+                      var hover_target;
+                      app = App(driver, webdriver);
+                      app.find_all_widgets().then(function (widgets) {
+                          var tags;
+                          widgets.should.have.property("length", 6);
+                          tags = [widgets[0].getTagName(),
+                                  widgets[1].getTagName(),
+                                  widgets[2].getTagName(),
+                                  widgets[3].getTagName(),
+                                  widgets[4].getTagName(),
+                                  widgets[5].getTagName()];
+                          webdriver.promise.all(tags).then(function (tags) {
+                              tags[0].should.be.equal("span");
+                              tags[1].should.be.equal("span");
+                              tags[2].should.be.equal("span");
+                              tags[3].should.be.equal("span");
+                              tags[4].should.be.equal("span");
+                              tags[5].should.be.equal("span");
+                          });
+                      });
+                  });
+        });
+    });
 });
