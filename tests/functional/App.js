@@ -114,7 +114,7 @@ describe("App", function () {
     });
 
     describe("#find_all_widgets", function () {
-        xit("should find all tooltips in the webpage", function (done) {
+        it("should find all tooltips in the webpage", function (done) {
             var driver,
                 app;
             driver = new webdriver.Builder()
@@ -122,25 +122,21 @@ describe("App", function () {
                                   .build();
             driver.get(["file://", process.env["PWD"], "/tests/fixture/sanity_check02.html"].join(""))
                   .then(function () {
-                      var hover_target;
+                      var hover_target, promises = [];
                       app = App(driver, webdriver);
                       app.find_all_widgets().then(function (widgets) {
-                          var tags;
-                          widgets.should.have.property("length", 6);
-                          tags = [widgets[0].getTagName(),
-                                  widgets[1].getTagName(),
-                                  widgets[2].getTagName(),
-                                  widgets[3].getTagName(),
-                                  widgets[4].getTagName(),
-                                  widgets[5].getTagName()];
-                          webdriver.promise.all(tags).then(function (tags) {
-                              tags[0].should.be.equal("span");
-                              tags[1].should.be.equal("span");
-                              tags[2].should.be.equal("span");
-                              tags[3].should.be.equal("span");
-                              tags[4].should.be.equal("span");
-                              tags[5].should.be.equal("span");
-                          });
+                          widgets.should.have.lengthOf(3);
+                          for (var i = 0; i < widgets.length; i++) {
+                              widgets[i].should.have.property("menu").and
+                                                    .property("dropdown");
+                              promises.push(widgets[i].getText());
+                          };
+                          return webdriver.promise.all(promises);
+                      }).then(function (widgets_texts) {
+                          widgets_texts.should.have.lengthOf(3);
+                          widgets_texts[0].should.containDeep("Useful message 1");
+                          widgets_texts[1].should.containDeep("Useful message 2");
+                          widgets_texts[2].should.containDeep("Useful 3");
                       });
                   });
         });
