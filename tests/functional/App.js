@@ -129,7 +129,7 @@ describe("App", function () {
                           for (var i = 0; i < widgets.length; i++) {
                               widgets[i].should.have.property("menu").and
                                                     .property("dropdown");
-                              promises.push(widgets[i].getText());
+                              promises.push(widgets[i].dropdown.getText());
                           };
                           return webdriver.promise.all(promises);
                       }).then(function (widgets_texts) {
