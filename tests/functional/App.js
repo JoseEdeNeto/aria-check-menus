@@ -127,16 +127,18 @@ describe("App", function () {
                       app.find_all_widgets().then(function (widgets) {
                           widgets.should.have.lengthOf(3);
                           for (var i = 0; i < widgets.length; i++) {
-                              widgets[i].should.have.property("menu").and
-                                                    .property("dropdown");
-                              promises.push(widgets[i].dropdown.getText());
+                              widgets[i].should.have.property("menu_activator");
+                              widgets[i].should.have.property("menu");
+                              widgets[i].menu.should.be.an.Array.and.have.lengthOf(1);
+                              promises.push(widgets[i].menu[0].getOuterHtml());
                           };
                           return webdriver.promise.all(promises);
                       }).then(function (widgets_texts) {
-                          widgets_texts.should.have.lengthOf(3);
+                          widgets_texts.length.should.be.equal(3);
                           widgets_texts[0].should.containDeep("Useful message 1");
                           widgets_texts[1].should.containDeep("Useful message 2");
                           widgets_texts[2].should.containDeep("Useful 3");
+                          done();
                       });
                   });
         });

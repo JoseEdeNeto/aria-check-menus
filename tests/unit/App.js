@@ -280,4 +280,85 @@ describe("App", function () {
         });
     });
 
+    describe("#find_all_widgets", function () {
+        it("should get all visibles and do nothing if nothing is returned", function (done) {
+            var driver_mock = {}, webdriver_mock = {},
+                app = App(driver_mock, webdriver_mock),
+                get_visibles_promise;
+
+            get_visibles_promise = Promise([]);
+            app.get_visibles = function () {
+                return get_visibles_promise;
+            };
+            app.find_all_widgets().then(function (result) {
+                result.should.be.an.Array.with.lengthOf(0);
+                done();
+            });
+
+        });
+
+        it("should call get all visible elements and call find_widget", function (done) {
+            var driver_mock = {}, webdriver_mock = {},
+                app = App(driver_mock, webdriver_mock),
+                get_visibles_promise, find_widget_arguments = [],
+                find_widget_results = ["promise 2", "promise 1"];
+
+            webdriver_mock.promise = {};
+            webdriver_mock.promise.all = function (promises) {
+                promises.should.have.lengthOf(2);
+                promises[0].should.be.equal("promise 1");
+                promises[1].should.be.equal("promise 2");
+                return Promise(["widget 1", "widget 2"]);
+            };
+            get_visibles_promise = Promise(["visible 1", "visible 2"]);
+            app.find_widget = function (target) {
+                find_widget_arguments.push(arguments);
+                return find_widget_results.pop();
+            };
+            app.get_visibles = function () {
+                return get_visibles_promise;
+            };
+            app.find_all_widgets().then(function (result) {
+                find_widget_arguments.should.have.lengthOf(2);
+                find_widget_arguments[0][0].should.be.equal("visible 1");
+                find_widget_arguments[1][0].should.be.equal("visible 2");
+
+                result.should.have.lengthOf(2);
+                result[0].should.have.property("menu_activator", "visible 1");
+                result[0].should.have.property("menu", "widget 1");
+                result[1].should.have.property("menu_activator", "visible 2");
+                result[1].should.have.property("menu", "widget 2");
+                done();
+            });
+        });
+
+        it("should not return elements which did not present a dropdown component", function (done) {
+            var driver_mock = {}, webdriver_mock = {},
+                app = App(driver_mock, webdriver_mock),
+                get_visibles_promise, find_widget_arguments = [],
+                find_widget_results = ["promise 2", "promise 1"];
+
+            webdriver_mock.promise = {};
+            webdriver_mock.promise.all = function (promises) {
+                promises.should.have.lengthOf(2);
+                return Promise([[], []]);
+            };
+            get_visibles_promise = Promise(["visible 1", "visible 2"]);
+            app.find_widget = function (target) {
+                find_widget_arguments.push(arguments);
+                return find_widget_results.pop();
+            };
+            app.get_visibles = function () {
+                return get_visibles_promise;
+            };
+            app.find_all_widgets().then(function (result) {
+                find_widget_arguments.should.have.lengthOf(2);
+
+                result.should.have.lengthOf(0);
+                done();
+            });
+        });
+
+    });
+
 });
