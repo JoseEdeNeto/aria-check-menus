@@ -23,7 +23,7 @@ describe("ScreenSaverApp", function () {
                 driver_mock = {}, captureScreen_returns = ["image_after_base64", "image_before_base64"],
                 fs_mock = {}, fs_write_arguments = [],
                 screen_app;
-            driver_mock.captureScreen = function () {
+            driver_mock.takeScreenshot = function () {
                 methods_calls.push("captureScreen");
                 return Promise(captureScreen_returns.pop());
             };
@@ -42,11 +42,14 @@ describe("ScreenSaverApp", function () {
             methods_calls[1].should.be.equal("find_widget");
             methods_calls[2].should.be.equal("captureScreen");
             fs_write_arguments.should.have.lengthOf(2);
-            fs_write_arguments[0].should.have.lengthOf(2);
+            fs_write_arguments[0].should.have.lengthOf(3);
             fs_write_arguments[0][0].should.be.equal("widget_1_before.png");
             fs_write_arguments[0][1].should.be.equal("image_before_base64");
+            fs_write_arguments[0][2].should.be.equal("base64");
+            fs_write_arguments[1].should.have.lengthOf(3);
             fs_write_arguments[1][0].should.be.equal("widget_1_after.png");
             fs_write_arguments[1][1].should.be.equal("image_after_base64");
+            fs_write_arguments[1][2].should.be.equal("base64");
             done();
         });
 
@@ -54,7 +57,7 @@ describe("ScreenSaverApp", function () {
             var app_mock = {}, driver_mock = {}, fs_mock = {}, target_stub = { id: "abobrinha" },
                 screen_app, result;
 
-            driver_mock.captureScreen = function () { return Promise([]); };
+            driver_mock.takeScreenshot = function () { return Promise([]); };
             fs_mock.writeFile = function () {};
             app_mock.find_widget = function () {
                 var promise_mock = Promise([{ id: "a promise" }]);
@@ -75,7 +78,7 @@ describe("ScreenSaverApp", function () {
                 target_stub = { id: "abobrinha" }, no_widgets_stub,
                 screen_app, result;
 
-            driver_mock.captureScreen = function () { return Promise([]); };
+            driver_mock.takeScreenshot = function () { return Promise([]); };
             app_mock.find_widget = function () { return Promise(no_widgets_stub); };
             no_widgets_stub = [];
             fs_mock.writeFile = function () { "it should not be called".should.be.equal(""); };
@@ -89,7 +92,7 @@ describe("ScreenSaverApp", function () {
                 target_stub = { id: "abobrinha" }, fs_stack_arguments = [],
                 screen_app, result;
 
-            driver_mock.captureScreen = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
+            driver_mock.takeScreenshot = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
             app_mock.find_widget = function () { return Promise([{}]); };
             fs_mock.writeFile = function (filename, data) {
                 fs_stack_arguments.push({
@@ -125,7 +128,7 @@ describe("ScreenSaverApp", function () {
                 target_stub = { id: "abobrinha" }, fs_stack_arguments = [],
                 screen_app, result;
 
-            driver_mock.captureScreen = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
+            driver_mock.takeScreenshot = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
             app_mock.find_widget = function () { return Promise([{}]); };
             fs_mock.writeFile = function (filename, data) {
                 fs_stack_arguments.push({
