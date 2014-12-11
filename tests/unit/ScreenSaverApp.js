@@ -152,11 +152,15 @@ describe("ScreenSaverApp", function () {
     describe("#find_all_widget", function () {
         it("should call find_all_widget method in App", function (done) {
             var app_mock = {}, methods_calls = [],
-                screen_app = ScreenSaverApp(app_mock);
-            app_mock.find_all_widgets = function () { methods_calls.push("find_all_widgets"); };
+                screen_app = ScreenSaverApp(app_mock), result;
+            app_mock.find_all_widgets = function () {
+                methods_calls.push("find_all_widgets");
+                return "something";
+            };
             screen_app.should.have.property("find_all_widgets");
-            screen_app.find_all_widgets();
+            result = screen_app.find_all_widgets();
             methods_calls[0].should.be.equal("find_all_widgets");
+            result.should.be.equal("something");
             done();
         });
         it("should call find_all_widget in app which should call find_widget", function (done) {
