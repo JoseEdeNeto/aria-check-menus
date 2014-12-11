@@ -22,7 +22,7 @@ describe("ScreenSaverApp", function () {
             var app_mock = {}, methods_calls = [], target_stub = { id: "something" },
                 driver_mock = {}, captureScreen_returns = ["image_after_base64", "image_before_base64"],
                 fs_mock = {}, fs_write_arguments = [],
-                screen_app = ScreenSaverApp(app_mock, driver_mock, fs_mock);
+                screen_app;
             driver_mock.captureScreen = function () {
                 methods_calls.push("captureScreen");
                 return Promise(captureScreen_returns.pop());
@@ -35,6 +35,7 @@ describe("ScreenSaverApp", function () {
                 methods_calls.push("find_widget");
                 return Promise([{}]);
             };
+            screen_app = ScreenSaverApp(app_mock, driver_mock, fs_mock);
             screen_app.should.have.property("find_widget");
             screen_app.find_widget(target_stub);
             methods_calls[0].should.be.equal("captureScreen");
@@ -51,8 +52,7 @@ describe("ScreenSaverApp", function () {
 
         it("should return the same promise which is returned in app", function () {
             var app_mock = {}, driver_mock = {}, fs_mock = {}, target_stub = { id: "abobrinha" },
-                screen_app = ScreenSaverApp(app_mock, driver_mock, fs_mock),
-                result;
+                screen_app, result;
 
             driver_mock.captureScreen = function () { return Promise([]); };
             fs_mock.writeFile = function () {};
@@ -61,6 +61,7 @@ describe("ScreenSaverApp", function () {
                 promise_mock.id = "a promise";
                 return promise_mock;
             };
+            screen_app = ScreenSaverApp(app_mock, driver_mock, fs_mock);
             result = screen_app.find_widget(target_stub);
             result.then(function (widgets) {
                 widgets.should.have.property(0).and
@@ -72,13 +73,13 @@ describe("ScreenSaverApp", function () {
         it("should not save widget image if no menus are found", function (done) {
             var app_mock = {}, driver_mock = {}, fs_mock = {},
                 target_stub = { id: "abobrinha" }, no_widgets_stub,
-                screen_app = ScreenSaverApp(app_mock, driver_mock, fs_mock),
-                result;
+                screen_app, result;
 
             driver_mock.captureScreen = function () { return Promise([]); };
             app_mock.find_widget = function () { return Promise(no_widgets_stub); };
             no_widgets_stub = [];
             fs_mock.writeFile = function () { "it should not be called".should.be.equal(""); };
+            screen_app = ScreenSaverApp(app_mock, driver_mock, fs_mock),
             result = screen_app.find_widget(target_stub);
             done();
         });
@@ -86,8 +87,7 @@ describe("ScreenSaverApp", function () {
         it("should save multiple images with different names for them", function (done) {
             var app_mock = {}, driver_mock = {}, fs_mock = {},
                 target_stub = { id: "abobrinha" }, fs_stack_arguments = [],
-                screen_app = ScreenSaverApp(app_mock, driver_mock, fs_mock),
-                result;
+                screen_app, result;
 
             driver_mock.captureScreen = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
             app_mock.find_widget = function () { return Promise([{}]); };
@@ -97,6 +97,7 @@ describe("ScreenSaverApp", function () {
                     data: data
                 });
             };
+            screen_app = ScreenSaverApp(app_mock, driver_mock, fs_mock),
             screen_app.find_widget(target_stub);
             screen_app.find_widget(target_stub);
             fs_stack_arguments.should.have.lengthOf(4);
@@ -129,6 +130,17 @@ describe("ScreenSaverApp", function () {
             screen_app.find_all_widgets();
             methods_calls[0].should.be.equal("find_all_widgets");
             done();
+        });
+        it("should call find_all_widget in app which should call find_widget", function (done) {
+            var app_mock = {},
+                screen_app;
+            app_mock.find_all_widgets = function () {
+                this.find_widget();
+            };
+            app_mock.find_widget = function () {};
+            screen_app = ScreenSaverApp(app_mock);
+            screen_app.find_widget = function () { "ok".should.be.equal("ok"); done(); }
+            screen_app.find_all_widgets();
         });
     });
 
