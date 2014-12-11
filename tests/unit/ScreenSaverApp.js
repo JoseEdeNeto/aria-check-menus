@@ -119,6 +119,34 @@ describe("ScreenSaverApp", function () {
                                  .be.equal("imagedijfoiasjfoaaf base:64");
             done();
         });
+
+        it("should use folder parameter to save images", function (done) {
+            var app_mock = {}, driver_mock = {}, fs_mock = {},
+                target_stub = { id: "abobrinha" }, fs_stack_arguments = [],
+                screen_app, result;
+
+            driver_mock.captureScreen = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
+            app_mock.find_widget = function () { return Promise([{}]); };
+            fs_mock.writeFile = function (filename, data) {
+                fs_stack_arguments.push({
+                    filename: filename,
+                    data: data
+                });
+            };
+            screen_app = ScreenSaverApp(app_mock, driver_mock, fs_mock, "some_folder"),
+            screen_app.find_widget(target_stub);
+            screen_app.find_widget(target_stub);
+            fs_stack_arguments.should.have.lengthOf(4);
+            fs_stack_arguments[0].should.have.property("filename").and
+                                 .be.equal("some_folder/widget_1_before.png");
+            fs_stack_arguments[1].should.have.property("filename").and
+                                 .be.equal("some_folder/widget_1_after.png");
+            fs_stack_arguments[2].should.have.property("filename").and
+                                 .be.equal("some_folder/widget_2_before.png");
+            fs_stack_arguments[3].should.have.property("filename").and
+                                 .be.equal("some_folder/widget_2_after.png");
+            done();
+        });
     });
 
     describe("#find_all_widget", function () {
