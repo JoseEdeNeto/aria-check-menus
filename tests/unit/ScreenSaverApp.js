@@ -20,15 +20,23 @@ describe("ScreenSaverApp", function () {
     describe("#find_widget", function () {
         it("should call find_widget method in App", function (done) {
             var app_mock = {}, methods_calls = [], target_stub = { id: "something" },
-                driver_mock = {}, captureScreen_returns = ["image_after_base64", "image_before_base64"],
-                fs_mock = {}, fs_write_arguments = [],
-                screen_app;
+                body_stub = { tagName: "body"}, driver_mock = {},
+                captureScreen_returns = ["image_after_base64", "image_before_base64"],
+                fs_mock = {}, fs_write_arguments = [], screen_app;
             driver_mock.takeScreenshot = function () {
                 methods_calls.push("captureScreen");
                 return Promise(captureScreen_returns.pop());
             };
+            driver_mock.findElement = function (query) {
+                query.should.have.property("css").and.be.equal("body");
+                return body_stub;
+            };
             fs_mock.writeFile = function () {
                 fs_write_arguments.push(arguments);
+            };
+            app_mock._hover = function (target) {
+                target.should.be.equal(body_stub);
+                methods_calls.push("_hover");
             };
             app_mock.find_widget = function (target) {
                 target.should.be.equal(target_stub);
@@ -38,9 +46,10 @@ describe("ScreenSaverApp", function () {
             screen_app = ScreenSaverApp(app_mock, driver_mock, fs_mock);
             screen_app.should.have.property("find_widget");
             screen_app.find_widget(target_stub);
-            methods_calls[0].should.be.equal("captureScreen");
-            methods_calls[1].should.be.equal("find_widget");
-            methods_calls[2].should.be.equal("captureScreen");
+            methods_calls[0].should.be.equal("_hover");
+            methods_calls[1].should.be.equal("captureScreen");
+            methods_calls[2].should.be.equal("find_widget");
+            methods_calls[3].should.be.equal("captureScreen");
             fs_write_arguments.should.have.lengthOf(2);
             fs_write_arguments[0].should.have.lengthOf(3);
             fs_write_arguments[0][0].should.be.equal("widget_1_before.png");
@@ -58,7 +67,9 @@ describe("ScreenSaverApp", function () {
                 screen_app, result;
 
             driver_mock.takeScreenshot = function () { return Promise([]); };
+            driver_mock.findElement = function (query) { return "body"; };
             fs_mock.writeFile = function () {};
+            app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () {
                 var promise_mock = Promise([{ id: "a promise" }]);
                 promise_mock.id = "a promise";
@@ -79,6 +90,8 @@ describe("ScreenSaverApp", function () {
                 screen_app, result;
 
             driver_mock.takeScreenshot = function () { return Promise([]); };
+            driver_mock.findElement = function (query) { return "body"; };
+            app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () { return Promise(no_widgets_stub); };
             no_widgets_stub = [];
             fs_mock.writeFile = function () { "it should not be called".should.be.equal(""); };
@@ -93,6 +106,8 @@ describe("ScreenSaverApp", function () {
                 screen_app, result;
 
             driver_mock.takeScreenshot = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
+            driver_mock.findElement = function (query) { return "body"; };
+            app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () { return Promise([{}]); };
             fs_mock.writeFile = function (filename, data) {
                 fs_stack_arguments.push({
@@ -129,6 +144,8 @@ describe("ScreenSaverApp", function () {
                 screen_app, result;
 
             driver_mock.takeScreenshot = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
+            driver_mock.findElement = function (query) { return "body"; };
+            app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () { return Promise([{}]); };
             fs_mock.writeFile = function (filename, data) {
                 fs_stack_arguments.push({
