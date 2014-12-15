@@ -178,6 +178,7 @@ describe("App", function () {
                 return Promise([false, true, true, false]);
             };
             driver_mock.findElements = function () { return Promise([]); };
+            driver_mock.executeScript = function (callback) { return Promise(); };
 
             // mocking private methods
             app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
@@ -195,10 +196,44 @@ describe("App", function () {
             });
         });
 
-        xit("should _hover an element and look for elements which did not exist before", function (done) {
+        it("should _hover an element and look for elements which did not exist before", function (done) {
+            var app, driver_mock = {}, webdriver_mock = {}, target_stub = {};
+            app = App(driver_mock, webdriver_mock);
+
+            webdriver_mock.promise = {
+                all: function (promises) {
+                    promises.should.have.lengthOf(0);
+                    webdriver_mock.promise.all = function (promises) {
+                        promises.should.have.lengthOf(1);
+                        return Promise(["aoioioioio"]);
+                    };
+                    return Promise([]);
+                }
+            };
+            app._hover = function () {};
+            app._get_invisibles = function () { return Promise([]); };
+            driver_mock.executeScript = function (callback) {
+                callback.toString().should.containDeep("window.mutationTargets = [];");
+                callback.toString().should.containDeep("MutationObserver");
+                callback.toString().should.containDeep("window.mutationTargets.push");
+                callback.toString().should.containDeep(
+                    "observer.observe(document.body, {childList: true, subtree: true})");
+                driver_mock.executeScript = function (callback) {
+                    callback.toString().should.containDeep("return window.mutationTargets.pop()");
+                    return Promise({id: "mutationObserved", getOuterHtml: function () { return Promise ("i"); }});
+                };
+                return Promise([]);
+            };
+
+            app.find_widget(target_stub).then(function (widgets) {
+                widgets.should.have.property(0).and
+                              .have.property("id").and
+                              .be.equal("mutationObserved");
+                done();
+            });
         });
 
-        it("should break if no widget elements are found", function (done) {
+        it("should not break if no widget elements are found", function (done) {
             var app, driver_mock = {}, webdriver_mock = { promise: {}, WebElement: {} },
                 target_stub = {id: "abobrinha1"}, method_calls = [], invisibles_stub = [],
                 result_promise, visible_stubs_stack = [], promise_all_stack = [],
@@ -219,6 +254,7 @@ describe("App", function () {
             webdriver_mock.promise.all = function (promises) { return promise_all_stack.pop(); };
             webdriver_mock.WebElement.equals = function (a, b) { return Promise(a.id === b.id); };
             driver_mock.findElements = function () { return Promise(visible_stubs_stack.pop()); };
+            driver_mock.executeScript = function (callback) { return Promise(); };
 
             // mocking private methods
             app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
