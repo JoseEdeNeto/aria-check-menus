@@ -63,7 +63,7 @@ describe("App", function () {
     });
 
     describe("#find_widget", function () {
-        it("should find a tooltip presented on mouse over in an specific element", function (done) {
+        it("should find a tooltip presented on mouse over in an specific element via CSS", function (done) {
             var driver,
                 app;
             driver = new webdriver.Builder()
@@ -79,6 +79,30 @@ describe("App", function () {
                           widgets.should.have.lengthOf(1);
                           widgets[0].getOuterHtml().then(function (html) {
                               html.should.containDeep("Useful message 1")
+                                  .and.containDeep("tooltip");
+                              driver.quit();
+                              done();
+                          });
+                      });
+                  });
+        });
+
+        it("should find a tooltip presented on mouse over in an specific element via JS", function (done) {
+            var driver,
+                app;
+            driver = new webdriver.Builder()
+                                  .withCapabilities(webdriver.Capabilities.firefox())
+                                  .build();
+            driver.get(["file://", process.env["PWD"], "/tests/fixture/sanity_check01.html"].join(""))
+                  .then(function () {
+                      var hover_target;
+                      app = App(driver, webdriver);
+                      hover_target = driver.findElement({css: "#link2"});
+                      app.find_widget(hover_target).then(function (widgets) {
+                          var promises;
+                          widgets.should.have.lengthOf(1);
+                          widgets[0].getOuterHtml().then(function (html) {
+                              html.should.containDeep("Useful message 2")
                                   .and.containDeep("tooltip");
                               driver.quit();
                               done();
