@@ -173,11 +173,8 @@ describe("App", function () {
                 promises[2].fakePromise.should.be.equal(3);
                 promises[3].fakePromise.should.be.equal(4);
                 webdriver_mock.promise.all = function () {
-                    webdriver_mock.promise.all = function () {
-                        return Promise(["<span></span>", "<span>bigger one should be returned</span>"]);
-                    };
-                    return [];
-                }
+                    return Promise(["<span></span>", "<span>bigger one should be returned</span>"]);
+                };
                 return Promise([false, true, true, false]);
             };
             driver_mock.findElements = function () { return Promise([]); };
@@ -198,52 +195,7 @@ describe("App", function () {
             });
         });
 
-        it("should _hover an element and look for elements which did not exist before", function (done) {
-            var app, driver_mock = {}, webdriver_mock = { promise: {}, WebElement: {} },
-                target_stub = {id: "abobrinha1"}, method_calls = [], invisibles_stub = [],
-                result_promise, visible_stubs_stack = [], promise_all_stack = [],
-                visible_stub_1 = [
-                    {id: 1},
-                    {id: 2}
-                ], visible_stub_2 = [
-                    {id: 1},
-                    {id: 2},
-                    {id: 3, getOuterHtml: function () { return Promise("false promise (abobrinha)"); } }
-                ];
-
-            app = App(driver_mock, webdriver_mock);
-
-            promise_all_stack = [Promise("abobrinha"),
-                                 Promise([true, false, false, true, false, false]),
-                                 Promise([])];
-            webdriver_mock.promise.all = function (promises) { return promise_all_stack.pop(); };
-            webdriver_mock.WebElement.equals = function (a, b) { return Promise(a.id === b.id); };
-            driver_mock.findElements = function () {
-                method_calls.push({method: "driver.findElements", arguments: arguments});
-                return Promise(visible_stubs_stack.pop());
-            };
-
-            // mocking private methods
-            app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
-            app._get_invisibles = function () { return Promise(invisibles_stub); };
-            visible_stubs_stack = [visible_stub_2, visible_stub_1];
-
-            result_promise = app.find_widget(target_stub);
-            method_calls.should.have.lengthOf(3);
-            method_calls[0].should.have.property("method", "driver.findElements");
-            method_calls[0].should.have.property("arguments").with.lengthOf(1);
-            method_calls[0].arguments[0].should.have.property("css", "body *");
-            method_calls[1].method.should.be.equal("_hover");
-            method_calls[1].should.have.property("arguments").with.length(1);
-            method_calls[1].arguments[0].should.be.equal(target_stub);
-            method_calls[2].should.have.property("method", "driver.findElements");
-            method_calls[2].should.have.property("arguments").with.lengthOf(1);
-            method_calls[2].arguments[0].should.have.property("css", "body *");
-            result_promise.then(function (widgets) {
-                widgets.should.have.lengthOf(1);
-                widgets[0].should.have.property("id", 3);
-                done();
-            });
+        xit("should _hover an element and look for elements which did not exist before", function (done) {
         });
 
         it("should break if no widget elements are found", function (done) {
