@@ -232,6 +232,51 @@ describe("App", function () {
             });
         });
 
+        it("should _hover an element and look for multiple elements which did not exist before", function (done) {
+            var app, driver_mock = {}, webdriver_mock = {}, target_stub = {};
+            app = App(driver_mock, webdriver_mock);
+
+            webdriver_mock.promise = {
+                all: function (promises) {
+                    return Promise([]);
+                }
+            };
+            app._hover = function () {};
+            app._get_invisibles = function () { return Promise([]); };
+            driver_mock.executeScript = function (callback) {
+                callback.toString().should.containDeep(
+                    "mutation.addedNodes[0].className += \" mutation_widget0\"");
+                return Promise([]);
+            };
+            driver_mock.findElements = function (query) {
+                query.should.have.property("css").and.be.equal(".mutation_widget0");
+                return Promise([{id: "mutationObserved", getOuterHtml: function () { return Promise("aio"); }}]);
+            };
+
+            app.find_widget(target_stub).then(function (widgets) {
+                widgets.should.have.property(0).and
+                              .have.property("id").and
+                              .be.equal("mutationObserved");
+            });
+
+            driver_mock.executeScript = function (callback) {
+                callback.toString().should.containDeep(
+                    "mutation.addedNodes[0].className += \" mutation_widget1\"");
+                return Promise([]);
+            };
+            driver_mock.findElements = function (query) {
+                query.should.have.property("css").and.be.equal(".mutation_widget1");
+                return Promise([{id: "mutationObserved", getOuterHtml: function () { return Promise("aio"); }}]);
+            };
+
+            app.find_widget(target_stub).then(function (widgets) {
+                widgets.should.have.property(0).and
+                              .have.property("id").and
+                              .be.equal("mutationObserved");
+                done();
+            });
+        });
+
         it("should not break if no widget elements are found", function (done) {
             var app, driver_mock = {}, webdriver_mock = { promise: {}, WebElement: {} },
                 target_stub = {id: "abobrinha1"}, method_calls = [], invisibles_stub = [],
