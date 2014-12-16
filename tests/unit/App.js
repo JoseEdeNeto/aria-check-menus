@@ -213,16 +213,15 @@ describe("App", function () {
             app._hover = function () {};
             app._get_invisibles = function () { return Promise([]); };
             driver_mock.executeScript = function (callback) {
-                callback.toString().should.containDeep("window.mutationTargets = [];");
                 callback.toString().should.containDeep("MutationObserver");
-                callback.toString().should.containDeep("window.mutationTargets.push");
+                callback.toString().should.containDeep("mutation.addedNodes[0].nodeType === 1");
                 callback.toString().should.containDeep(
                     "observer.observe(document.body, {childList: true, subtree: true})");
-                driver_mock.executeScript = function (callback) {
-                    callback.toString().should.containDeep("return window.mutationTargets.pop()");
-                    return Promise({id: "mutationObserved", getOuterHtml: function () { return Promise ("i"); }});
-                };
                 return Promise([]);
+            };
+            driver_mock.findElements = function (query) {
+                query.should.have.property("css").and.be.equal(".mutation_widget0");
+                return Promise([{id: "mutationObserved", getOuterHtml: function () { return Promise("aio"); }}]);
             };
 
             app.find_widget(target_stub).then(function (widgets) {
@@ -236,24 +235,16 @@ describe("App", function () {
         it("should not break if no widget elements are found", function (done) {
             var app, driver_mock = {}, webdriver_mock = { promise: {}, WebElement: {} },
                 target_stub = {id: "abobrinha1"}, method_calls = [], invisibles_stub = [],
-                result_promise, visible_stubs_stack = [], promise_all_stack = [],
-                visible_stub_1 = [
-                    {id: 1},
-                    {id: 2}
-                ], visible_stub_2 = [
-                    {id: 1},
-                    {id: 2}
-                ];
+                result_promise, visible_stubs_stack = [], promise_all_stack = [];
 
             app = App(driver_mock, webdriver_mock);
 
             promise_all_stack = [Promise("abobrinha"),
                                  Promise([true, false, false, true]),
                                  Promise([])];
-            visible_stubs_stack = [visible_stub_2, visible_stub_1];
             webdriver_mock.promise.all = function (promises) { return promise_all_stack.pop(); };
             webdriver_mock.WebElement.equals = function (a, b) { return Promise(a.id === b.id); };
-            driver_mock.findElements = function () { return Promise(visible_stubs_stack.pop()); };
+            driver_mock.findElements = function () { return Promise([]); };
             driver_mock.executeScript = function (callback) { return Promise(); };
 
             // mocking private methods
