@@ -34,6 +34,7 @@ describe("LoggerApp", function () {
             fs_mock.writeFile = function () {
                 fs_write_arguments.push(arguments);
             };
+            app_mock.get_visibles = function () { return Promise([]); };
             app_mock._hover = function (target) {
                 target.should.be.equal(body_stub);
                 methods_calls.push("_hover");
@@ -83,6 +84,7 @@ describe("LoggerApp", function () {
             driver_mock.takeScreenshot = function () { return Promise([]); };
             driver_mock.findElement = function (query) { return "body"; };
             fs_mock.writeFile = function () {};
+            app_mock.get_visibles = function () { return Promise([]); };
             app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () {
                 var promise_mock = Promise([{ id: "a promise", getOuterHtml: function () {return Promise({});}}]);
@@ -105,6 +107,7 @@ describe("LoggerApp", function () {
 
             driver_mock.takeScreenshot = function () { return Promise([]); };
             driver_mock.findElement = function (query) { return "body"; };
+            app_mock.get_visibles = function () { return Promise([]); };
             app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () { return Promise(no_widgets_stub); };
             no_widgets_stub = [];
@@ -123,6 +126,7 @@ describe("LoggerApp", function () {
             screenshot_promises = Promise("imagedijfoiasjfoaaf base:64");
             driver_mock.takeScreenshot = function () { return screenshot_promises; };
             driver_mock.findElement = function (query) { return "body"; };
+            app_mock.get_visibles = function () { return Promise([]); };
             app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () {
                 return Promise([{getOuterHtml: function () {return Promise("widget"); }}]); };
@@ -191,6 +195,7 @@ describe("LoggerApp", function () {
             };
             driver_mock.takeScreenshot = function () { return screenshot_promises; };
             driver_mock.findElement = function (query) { return "body"; };
+            app_mock.get_visibles = function () { return Promise([]); };
             app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () {
                 return Promise([{getOuterHtml: function () {return Promise("widget"); }}]); };
@@ -251,6 +256,7 @@ describe("LoggerApp", function () {
 
             driver_mock.takeScreenshot = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
             driver_mock.findElement = function (query) { return "body"; };
+            app_mock.get_visibles = function () { return Promise([]); };
             app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () { return Promise(
                 [{getOuterHtml: function () {return Promise("widget");}}]); };
@@ -282,16 +288,75 @@ describe("LoggerApp", function () {
                                  .be.equal("some_folder/widget_2_code.txt");
             done();
         });
+
+        it("should log the percentage of completion for a webpage", function (done) {
+            var app_mock = {}, driver_mock = {}, fs_mock = {}, console_mock = {},
+                target_stub = { id: "abobrinha", getOuterHtml: function () {return Promise("activator");} },
+                console_log_arguments = [], screen_app, result, screenshot_promises;
+
+            driver_mock.takeScreenshot = function () { return Promise("abobrinha base64"); };
+            driver_mock.findElement = function (query) { return "body"; };
+            app_mock.get_visibles = function () { return Promise([1, 2, 3, 4, 5]); };
+            app_mock._hover = function (target) { target.should.be.equal("body"); };
+            app_mock.find_widget = function () {
+                return Promise([{getOuterHtml: function () {return Promise("widget"); }}]); };
+            fs_mock.writeFile = function (filename, data) { };
+            console_mock.log = function (message) { console_log_arguments.push(message); };
+            screen_app = LoggerApp(app_mock, driver_mock, fs_mock, "", console_mock),
+            screen_app.find_widget(target_stub);
+            screen_app.find_widget(target_stub);
+            console_log_arguments.should.have.lengthOf(2);
+            console_log_arguments[0].should.be.equal("1 of 5 visible elements inspected...");
+            console_log_arguments[1].should.be.equal("2 of 5 visible elements inspected...");
+            done();
+        });
+
+        it("should log the percentage of completion for a webpage after find_widget promise", function (done) {
+            var app_mock = {}, driver_mock = {}, fs_mock = {}, console_mock = {},
+                target_stub = { id: "abobrinha", getOuterHtml: function () {return Promise("activator");} },
+                console_log_arguments = [], screen_app, result, screenshot_promises, screenshot_counter = 0;
+
+            driver_mock.takeScreenshot = function () {
+                var screenshot_promise = Promise("abobrinha base64");
+                screenshot_promise.true_then = screenshot_promise.then;
+                screenshot_promise.then = function () {
+                    var self = this;
+                    screenshot_counter++;
+                    if (screenshot_counter === 1)
+                        console_log_arguments.should.have.lengthOf(0);
+                    if (screenshot_counter === 3)
+                        console_log_arguments.should.have.lengthOf(1);
+                    screenshot_promise.true_then.apply(self, arguments);
+                };
+                return screenshot_promise;
+            };
+            driver_mock.findElement = function (query) { return "body"; };
+            app_mock.get_visibles = function () { return Promise([2, 3, 4, 5]); };
+            app_mock._hover = function (target) { target.should.be.equal("body"); };
+            app_mock.find_widget = function () {
+                return Promise([{getOuterHtml: function () {return Promise("widget"); }}]); };
+            fs_mock.writeFile = function (filename, data) { };
+            console_mock.log = function (message) { console_log_arguments.push(message); };
+            screen_app = LoggerApp(app_mock, driver_mock, fs_mock, "", console_mock),
+            screen_app.find_widget(target_stub);
+            screen_app.find_widget(target_stub);
+            console_log_arguments.should.have.lengthOf(2);
+            console_log_arguments[0].should.be.equal("1 of 4 visible elements inspected...");
+            console_log_arguments[1].should.be.equal("2 of 4 visible elements inspected...");
+            done();
+        });
     });
 
     describe("#find_all_widget", function () {
         it("should call find_all_widget method in App", function (done) {
             var app_mock = {}, methods_calls = [],
-                screen_app = LoggerApp(app_mock), result;
+                screen_app, result;
+            app_mock.get_visibles = function () { return Promise([]); };
             app_mock.find_all_widgets = function () {
                 methods_calls.push("find_all_widgets");
                 return "something";
             };
+            screen_app = LoggerApp(app_mock);
             screen_app.should.have.property("find_all_widgets");
             result = screen_app.find_all_widgets();
             methods_calls[0].should.be.equal("find_all_widgets");
@@ -301,6 +366,7 @@ describe("LoggerApp", function () {
         it("should call find_all_widget in app which should call find_widget", function (done) {
             var app_mock = {},
                 screen_app;
+            app_mock.get_visibles = function () { return Promise([]); };
             app_mock.find_all_widgets = function () {
                 this.find_widget();
             };
