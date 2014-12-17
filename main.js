@@ -1,5 +1,5 @@
 var App = require("./lib/App"),
-    ScreenSaverApp = require("./lib/ScreenSaverApp"),
+    LoggerApp = require("./lib/LoggerApp"),
     webdriver = require("selenium-webdriver"),
     fs = require("fs"),
     app, driver, url;
@@ -14,7 +14,7 @@ driver = new webdriver.Builder()
                       .build();
 
 driver.get(url).then(function () {
-    app = ScreenSaverApp(App(driver, webdriver), driver, fs, "captured_widgets");
+    app = LoggerApp(App(driver, webdriver), driver, fs, "captured_widgets");
     console.log("Looking for widgets...");
     app.find_all_widgets().then(function (widgets) {
         console.log("- Found: " + widgets.length);
