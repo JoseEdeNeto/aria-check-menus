@@ -118,9 +118,18 @@ describe("LoggerApp", function () {
             var app_mock = {}, driver_mock = {}, fs_mock = {},
                 target_stub = { id: "abobrinha", getOuterHtml: function () {return Promise("activator");} },
                 fs_stack_arguments = [],
-                screen_app, result;
+                screen_app, result, screenshot_promises;
 
-            driver_mock.takeScreenshot = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
+            screenshot_promises = Promise("imagedijfoiasjfoaaf base:64");
+            screenshot_promises.true_then = screenshot_promises.then;
+            screenshot_promises.then = function () {
+                var self = this,
+                    then_arguments = arguments;
+                setTimeout(function () {
+                    self.true_then.apply(self, then_arguments);
+                }, 1);
+            };
+            driver_mock.takeScreenshot = function () { return screenshot_promises; };
             driver_mock.findElement = function (query) { return "body"; };
             app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () {
@@ -134,43 +143,45 @@ describe("LoggerApp", function () {
             screen_app = LoggerApp(app_mock, driver_mock, fs_mock),
             screen_app.find_widget(target_stub);
             screen_app.find_widget(target_stub);
-            fs_stack_arguments.should.have.lengthOf(8);
-            fs_stack_arguments[0].should.have.property("filename").and
-                                 .be.equal("widget_1_before.png");
-            fs_stack_arguments[0].should.have.property("data").and
-                                 .be.equal("imagedijfoiasjfoaaf base:64");
-            fs_stack_arguments[1].should.have.property("filename").and
-                                 .be.equal("widget_1_after.png");
-            fs_stack_arguments[1].should.have.property("data").and
-                                 .be.equal("imagedijfoiasjfoaaf base:64");
+            setTimeout(function () {
+                fs_stack_arguments.should.have.lengthOf(8);
+                fs_stack_arguments[4].should.have.property("filename").and
+                                     .be.equal("widget_1_before.png");
+                fs_stack_arguments[4].should.have.property("data").and
+                                     .be.equal("imagedijfoiasjfoaaf base:64");
+                fs_stack_arguments[5].should.have.property("filename").and
+                                     .be.equal("widget_1_after.png");
+                fs_stack_arguments[5].should.have.property("data").and
+                                     .be.equal("imagedijfoiasjfoaaf base:64");
 
-            fs_stack_arguments[2].should.have.property("filename").and
-                                 .be.equal("widget_1_activator_code.txt");
-            fs_stack_arguments[2].should.have.property("data").and
-                                 .be.equal("activator");
-            fs_stack_arguments[3].should.have.property("filename").and
-                                 .be.equal("widget_1_code.txt");
-            fs_stack_arguments[3].should.have.property("data").and
-                                 .be.equal("widget");
+                fs_stack_arguments[0].should.have.property("filename").and
+                                     .be.equal("widget_1_activator_code.txt");
+                fs_stack_arguments[0].should.have.property("data").and
+                                     .be.equal("activator");
+                fs_stack_arguments[1].should.have.property("filename").and
+                                     .be.equal("widget_1_code.txt");
+                fs_stack_arguments[1].should.have.property("data").and
+                                     .be.equal("widget");
 
-            fs_stack_arguments[4].should.have.property("filename").and
-                                 .be.equal("widget_2_before.png");
-            fs_stack_arguments[4].should.have.property("data").and
-                                 .be.equal("imagedijfoiasjfoaaf base:64");
-            fs_stack_arguments[5].should.have.property("filename").and
-                                 .be.equal("widget_2_after.png");
-            fs_stack_arguments[5].should.have.property("data").and
-                                 .be.equal("imagedijfoiasjfoaaf base:64");
+                fs_stack_arguments[6].should.have.property("filename").and
+                                     .be.equal("widget_2_before.png");
+                fs_stack_arguments[6].should.have.property("data").and
+                                     .be.equal("imagedijfoiasjfoaaf base:64");
+                fs_stack_arguments[7].should.have.property("filename").and
+                                     .be.equal("widget_2_after.png");
+                fs_stack_arguments[7].should.have.property("data").and
+                                     .be.equal("imagedijfoiasjfoaaf base:64");
 
-            fs_stack_arguments[6].should.have.property("filename").and
-                                 .be.equal("widget_2_activator_code.txt");
-            fs_stack_arguments[6].should.have.property("data").and
-                                 .be.equal("activator");
-            fs_stack_arguments[7].should.have.property("filename").and
-                                 .be.equal("widget_2_code.txt");
-            fs_stack_arguments[7].should.have.property("data").and
-                                 .be.equal("widget");
-            done();
+                fs_stack_arguments[2].should.have.property("filename").and
+                                     .be.equal("widget_2_activator_code.txt");
+                fs_stack_arguments[2].should.have.property("data").and
+                                     .be.equal("activator");
+                fs_stack_arguments[3].should.have.property("filename").and
+                                     .be.equal("widget_2_code.txt");
+                fs_stack_arguments[3].should.have.property("data").and
+                                     .be.equal("widget");
+                done();
+            }, 1);
         });
 
         it("should use folder parameter to save images", function (done) {
