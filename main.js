@@ -14,7 +14,7 @@ driver = new webdriver.Builder()
                       .build();
 
 driver.get(url).then(function () {
-    app = LoggerApp(App(driver, webdriver), driver, fs, "captured_widgets");
+    app = LoggerApp(App(driver, webdriver), driver, fs, "captured_widgets", console);
     console.log("Looking for widgets...");
     app.find_all_widgets().then(function (widgets) {
         console.log("- Found: " + widgets.length);
