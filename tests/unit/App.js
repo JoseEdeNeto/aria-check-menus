@@ -182,7 +182,9 @@ describe("App", function () {
 
             // mocking private methods
             app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
-            app._get_invisibles = function () { return Promise(invisibles_stub); };
+            app._get_invisibles = function () {
+                return Promise(invisibles_stub);
+            };
 
             result_promise = app.find_widget(target_stub);
             method_calls.should.have.lengthOf(1);
@@ -301,6 +303,31 @@ describe("App", function () {
                 widgets.should.have.lengthOf(0);
                 done();
             });
+        });
+
+        it("should call _get_invisibles only once", function (done) {
+            var app, driver_mock = {}, webdriver_mock = { promise: {}, WebElement: {} },
+                target_stub = {id: "abobrinha1"}, method_calls = [], invisibles_stub = [],
+                result_promise, visible_stubs_stack = [];
+
+            app = App(driver_mock, webdriver_mock);
+
+            webdriver_mock.promise.all = function (promises) { return Promise([]); };
+            driver_mock.findElements = function () { return Promise([]); };
+            driver_mock.executeScript = function (callback) { return Promise(); };
+
+            // mocking private methods
+            app._hover = function () { method_calls.push({method: "_hover", arguments: arguments}); };
+            app._get_invisibles = function () {
+                this._get_invisibles = function () {
+                    "".should.be.equal("it should not pass through here");
+                }
+                return Promise(invisibles_stub);
+            };
+
+            app.find_widget(target_stub);
+            app.find_widget(target_stub);
+            done();
         });
     });
 
