@@ -41,7 +41,14 @@ describe("LoggerApp", function () {
             app_mock.find_widget = function (target) {
                 target.should.be.equal(target_stub);
                 methods_calls.push("find_widget");
-                return Promise([{}]);
+                return Promise([{
+                    getOuterHtml: function () {
+                        return Promise("<div>tooltip fragment</div>");
+                    }
+                }]);
+            };
+            target_stub.getOuterHtml = function () {
+                return Promise("<span>tooltip activator</span>");
             };
             screen_app = LoggerApp(app_mock, driver_mock, fs_mock);
             screen_app.should.have.property("find_widget");
@@ -50,7 +57,7 @@ describe("LoggerApp", function () {
             methods_calls[1].should.be.equal("captureScreen");
             methods_calls[2].should.be.equal("find_widget");
             methods_calls[3].should.be.equal("captureScreen");
-            fs_write_arguments.should.have.lengthOf(2);
+            fs_write_arguments.should.have.lengthOf(4);
             fs_write_arguments[0].should.have.lengthOf(3);
             fs_write_arguments[0][0].should.be.equal("widget_1_before.png");
             fs_write_arguments[0][1].should.be.equal("image_before_base64");
@@ -59,11 +66,18 @@ describe("LoggerApp", function () {
             fs_write_arguments[1][0].should.be.equal("widget_1_after.png");
             fs_write_arguments[1][1].should.be.equal("image_after_base64");
             fs_write_arguments[1][2].should.be.equal("base64");
+            fs_write_arguments[2].should.have.lengthOf(2);
+            fs_write_arguments[2][0].should.be.equal("widget_1_activator_code.txt");
+            fs_write_arguments[2][1].should.be.equal("<span>tooltip activator</span>");
+            fs_write_arguments[3].should.have.lengthOf(2);
+            fs_write_arguments[3][0].should.be.equal("widget_1_code.txt");
+            fs_write_arguments[3][1].should.be.equal("<div>tooltip fragment</div>");
             done();
         });
 
         it("should return the same promise which is returned in app", function () {
-            var app_mock = {}, driver_mock = {}, fs_mock = {}, target_stub = { id: "abobrinha" },
+            var app_mock = {}, driver_mock = {}, fs_mock = {},
+                target_stub = { id: "abobrinha", getOuterHtml: function () {return Promise({});} },
                 screen_app, result;
 
             driver_mock.takeScreenshot = function () { return Promise([]); };
@@ -71,7 +85,7 @@ describe("LoggerApp", function () {
             fs_mock.writeFile = function () {};
             app_mock._hover = function (target) { target.should.be.equal("body"); };
             app_mock.find_widget = function () {
-                var promise_mock = Promise([{ id: "a promise" }]);
+                var promise_mock = Promise([{ id: "a promise", getOuterHtml: function () {return Promise({});}}]);
                 promise_mock.id = "a promise";
                 return promise_mock;
             };
@@ -102,13 +116,15 @@ describe("LoggerApp", function () {
 
         it("should save multiple images with different names for them", function (done) {
             var app_mock = {}, driver_mock = {}, fs_mock = {},
-                target_stub = { id: "abobrinha" }, fs_stack_arguments = [],
+                target_stub = { id: "abobrinha", getOuterHtml: function () {return Promise("activator");} },
+                fs_stack_arguments = [],
                 screen_app, result;
 
             driver_mock.takeScreenshot = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
             driver_mock.findElement = function (query) { return "body"; };
             app_mock._hover = function (target) { target.should.be.equal("body"); };
-            app_mock.find_widget = function () { return Promise([{}]); };
+            app_mock.find_widget = function () {
+                return Promise([{getOuterHtml: function () {return Promise("widget"); }}]); };
             fs_mock.writeFile = function (filename, data) {
                 fs_stack_arguments.push({
                     filename: filename,
@@ -118,7 +134,7 @@ describe("LoggerApp", function () {
             screen_app = LoggerApp(app_mock, driver_mock, fs_mock),
             screen_app.find_widget(target_stub);
             screen_app.find_widget(target_stub);
-            fs_stack_arguments.should.have.lengthOf(4);
+            fs_stack_arguments.should.have.lengthOf(8);
             fs_stack_arguments[0].should.have.property("filename").and
                                  .be.equal("widget_1_before.png");
             fs_stack_arguments[0].should.have.property("data").and
@@ -127,26 +143,46 @@ describe("LoggerApp", function () {
                                  .be.equal("widget_1_after.png");
             fs_stack_arguments[1].should.have.property("data").and
                                  .be.equal("imagedijfoiasjfoaaf base:64");
+
             fs_stack_arguments[2].should.have.property("filename").and
-                                 .be.equal("widget_2_before.png");
+                                 .be.equal("widget_1_activator_code.txt");
             fs_stack_arguments[2].should.have.property("data").and
-                                 .be.equal("imagedijfoiasjfoaaf base:64");
+                                 .be.equal("activator");
             fs_stack_arguments[3].should.have.property("filename").and
-                                 .be.equal("widget_2_after.png");
+                                 .be.equal("widget_1_code.txt");
             fs_stack_arguments[3].should.have.property("data").and
+                                 .be.equal("widget");
+
+            fs_stack_arguments[4].should.have.property("filename").and
+                                 .be.equal("widget_2_before.png");
+            fs_stack_arguments[4].should.have.property("data").and
                                  .be.equal("imagedijfoiasjfoaaf base:64");
+            fs_stack_arguments[5].should.have.property("filename").and
+                                 .be.equal("widget_2_after.png");
+            fs_stack_arguments[5].should.have.property("data").and
+                                 .be.equal("imagedijfoiasjfoaaf base:64");
+
+            fs_stack_arguments[6].should.have.property("filename").and
+                                 .be.equal("widget_2_activator_code.txt");
+            fs_stack_arguments[6].should.have.property("data").and
+                                 .be.equal("activator");
+            fs_stack_arguments[7].should.have.property("filename").and
+                                 .be.equal("widget_2_code.txt");
+            fs_stack_arguments[7].should.have.property("data").and
+                                 .be.equal("widget");
             done();
         });
 
         it("should use folder parameter to save images", function (done) {
             var app_mock = {}, driver_mock = {}, fs_mock = {},
-                target_stub = { id: "abobrinha" }, fs_stack_arguments = [],
-                screen_app, result;
+                target_stub = { id: "abobrinha", getOuterHtml: function () {return Promise("activator");} },
+                fs_stack_arguments = [], screen_app, result;
 
             driver_mock.takeScreenshot = function () { return Promise("imagedijfoiasjfoaaf base:64"); };
             driver_mock.findElement = function (query) { return "body"; };
             app_mock._hover = function (target) { target.should.be.equal("body"); };
-            app_mock.find_widget = function () { return Promise([{}]); };
+            app_mock.find_widget = function () { return Promise(
+                [{getOuterHtml: function () {return Promise("widget");}}]); };
             fs_mock.writeFile = function (filename, data) {
                 fs_stack_arguments.push({
                     filename: filename,
@@ -156,15 +192,23 @@ describe("LoggerApp", function () {
             screen_app = LoggerApp(app_mock, driver_mock, fs_mock, "some_folder"),
             screen_app.find_widget(target_stub);
             screen_app.find_widget(target_stub);
-            fs_stack_arguments.should.have.lengthOf(4);
+            fs_stack_arguments.should.have.lengthOf(8);
             fs_stack_arguments[0].should.have.property("filename").and
                                  .be.equal("some_folder/widget_1_before.png");
             fs_stack_arguments[1].should.have.property("filename").and
                                  .be.equal("some_folder/widget_1_after.png");
             fs_stack_arguments[2].should.have.property("filename").and
-                                 .be.equal("some_folder/widget_2_before.png");
+                                 .be.equal("some_folder/widget_1_activator_code.txt");
             fs_stack_arguments[3].should.have.property("filename").and
+                                 .be.equal("some_folder/widget_1_code.txt");
+            fs_stack_arguments[4].should.have.property("filename").and
+                                 .be.equal("some_folder/widget_2_before.png");
+            fs_stack_arguments[5].should.have.property("filename").and
                                  .be.equal("some_folder/widget_2_after.png");
+            fs_stack_arguments[6].should.have.property("filename").and
+                                 .be.equal("some_folder/widget_2_activator_code.txt");
+            fs_stack_arguments[7].should.have.property("filename").and
+                                 .be.equal("some_folder/widget_2_code.txt");
             done();
         });
     });
