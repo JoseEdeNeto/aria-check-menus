@@ -247,7 +247,9 @@ describe("App", function () {
             app._get_invisibles = function () { return Promise([]); };
             driver_mock.executeScript = function (callback) {
                 callback.toString().should.containDeep(
-                    "mutation.addedNodes[0].className += \" mutation_widget0\"");
+                    "mutation.addedNodes[0].className += \" mutation_widget\" + window.index");
+                callback.toString().should.containDeep(
+                    "window.index = 0;");
                 return Promise([]);
             };
             driver_mock.findElements = function (query) {
@@ -263,7 +265,9 @@ describe("App", function () {
 
             driver_mock.executeScript = function (callback) {
                 callback.toString().should.containDeep(
-                    "mutation.addedNodes[0].className += \" mutation_widget1\"");
+                    "mutation.addedNodes[0].className += \" mutation_widget\" + window.index");
+                callback.toString().should.containDeep(
+                    "window.index = 1;");
                 return Promise([]);
             };
             driver_mock.findElements = function (query) {
