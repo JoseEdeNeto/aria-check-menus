@@ -311,6 +311,27 @@ describe("LoggerApp", function () {
             done();
         });
 
+        it("should log the percentage of completion even if no widgets are found", function (done) {
+            var app_mock = {}, driver_mock = {}, fs_mock = {}, console_mock = {},
+                target_stub = { id: "abobrinha", getOuterHtml: function () {return Promise("activator");} },
+                console_log_arguments = [], screen_app, result, screenshot_promises;
+
+            driver_mock.takeScreenshot = function () { return Promise("abobrinha base64"); };
+            driver_mock.findElement = function (query) { return "body"; };
+            app_mock.get_visibles = function () { return Promise([3, 4, 5]); };
+            app_mock._hover = function (target) { target.should.be.equal("body"); };
+            app_mock.find_widget = function () { return Promise([]); };
+            fs_mock.writeFile = function (filename, data) { };
+            console_mock.log = function (message) { console_log_arguments.push(message); };
+            screen_app = LoggerApp(app_mock, driver_mock, fs_mock, "", console_mock),
+            screen_app.find_widget(target_stub);
+            screen_app.find_widget(target_stub);
+            console_log_arguments.should.have.lengthOf(2);
+            console_log_arguments[0].should.be.equal("1 of 3 visible elements inspected...");
+            console_log_arguments[1].should.be.equal("2 of 3 visible elements inspected...");
+            done();
+        });
+
         it("should log the percentage of completion for a webpage after find_widget promise", function (done) {
             var app_mock = {}, driver_mock = {}, fs_mock = {}, console_mock = {},
                 target_stub = { id: "abobrinha", getOuterHtml: function () {return Promise("activator");} },
