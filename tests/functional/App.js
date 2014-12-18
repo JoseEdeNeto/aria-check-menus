@@ -166,7 +166,7 @@ describe("App", function () {
                   });
         });
 
-        xit("should find all tooltips with multiple mutations happening", function (done) {
+        it("should find all tooltips with multiple mutations happening", function (done) {
             var driver,
                 app;
             driver = new webdriver.Builder()
@@ -186,9 +186,9 @@ describe("App", function () {
                           };
                           return webdriver.promise.all(promises);
                       }).then(function (widgets_texts) {
-                          widgets_texts.should.have.property(0).and.should.containDeep("Useful message 1");
-                          widgets_texts.should.have.property(1).and.should.containDeep("Useful message 2");
-                          widgets_texts.should.have.property(2).and.should.containDeep("Useful 3");
+                          widgets_texts[0].should.containDeep("Useful message 1");
+                          widgets_texts[1].should.containDeep("Useful message 2");
+                          widgets_texts[2].should.containDeep("Useful 3");
                           done();
                       });
                   });

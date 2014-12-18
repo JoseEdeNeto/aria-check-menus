@@ -199,7 +199,7 @@ describe("App", function () {
         });
 
         it("should _hover an element and look for elements which did not exist before", function (done) {
-            var app, driver_mock = {}, webdriver_mock = {}, target_stub = {};
+            var app, driver_mock = {}, webdriver_mock = {}, target_stub = {}, execute_script_called = 0;
             app = App(driver_mock, webdriver_mock);
 
             webdriver_mock.promise = {
@@ -215,14 +215,25 @@ describe("App", function () {
             app._hover = function () {};
             app._get_invisibles = function () { return Promise([]); };
             driver_mock.executeScript = function (callback) {
+                execute_script_called++;
                 callback.toString().should.containDeep("MutationObserver");
                 callback.toString().should.containDeep("mutation.addedNodes[0].nodeType === 1");
                 callback.toString().should.containDeep(
                     "observer.observe(document.body, {childList: true, subtree: true})");
+                driver_mock.executeScript = function (callback) {
+                    execute_script_called++;
+                    callback.should.containDeep(
+                        "var mutation_widget = document.querySelector(\".mutation_widget\");" +
+                        "if (mutation_widget)" +
+                        "    mutation_widget.className = mutation_widget.className.split(\"mutation_widget\").join(\"\");"
+                    );
+                    return Promise([]);
+                };
                 return Promise([]);
             };
             driver_mock.findElements = function (query) {
                 query.should.have.property("css").and.be.equal(".mutation_widget");
+                execute_script_called.should.be.equal(1);
                 return Promise([{id: "mutationObserved", getOuterHtml: function () { return Promise("aio"); }}]);
             };
 
@@ -230,6 +241,7 @@ describe("App", function () {
                 widgets.should.have.property(0).and
                               .have.property("id").and
                               .be.equal("mutationObserved");
+                execute_script_called.should.be.equal(2);
                 done();
             });
         });
@@ -246,8 +258,6 @@ describe("App", function () {
             app._hover = function () {};
             app._get_invisibles = function () { return Promise([]); };
             driver_mock.executeScript = function (callback) {
-                callback.toString().should.containDeep(
-                    "mutation.addedNodes[0].className += \" mutation_widget\";");
                 return Promise([]);
             };
             driver_mock.findElements = function (query) {
@@ -262,8 +272,6 @@ describe("App", function () {
             });
 
             driver_mock.executeScript = function (callback) {
-                callback.toString().should.containDeep(
-                    "mutation.addedNodes[0].className += \" mutation_widget\";");
                 return Promise([]);
             };
             driver_mock.findElements = function (query) {
