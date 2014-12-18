@@ -222,7 +222,7 @@ describe("App", function () {
                 return Promise([]);
             };
             driver_mock.findElements = function (query) {
-                query.should.have.property("css").and.be.equal(".mutation_widget0");
+                query.should.have.property("css").and.be.equal(".mutation_widget");
                 return Promise([{id: "mutationObserved", getOuterHtml: function () { return Promise("aio"); }}]);
             };
 
@@ -247,13 +247,11 @@ describe("App", function () {
             app._get_invisibles = function () { return Promise([]); };
             driver_mock.executeScript = function (callback) {
                 callback.toString().should.containDeep(
-                    "mutation.addedNodes[0].className += \" mutation_widget\" + window.index");
-                callback.toString().should.containDeep(
-                    "window.index = 0;");
+                    "mutation.addedNodes[0].className += \" mutation_widget\";");
                 return Promise([]);
             };
             driver_mock.findElements = function (query) {
-                query.should.have.property("css").and.be.equal(".mutation_widget0");
+                query.should.have.property("css").and.be.equal(".mutation_widget");
                 return Promise([{id: "mutationObserved", getOuterHtml: function () { return Promise("aio"); }}]);
             };
 
@@ -265,13 +263,11 @@ describe("App", function () {
 
             driver_mock.executeScript = function (callback) {
                 callback.toString().should.containDeep(
-                    "mutation.addedNodes[0].className += \" mutation_widget\" + window.index");
-                callback.toString().should.containDeep(
-                    "window.index = 1;");
+                    "mutation.addedNodes[0].className += \" mutation_widget\";");
                 return Promise([]);
             };
             driver_mock.findElements = function (query) {
-                query.should.have.property("css").and.be.equal(".mutation_widget1");
+                query.should.have.property("css").and.be.equal(".mutation_widget");
                 return Promise([{id: "mutationObserved", getOuterHtml: function () { return Promise("aio"); }}]);
             };
 
