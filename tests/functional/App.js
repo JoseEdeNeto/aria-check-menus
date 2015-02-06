@@ -135,6 +135,37 @@ describe("App", function () {
                       });
                   });
         });
+
+        it("should find a tooltip with multiple mutations happening", function (done) {
+            var driver,
+                app;
+            driver = new webdriver.Builder()
+                                  .withCapabilities(webdriver.Capabilities.firefox())
+                                  .build();
+            driver.get(["file://", process.env["PWD"], "/tests/fixture/multiple_mutations02.html"].join(""))
+                  .then(function () {
+                      var hover_target, promises = [];
+                      app = App(driver, webdriver);
+                      app.find_widget(driver.findElement({css: "#link2"})).then(function (widget) {
+                          widget.should.have.lengthOf(1);
+                          return widget[0].getOuterHtml();
+                      }).then(function (html) {
+                          html.should.containDeep("Useful 3").and
+                                     .containDeep("<div");
+                      }).then(function () {
+                          return app.find_widget(driver.findElement({css: "#link3"}));
+                      }).then(function (widget) {
+                          widget.should.have.lengthOf(1);
+                          return widget[0].getOuterHtml();
+                      }).then(function (html) {
+                          html.should.containDeep("Useful 3").and
+                                     .containDeep("<div");
+                          driver.quit();
+                          done();
+                      });
+                  });
+        });
+
     });
 
     describe("#find_all_widgets", function () {

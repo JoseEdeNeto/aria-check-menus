@@ -1,0 +1,1 @@
+<div style="top: 114px; left: 58px; display: block; opacity: 0.0815926;" id="ui-id-3" class="ui-tooltip ui-widget ui-corner-all ui-widget-content " role="tooltip"><div class="ui-tooltip-content">We ask for your age only for statistical purposes.</div></div>
