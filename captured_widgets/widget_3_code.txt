@@ -1,1 +1,0 @@
-<div style="top: 38px; left: 8px; display: block; opacity: 0.0909251;" id="ui-id-1" class="ui-tooltip ui-widget ui-corner-all ui-widget-content " role="tooltip"><div class="ui-tooltip-content">That's what this widget is</div></div>

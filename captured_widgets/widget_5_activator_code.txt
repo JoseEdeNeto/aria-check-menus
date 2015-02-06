@@ -1,1 +1,0 @@
-<p>Tooltips are also useful for form elements, to show some additional information in the context of each field.</p>
