@@ -223,9 +223,9 @@ describe("App", function () {
                 driver_mock.executeScript = function (callback) {
                     execute_script_called++;
                     callback.should.containDeep(
-                        "var mutation_widget = document.querySelector(\".mutation_widget\");" +
-                        "if (mutation_widget)" +
-                        "    mutation_widget.className = mutation_widget.className.split(\"mutation_widget\").join(\"\");"
+                        "var mutation_widget = document.querySelectorAll(\".mutation_widget\");" +
+                        "for (var i = 0; i < mutation_widget.length; i++)" +
+                        "    mutation_widget[i].className = mutation_widget[i].className.split(\"mutation_widget\").join(\"\");"
                     );
                     return Promise([]);
                 };

@@ -158,7 +158,7 @@ describe("App", function () {
                           widget.should.have.lengthOf(1);
                           return widget[0].getOuterHtml();
                       }).then(function (html) {
-                          html.should.containDeep("Useful 3").and
+                          html.should.containDeep("Useful 4").and
                                      .containDeep("<div");
                           driver.quit();
                           done();
