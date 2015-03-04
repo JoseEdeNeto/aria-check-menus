@@ -188,6 +188,28 @@ describe("App", function () {
                   });
         });
 
+        it("should clear intervals before searching for widget", function (done) {
+            var driver,
+                app;
+            driver = new webdriver.Builder()
+                                  .withCapabilities(webdriver.Capabilities.firefox())
+                                  .build();
+            driver.get(["file://", process.env["PWD"], "/tests/fixture/carousel_01.html"].join(""))
+                  .then(function () {
+                      var hover_target, promises = [];
+                      app = App(driver, webdriver);
+                      app.find_widget(driver.findElement({css: "#link2"})).then(function (widget) {
+                          widget.should.have.lengthOf(1);
+                          return widget[0].getOuterHtml();
+                      }).then(function (html) {
+                          html.should.containDeep("Useful 3").and
+                                     .containDeep("<div");
+                          driver.quit();
+                          done();
+                      });
+                  });
+        });
+
     });
 
     describe("#find_all_widgets", function () {
@@ -242,6 +264,28 @@ describe("App", function () {
                           widgets_texts[0].should.containDeep("Useful message 1");
                           widgets_texts[1].should.containDeep("Useful message 2");
                           widgets_texts[2].should.containDeep("Useful 3");
+                          done();
+                      });
+                  });
+        });
+
+        xit("should clear multiple intervals before searching for widget", function (done) {
+            var driver,
+                app;
+            driver = new webdriver.Builder()
+                                  .withCapabilities(webdriver.Capabilities.firefox())
+                                  .build();
+            driver.get(["file://", process.env["PWD"], "/tests/fixture/carousel_01.html"].join(""))
+                  .then(function () {
+                      var hover_target, promises = [];
+                      app = App(driver, webdriver);
+                      app.find_all_widgets().then(function (widgets) {
+                          widgets.should.have.lengthOf(1);
+                          return widgets[0].menu[0].getOuterHtml();
+                      }).then(function (html) {
+                          html.should.containDeep("Useful 3").and
+                                     .containDeep("<div");
+                          driver.quit();
                           done();
                       });
                   });

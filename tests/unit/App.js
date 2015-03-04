@@ -220,6 +220,8 @@ describe("App", function () {
                 callback.toString().should.containDeep("mutation.addedNodes[0].nodeType === 1");
                 callback.toString().should.containDeep(
                     "observer.observe(document.body, {childList: true, subtree: true})");
+                callback.toString().should.containDeep(
+                    "for (var i = 0; i < 10000; i++) { clearTimeout(i); clearInterval(i); };");
                 driver_mock.executeScript = function (callback) {
                     execute_script_called++;
                     callback.should.containDeep(
