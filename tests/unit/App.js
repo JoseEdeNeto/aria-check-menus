@@ -222,6 +222,8 @@ describe("App", function () {
                     "observer.observe(document.body, {childList: true, subtree: true})");
                 callback.toString().should.containDeep(
                     "for (var i = 0; i < 10000; i++) { clearTimeout(i); clearInterval(i); };");
+                callback.toString().should.containDeep(
+                    "window.setInterval = function () {};");
                 driver_mock.executeScript = function (callback) {
                     execute_script_called++;
                     callback.should.containDeep(
