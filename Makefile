@@ -16,10 +16,10 @@ clean:
 
 tests-unit:
 	@echo "testing something cool..."
-	@mocha --require should --reporter dot tests/unit
+	mocha --require should --reporter dot tests/unit
 
 tests-functional:
-	@mocha --require should --timeout 30000 tests/functional
+	mocha --require should --timeout 30000 tests/functional
 
 coverage:
 	@mocha --require should --reporter html-cov tests/unit > coverage.html; open coverage.html
