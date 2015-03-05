@@ -77,7 +77,7 @@ run:
 	for i in `find lib -name "*.jar"`; do\
 		CLASSPATH="$$CLASSPATH:$$i";\
 	done;\
-	$(JVM) -cp "$$CLASSPATH" -jar package.jar;\
+	$(JVM) -cp "$$CLASSPATH" -Dhttp.nonProxyHosts=127.0.0.1 -jar package.jar;\
 	echo "";
 
 init:
