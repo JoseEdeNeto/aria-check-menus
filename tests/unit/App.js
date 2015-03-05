@@ -364,13 +364,17 @@ describe("App", function () {
             var driver_mock = {}, webdriver_mock = {},
                 app = App(driver_mock, webdriver_mock),
                 get_visibles_promise, find_widget_arguments = [],
-                find_widget_results = ["promise 2", "promise 1"];
+                find_widget_results = [Promise("promise 2"), Promise("promise 1")];
 
             webdriver_mock.promise = {};
             webdriver_mock.promise.all = function (promises) {
                 promises.should.have.lengthOf(2);
-                promises[0].should.be.equal("promise 1");
-                promises[1].should.be.equal("promise 2");
+                promises[0].then(function (value) {
+                    value.should.be.equal("promise 1");
+                });
+                promises[1].then(function (value) {
+                    value.should.be.equal("promise 2");
+                });
                 return Promise(["widget 1", "widget 2"]);
             };
             get_visibles_promise = Promise(["visible 1", "visible 2"]);
@@ -399,7 +403,7 @@ describe("App", function () {
             var driver_mock = {}, webdriver_mock = {},
                 app = App(driver_mock, webdriver_mock),
                 get_visibles_promise, find_widget_arguments = [],
-                find_widget_results = ["promise 2", "promise 1"];
+                find_widget_results = [Promise("promise 2"), Promise("promise 1")];
 
             webdriver_mock.promise = {};
             webdriver_mock.promise.all = function (promises) {
