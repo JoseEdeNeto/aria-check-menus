@@ -16,6 +16,10 @@ public class WidgetLocator {
 
     public WebElement find_widget (WebElement target) {
         List <WebElement> child_elements = this.driver.findElements(By.cssSelector("body *"));
+        for (WebElement child : child_elements) {
+            if ( ! child.isDisplayed())
+                return child;
+        }
         return child_elements.get(0);
     }
 
