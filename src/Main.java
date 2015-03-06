@@ -12,9 +12,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Main  {
     public static void main (String[] args) {
         FirefoxProfile profile = new FirefoxProfile();
-        profile.setPreference("network.proxy.type", 1);
-        profile.setPreference("network.proxy.http", "10.20.10.50");
-        profile.setPreference("network.proxy.http_port", 3128);
+        //profile.setPreference("network.proxy.type", 1);
+        //profile.setPreference("network.proxy.http", "10.20.10.50");
+        //profile.setPreference("network.proxy.http_port", 3128);
         WebDriver driver = new FirefoxDriver(profile);
         driver.get("http://www.google.com");
         WebElement element = driver.findElement(By.name("q"));
@@ -28,6 +28,7 @@ public class Main  {
         });
         System.out.println("Page title is: " + driver.getTitle());
         driver.quit();
+        System.out.println(By.cssSelector("body *"));
     }
 
 }
