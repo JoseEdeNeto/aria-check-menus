@@ -1,4 +1,4 @@
-package test.ariacheck;
+package functional.test.ariacheck;
 
 import ariacheck.WidgetLocator;
 

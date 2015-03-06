@@ -89,7 +89,16 @@ junit: test-compile
 	for i in `find test/lib -name "*.jar"`; do\
 		TEST_CLASSPATH="$$i:$$TEST_CLASSPATH";\
 	done;\
-	TESTS=`find test/build -name *Test.class | sed "s/\//./g" | sed "s/\.class//" | sed "s/test\.build\.//"`;\
+	TESTS=`find test/build/unit -name *Test.class | sed "s/\//./g" | sed "s/\.class//" | sed "s/test\.build\.//"`;\
+	$(JVM) -cp "$$TEST_CLASSPATH:test/build/:build/" org.junit.runner.JUnitCore $$TESTS
+
+tests-functional: test-compile
+	@echo "running functional tests...";\
+	TEST_CLASSPATH="";\
+	for i in `find test/lib -name "*.jar"`; do\
+		TEST_CLASSPATH="$$i:$$TEST_CLASSPATH";\
+	done;\
+	TESTS=`find test/build/functional -name *Test.class | sed "s/\//./g" | sed "s/\.class//" | sed "s/test\.build\.//"`;\
 	$(JVM) -cp "$$TEST_CLASSPATH:test/build/:build/" org.junit.runner.JUnitCore $$TESTS
 
 test-compile: compile
