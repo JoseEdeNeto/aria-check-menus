@@ -25,6 +25,7 @@ public class WidgetLocatorTest {
     public void test_widget_locator_should_call_findElements_in_driver_and_return_result () {
         WebDriver driver_mock = mock(WebDriver.class);
         Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
         WebElement target_mock = mock(WebElement.class),
                    result;
         WidgetLocator locator = new WidgetLocator(driver_mock, actions_mock);
@@ -32,6 +33,9 @@ public class WidgetLocatorTest {
         childs_list.add(mock(WebElement.class));
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
+        when(actions_mock.build()).thenReturn(action_mock);
 
         result = locator.find_widget(target_mock);
         assertEquals(childs_list.get(0), result);
@@ -41,6 +45,7 @@ public class WidgetLocatorTest {
     public void test_widget_locator_should_return_only_initially_invisible_elements () {
         WebDriver driver_mock = mock(WebDriver.class);
         Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
         WebElement target_mock = mock(WebElement.class),
                    result;
         WidgetLocator locator = new WidgetLocator(driver_mock, actions_mock);
@@ -60,6 +65,9 @@ public class WidgetLocatorTest {
         when(childs_list.get(5).isDisplayed()).thenReturn(false).thenReturn(true);
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
+        when(actions_mock.build()).thenReturn(action_mock);
 
         result = locator.find_widget(target_mock);
         assertEquals(childs_list.get(5), result);
