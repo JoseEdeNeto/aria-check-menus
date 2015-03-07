@@ -37,7 +37,7 @@ public class WidgetLocator {
                 return inv;
         }
 
-        return child_elements.get(0);
+        return null;
     }
 
 }
