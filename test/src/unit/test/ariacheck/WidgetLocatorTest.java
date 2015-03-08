@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
@@ -24,11 +25,12 @@ public class WidgetLocatorTest {
     @Test
     public void test_widget_locator_should_call_findElements_in_driver_and_return_result () {
         WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor = mock(JavascriptExecutor.class);
         Actions actions_mock = mock(Actions.class);
         Action action_mock = mock(Action.class);
         WebElement target_mock = mock(WebElement.class),
                    result;
-        WidgetLocator locator = new WidgetLocator(driver_mock, actions_mock);
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         childs_list.add(mock(WebElement.class));
         when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
@@ -45,11 +47,12 @@ public class WidgetLocatorTest {
     @Test
     public void test_widget_locator_should_return_only_initially_invisible_elements () {
         WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor = mock(JavascriptExecutor.class);
         Actions actions_mock = mock(Actions.class);
         Action action_mock = mock(Action.class);
         WebElement target_mock = mock(WebElement.class),
                    result;
-        WidgetLocator locator = new WidgetLocator(driver_mock, actions_mock);
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         childs_list.add(mock(WebElement.class));
         childs_list.add(mock(WebElement.class));
@@ -77,12 +80,13 @@ public class WidgetLocatorTest {
     @Test
     public void test_widget_locator_should_return_only_initially_invisible_elements_with_became_visible () {
         WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor = mock(JavascriptExecutor.class);
         Actions actions_mock = mock(Actions.class);
         Action action_mock = mock(Action.class);
         WebElement target_mock = mock(WebElement.class),
                    result;
         InOrder inorder = inOrder(actions_mock, action_mock);
-        WidgetLocator locator = new WidgetLocator(driver_mock, actions_mock);
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         childs_list.add(mock(WebElement.class));
         childs_list.add(mock(WebElement.class));
@@ -116,11 +120,12 @@ public class WidgetLocatorTest {
     @Test
     public void test_widget_locator_should_return_null_if_no_invisible_elements_became_visible () {
         WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor = mock(JavascriptExecutor.class);
         Actions actions_mock = mock(Actions.class);
         Action action_mock = mock(Action.class);
         WebElement target_mock = mock(WebElement.class),
                    result;
-        WidgetLocator locator = new WidgetLocator(driver_mock, actions_mock);
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         childs_list.add(mock(WebElement.class));
         childs_list.add(mock(WebElement.class));
@@ -148,11 +153,12 @@ public class WidgetLocatorTest {
     @Test
     public void test_widget_locator_return_null_if_there_are_no_inv_elements () {
         WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor = mock(JavascriptExecutor.class);
         Actions actions_mock = mock(Actions.class);
         Action action_mock = mock(Action.class);
         WebElement target_mock = mock(WebElement.class),
                    result;
-        WidgetLocator locator = new WidgetLocator(driver_mock, actions_mock);
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         childs_list.add(mock(WebElement.class));
         childs_list.add(mock(WebElement.class));
@@ -175,5 +181,46 @@ public class WidgetLocatorTest {
 
         result = locator.find_widget(target_mock);
         assertEquals(null, result);
+    }
+
+    @Test
+    public void test_widget_locator_should_return_mutation_elements () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
+        WebElement target_mock = mock(WebElement.class),
+                   mutation_widget = mock(WebElement.class),
+                   result;
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        List <WebElement> mutations_list = new ArrayList <WebElement> ();
+        String javascript_code = "if ( ! window.observer) {" +
+                                 "    window.setInterval = function () {};" +
+                                 "    for (var i = 0; i < 10000; i++) { clearTimeout(i); clearInterval(i); };" +
+                                 "    window.observer = new MutationObserver(function (mutations) {" +
+                                 "        mutations.forEach(function (mutation) {" +
+                                 "            if (mutation.addedNodes && mutation.addedNodes.length > 0 &&" +
+                                 "                mutation.addedNodes[0].nodeType === 1 &&" +
+                                 "                mutation.addedNodes[0].parentElement.getAttribute(\"role\") !== \"log\") {" +
+                                 "                mutation.addedNodes[0].className += \" mutation_widget\";" +
+                                 "            }" +
+                                 "        });" +
+                                 "    });" +
+                                 "    window.observer.observe(document.body, {childList: true, subtree: true});" +
+                                 "}";
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        mutations_list.add(mutation_widget);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
+        when(actions_mock.build()).thenReturn(action_mock);
+        when(executor_mock.executeScript(javascript_code)).thenReturn(null);
+
+        result = locator.find_widget(target_mock);
+
+        verify(executor_mock).executeScript(javascript_code);
+        assertEquals(mutation_widget, result);
     }
 }
