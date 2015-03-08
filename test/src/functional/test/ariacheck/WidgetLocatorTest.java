@@ -33,7 +33,12 @@ public class WidgetLocatorTest {
         result_widget = locator.find_widget(target);
 
         assertEquals("Useful message 1", result_widget.getText());
+
+        target = driver.findElement(By.cssSelector("#link2"));
+        result_widget = locator.find_widget(target);
+        assertEquals("Useful message 2", result_widget.getText());
+
         driver.quit();
     }
 
-    }
+}
