@@ -38,7 +38,10 @@ public class WidgetLocator {
                                  "        });" +
                                  "    });" +
                                  "    window.observer.observe(document.body, {childList: true, subtree: true});" +
-                                 "}";
+                                 "}",
+               clean_code = "var mutation_widget = document.querySelectorAll(\".mutation_widget\");" +
+                            "for (var i = 0; i < mutation_widget.length; i++)" +
+                            "    mutation_widget[i].className = mutation_widget[i].className.split(\"mutation_widget\").join(\"\");";
 
         this.executor.executeScript(javascript_code);
 
@@ -58,6 +61,8 @@ public class WidgetLocator {
         }
 
         mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget"));
+        this.executor.executeScript(clean_code);
+
         if (mutation_widgets.size() == 0)
             return null;
         return mutation_widgets.get(0);

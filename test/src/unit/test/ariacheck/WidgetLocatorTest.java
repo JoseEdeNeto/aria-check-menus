@@ -223,4 +223,36 @@ public class WidgetLocatorTest {
         verify(executor_mock).executeScript(javascript_code);
         assertEquals(mutation_widget, result);
     }
+
+    @Test
+    public void test_widget_locator_should_return_mutation_elements_and_clean_previous_mutation_records () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
+        WebElement target_mock = mock(WebElement.class),
+                   mutation_widget = mock(WebElement.class),
+                   result;
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        List <WebElement> mutations_list = new ArrayList <WebElement> ();
+        InOrder inorder = inOrder(driver_mock, executor_mock);
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        mutations_list.add(mutation_widget);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
+        when(actions_mock.build()).thenReturn(action_mock);
+
+        result = locator.find_widget(target_mock);
+
+        assertEquals(mutation_widget, result);
+        inorder.verify(driver_mock).findElements(By.cssSelector(".mutation_widget"));
+        inorder.verify(executor_mock).executeScript(
+            "var mutation_widget = document.querySelectorAll(\".mutation_widget\");" +
+            "for (var i = 0; i < mutation_widget.length; i++)" +
+            "    mutation_widget[i].className = mutation_widget[i].className.split(\"mutation_widget\").join(\"\");"
+        );
+    }
 }
