@@ -114,7 +114,7 @@ public class WidgetLocatorTest {
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
 
         result_widget = locator.find_widget(driver.findElement(By.cssSelector("#link2")));
-        assertEquals("Useful 3", result_widget.getText());
+        assertEquals("Super Useful 3", result_widget.getText());
         assertEquals("div", result_widget.getTagName());
 
         driver.quit();
