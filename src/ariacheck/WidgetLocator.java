@@ -45,6 +45,7 @@ public class WidgetLocator {
         List <WebElement> child_elements = this.driver.findElements(By.cssSelector("body *"));
         List <WebElement> invisibles = new ArrayList <WebElement> ();
         List <WebElement> mutation_widgets = new ArrayList <WebElement> ();
+        WebElement potential_widget = null;
 
         this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
 
@@ -59,16 +60,21 @@ public class WidgetLocator {
                     .perform();
 
         for (WebElement inv : invisibles) {
-            if (inv.isDisplayed())
-                return inv;
+            if (inv.isDisplayed() && (potential_widget == null ||
+                        potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length()))
+                potential_widget = inv;
         }
 
         mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget"));
         this.executor.executeScript(WidgetLocator.JS_CLEAN_MUTATION_RECORDS);
 
-        if (mutation_widgets.size() == 0)
-            return null;
-        return mutation_widgets.get(0);
+        for (WebElement mutation : mutation_widgets) {
+            if (potential_widget == null ||
+                    potential_widget.getAttribute("outerHTML").length() < mutation.getAttribute("outerHTML").length())
+                potential_widget = mutation;
+        }
+
+        return potential_widget;
     }
 
 }
