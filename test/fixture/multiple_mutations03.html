@@ -53,6 +53,7 @@
             Tooltip 3
         </a>
         <div role="log" style="display: none"></div>
+        <div id="container"></div>
         <script type="text/javascript" charset="utf-8">
             (function () {
                 var dialog3 = document.createElement("span"),
@@ -65,13 +66,15 @@
                 arrow2.className = "arrow";
                 dialog3.appendChild(arrow2);
                 document.querySelector("#link2").onmouseover = function () {
-                    document.body.appendChild(dialog4);
+                    var log_event = document.createElement("span");
+                    log_event.innerHTML = "abobrinha";
+                    log.appendChild(log_event);
+                    document.querySelector("#container").appendChild(dialog4);
                     dialog4.appendChild(dialog3);
-                    log.innerHTML += "<div>abobrinha</div>"
                 };
                 document.querySelector("#link2").onmouseout = function () {
                     setTimeout(function () {
-                        document.body.removeChild(dialog4);
+                        document.querySelector("#container").removeChild(dialog4);
                         dialog4.removeChild(dialog3);
                     }, 2000);
                 };
