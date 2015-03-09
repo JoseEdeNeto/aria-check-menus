@@ -8,6 +8,8 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class WidgetLocator {
 
@@ -75,6 +77,23 @@ public class WidgetLocator {
         }
 
         return potential_widget;
+    }
+
+    public List <Map <String, String>> find_all_widgets () {
+        List <WebElement> elements = this.driver.findElements(By.cssSelector("body *"));
+        List <Map <String, String>> results = new ArrayList <Map <String, String>> ();
+
+        for (WebElement element : elements) {
+            WebElement widget = this.find_widget(element);
+            if (widget != null) {
+                Map <String, String> widget_map = new HashMap <String, String> ();
+                widget_map.put("activator", element.getAttribute("outerHTML"));
+                widget_map.put("widget", widget.getAttribute("outerHTML"));
+                results.add(widget_map);
+            }
+        }
+
+        return results;
     }
 
 }
