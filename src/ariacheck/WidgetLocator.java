@@ -85,11 +85,13 @@ public class WidgetLocator {
 
         for (WebElement element : elements) {
             WebElement widget = null;
-            if (element.isDisplayed())
+            String activator_html = null;
+            if (element.isDisplayed()) {
+                activator_html = element.getAttribute("outerHTML");
                 widget = this.find_widget(element);
-            if (widget != null) {
+            } if (widget != null) {
                 Map <String, String> widget_map = new HashMap <String, String> ();
-                widget_map.put("activator", element.getAttribute("outerHTML"));
+                widget_map.put("activator", activator_html);
                 widget_map.put("widget", widget.getAttribute("outerHTML"));
                 results.add(widget_map);
             }

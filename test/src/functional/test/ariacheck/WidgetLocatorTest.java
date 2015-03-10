@@ -185,7 +185,7 @@ public class WidgetLocatorTest {
         assertEquals(
         "<a id=\"link2\" href=\"#\">\n" +
 "            Tooltip 2\n" +
-"            <span id=\"useful2\" class=\"tooltip open\">\n" +
+"            <span id=\"useful2\" class=\"tooltip\">\n" +
 "                <span class=\"arrow\"></span>\n" +
 "                Useful message 2\n" +
 "            </span>\n" +
@@ -198,7 +198,7 @@ public class WidgetLocatorTest {
         assertEquals(
         "<a id=\"link3\" href=\"#\">\n" +
 "            Tooltip 3\n" +
-"        <span class=\"tooltip open \">Useful 3<span class=\"arrow\"></span></span></a>",
+"        </a>",
                 result_widget.get(2).get("activator"));
         assertEquals("<span class=\"tooltip open \">Useful 3<span class=\"arrow\"></span></span>",
                 result_widget.get(2).get("widget"));
