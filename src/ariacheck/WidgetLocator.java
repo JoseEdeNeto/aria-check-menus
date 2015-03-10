@@ -84,7 +84,9 @@ public class WidgetLocator {
         List <Map <String, String>> results = new ArrayList <Map <String, String>> ();
 
         for (WebElement element : elements) {
-            WebElement widget = this.find_widget(element);
+            WebElement widget = null;
+            if (element.isDisplayed())
+                widget = this.find_widget(element);
             if (widget != null) {
                 Map <String, String> widget_map = new HashMap <String, String> ();
                 widget_map.put("activator", element.getAttribute("outerHTML"));
