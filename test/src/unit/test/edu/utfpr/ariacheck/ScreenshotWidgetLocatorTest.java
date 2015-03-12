@@ -1,0 +1,29 @@
+package test.edu.utfpr.ariacheck;
+
+import edu.utfpr.ariacheck.WidgetLocator;
+import edu.utfpr.ariacheck.ScreenshotWidgetLocator;
+
+import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
+@RunWith(JUnit4.class)
+public class ScreenshotWidgetLocatorTest {
+
+    @Test
+    public void test_it_should_be_an_instance_of_widget_locator () {
+        ScreenshotWidgetLocator locator = new ScreenshotWidgetLocator(
+                mock(WebDriver.class), mock(JavascriptExecutor.class),
+                mock(Actions.class), "captured_folder");
+        assertTrue(locator instanceof WidgetLocator);
+    }
+
+}

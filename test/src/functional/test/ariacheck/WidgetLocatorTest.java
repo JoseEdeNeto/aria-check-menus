@@ -1,6 +1,6 @@
 package functional.test.ariacheck;
 
-import ariacheck.WidgetLocator;
+import edu.utfpr.ariacheck.WidgetLocator;
 
 import static org.junit.Assert.assertEquals;
 

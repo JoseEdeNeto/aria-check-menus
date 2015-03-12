@@ -1,6 +1,6 @@
-package unit.test.ariacheck;
+package unit.test.edu.utfpr.ariacheck;
 
-import ariacheck.WidgetLocator;
+import edu.utfpr.ariacheck.WidgetLocator;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;

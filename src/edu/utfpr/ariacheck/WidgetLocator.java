@@ -1,4 +1,4 @@
-package ariacheck;
+package edu.utfpr.ariacheck;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
