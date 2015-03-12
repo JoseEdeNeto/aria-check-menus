@@ -1,4 +1,4 @@
-package test.edu.utfpr.ariacheck.locators;
+package unit.test.edu.utfpr.ariacheck.locators;
 
 import edu.utfpr.ariacheck.locators.WidgetLocator;
 import edu.utfpr.ariacheck.locators.ScreenshotWidgetLocator;
