@@ -1,4 +1,4 @@
-package edu.utfpr.ariacheck;
+package edu.utfpr.ariacheck.locators;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
