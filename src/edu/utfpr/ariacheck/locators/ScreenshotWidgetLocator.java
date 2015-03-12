@@ -2,12 +2,13 @@ package edu.utfpr.ariacheck.locators;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-public class ScreenshotWidgetLocator extends WidgetLocator {
+public class ScreenshotWidgetLocator implements Locator {
 
-    public ScreenshotWidgetLocator (WebDriver driver, JavascriptExecutor executor, Actions actions, String captured_folder) {
-        super(driver, executor, actions);
+    public WebElement find_widget (WebElement target) {
+        return null;
     }
 
 }

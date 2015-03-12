@@ -20,10 +20,6 @@ public class ScreenshotWidgetLocatorTest {
 
     @Test
     public void test_it_should_be_an_instance_of_widget_locator () {
-        ScreenshotWidgetLocator locator = new ScreenshotWidgetLocator(
-                mock(WebDriver.class), mock(JavascriptExecutor.class),
-                mock(Actions.class), "captured_folder");
-        assertTrue(locator instanceof WidgetLocator);
     }
 
 }

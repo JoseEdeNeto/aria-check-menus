@@ -8,10 +8,8 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
-public class WidgetLocator {
+public class WidgetLocator implements Locator {
 
     private WebDriver driver;
     private JavascriptExecutor executor;
