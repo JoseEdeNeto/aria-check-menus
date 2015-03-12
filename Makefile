@@ -99,7 +99,7 @@ tests-functional: test-compile
 		TEST_CLASSPATH="$$i:$$TEST_CLASSPATH";\
 	done;\
 	TESTS=`find test/build/functional -name *Test.class | sed "s/\//./g" | sed "s/\.class//" | sed "s/test\.build\.//"`;\
-	$(JVM) -cp "$$TEST_CLASSPATH:test/build/:build/" org.junit.runner.JUnitCore $$TESTS
+	$(JVM) -cp "$$TEST_CLASSPATH:test/build/:build/" -Dhttp.nonProxyHosts=127.0.0.1 org.junit.runner.JUnitCore $$TESTS
 
 test-compile: compile
 	@echo "compiling java files...";\
