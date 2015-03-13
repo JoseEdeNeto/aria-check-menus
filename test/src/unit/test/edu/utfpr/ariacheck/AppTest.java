@@ -1,6 +1,7 @@
 package unit.test.edu.utfpr.ariacheck;
 
 import edu.utfpr.ariacheck.locators.WidgetLocator;
+import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.App;
 
 import static org.mockito.Mockito.*;
@@ -27,11 +28,7 @@ public class AppTest {
     @Test
     public void test_find_all_widgets_should_do_multiple_calls_to_find_widget () {
         WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        Action action_mock = mock(Action.class);
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
-        WidgetLocator spy = spy(locator);
+        Locator spy = mock(Locator.class);
         App app = new App(driver_mock, spy);
 
         List <Map<String, String>> result_widget;
@@ -78,11 +75,7 @@ public class AppTest {
     @Test
     public void test_find_all_widgets_should_do_multiple_calls_to_find_widget_only_in_visible_elements () {
         WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        Action action_mock = mock(Action.class);
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
-        WidgetLocator spy = spy(locator);
+        Locator spy = mock(Locator.class);
         App app = new App(driver_mock, spy);
 
         List <Map<String, String>> result_widget;

@@ -1,6 +1,6 @@
 package edu.utfpr.ariacheck;
 
-import edu.utfpr.ariacheck.locators.WidgetLocator;
+import edu.utfpr.ariacheck.locators.Locator;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,10 +13,10 @@ import java.util.HashMap;
 
 public class App {
 
-    private WidgetLocator locator;
+    private Locator locator;
     private WebDriver driver;
 
-    public App (WebDriver driver, WidgetLocator locator) {
+    public App (WebDriver driver, Locator locator) {
         this.driver = driver;
         this.locator = locator;
     }
