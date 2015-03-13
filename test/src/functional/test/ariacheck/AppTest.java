@@ -1,6 +1,7 @@
 package functional.test.ariacheck;
 
 import edu.utfpr.ariacheck.locators.WidgetLocator;
+import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.App;
 
 import static org.junit.Assert.assertEquals;
@@ -34,7 +35,7 @@ public class AppTest {
 
         driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/sanity_check02.html");
 
-        WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
+        Locator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(driver, locator);
 
         result_widget = app.find_all_widgets();
