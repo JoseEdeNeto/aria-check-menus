@@ -17,6 +17,7 @@ public class ScreenshotWidgetLocator implements Locator {
     private Locator decorable;
     private TakesScreenshot takes;
     private String folder;
+    private int counter = 1;
 
     public ScreenshotWidgetLocator (Locator locator, TakesScreenshot takes, String folder) {
         this.decorable = locator;
@@ -26,7 +27,7 @@ public class ScreenshotWidgetLocator implements Locator {
 
     public WebElement find_widget (WebElement target) {
         File screenshot = this.takes.getScreenshotAs(OutputType.FILE),
-             new_file = this.create_file_wrapper(this.folder + "001_before_widget.jpg");
+             new_file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter)) + "_before_widget.jpg");
         WebElement widget = null;
         try {
             this.copy_file_wrapper(screenshot, new_file);
@@ -35,7 +36,7 @@ public class ScreenshotWidgetLocator implements Locator {
         }
         widget = this.decorable.find_widget(target);
         screenshot = this.takes.getScreenshotAs(OutputType.FILE);
-        new_file = this.create_file_wrapper(this.folder + "001_later_widget.jpg");
+        new_file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter++)) + "_later_widget.jpg");
         try {
             this.copy_file_wrapper(screenshot, new_file);
         } catch (IOException io) {

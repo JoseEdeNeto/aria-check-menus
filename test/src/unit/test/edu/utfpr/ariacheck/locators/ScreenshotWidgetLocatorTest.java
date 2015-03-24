@@ -57,4 +57,50 @@ public class ScreenshotWidgetLocatorTest {
         assertEquals(widget_stub, result);
     }
 
+    @Test
+    public void test_should_increment_the_file_name_counter_as_more_widgets_are_found () throws IOException {
+        Locator locator_mock = mock(Locator.class);
+        TakesScreenshot takes_mock = mock(TakesScreenshot.class);
+        File screenshot_stub = mock(File.class),
+             new_file_stub = mock(File.class);
+        WebElement target_stub = mock(WebElement.class),
+                   widget_stub = mock(WebElement.class),
+                   result = null;
+        InOrder inorder;
+        when(locator_mock.find_widget(target_stub)).thenReturn(widget_stub);
+        when(takes_mock.getScreenshotAs(OutputType.FILE)).thenReturn(screenshot_stub);
+
+        ScreenshotWidgetLocator locator = new ScreenshotWidgetLocator(locator_mock, takes_mock, "captured_screens/");
+        locator = spy(locator);
+        inorder = inOrder(locator, locator_mock);
+        when(locator.create_file_wrapper(anyString())).thenReturn(new_file_stub);
+        doNothing().when(locator).copy_file_wrapper(screenshot_stub, new_file_stub);
+        result = locator.find_widget(target_stub);
+        result = locator.find_widget(target_stub);
+        result = locator.find_widget(target_stub);
+        result = locator.find_widget(target_stub);
+        result = locator.find_widget(target_stub);
+        result = locator.find_widget(target_stub);
+
+        inorder.verify(locator).create_file_wrapper("captured_screens/001_before_widget.jpg");
+        inorder.verify(locator_mock).find_widget(target_stub);
+        inorder.verify(locator).create_file_wrapper("captured_screens/001_later_widget.jpg");
+        inorder.verify(locator).create_file_wrapper("captured_screens/002_before_widget.jpg");
+        inorder.verify(locator_mock).find_widget(target_stub);
+        inorder.verify(locator).create_file_wrapper("captured_screens/002_later_widget.jpg");
+        inorder.verify(locator).create_file_wrapper("captured_screens/003_before_widget.jpg");
+        inorder.verify(locator_mock).find_widget(target_stub);
+        inorder.verify(locator).create_file_wrapper("captured_screens/003_later_widget.jpg");
+        inorder.verify(locator).create_file_wrapper("captured_screens/004_before_widget.jpg");
+        inorder.verify(locator_mock).find_widget(target_stub);
+        inorder.verify(locator).create_file_wrapper("captured_screens/004_later_widget.jpg");
+        inorder.verify(locator).create_file_wrapper("captured_screens/005_before_widget.jpg");
+        inorder.verify(locator_mock).find_widget(target_stub);
+        inorder.verify(locator).create_file_wrapper("captured_screens/005_later_widget.jpg");
+        inorder.verify(locator).create_file_wrapper("captured_screens/006_before_widget.jpg");
+        inorder.verify(locator_mock).find_widget(target_stub);
+        inorder.verify(locator).create_file_wrapper("captured_screens/006_later_widget.jpg");
+        assertEquals(widget_stub, result);
+    }
+
 }
