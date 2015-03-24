@@ -42,16 +42,18 @@ public class ScreenshotWidgetLocatorTest {
 
         ScreenshotWidgetLocator locator = new ScreenshotWidgetLocator(locator_mock, takes_mock, "captured_screens/");
         locator = spy(locator);
-        inorder = inOrder(locator, locator_mock);
+        inorder = inOrder(locator, locator_mock, takes_mock);
         when(locator.create_file_wrapper("captured_screens/001_before_widget.jpg")).thenReturn(new_file_stub);
         when(locator.create_file_wrapper("captured_screens/001_later_widget.jpg")).thenReturn(new_file_stub_2);
         doNothing().when(locator).copy_file_wrapper(screenshot_stub, new_file_stub);
         doNothing().when(locator).copy_file_wrapper(screenshot_stub_2, new_file_stub_2);
         result = locator.find_widget(target_stub);
 
+        inorder.verify(takes_mock).getScreenshotAs(OutputType.FILE);
+        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/001_before_widget.jpg");
         inorder.verify(locator).copy_file_wrapper(screenshot_stub, new_file_stub);
-        inorder.verify(locator_mock).find_widget(target_stub);
+        inorder.verify(takes_mock).getScreenshotAs(OutputType.FILE);
         inorder.verify(locator).create_file_wrapper("captured_screens/001_later_widget.jpg");
         inorder.verify(locator).copy_file_wrapper(screenshot_stub_2, new_file_stub_2);
         assertEquals(widget_stub, result);
@@ -82,25 +84,54 @@ public class ScreenshotWidgetLocatorTest {
         result = locator.find_widget(target_stub);
         result = locator.find_widget(target_stub);
 
+        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/001_before_widget.jpg");
-        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/001_later_widget.jpg");
+        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/002_before_widget.jpg");
-        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/002_later_widget.jpg");
+        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/003_before_widget.jpg");
-        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/003_later_widget.jpg");
+        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/004_before_widget.jpg");
-        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/004_later_widget.jpg");
+        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/005_before_widget.jpg");
-        inorder.verify(locator_mock).find_widget(target_stub);
         inorder.verify(locator).create_file_wrapper("captured_screens/005_later_widget.jpg");
-        inorder.verify(locator).create_file_wrapper("captured_screens/006_before_widget.jpg");
         inorder.verify(locator_mock).find_widget(target_stub);
+        inorder.verify(locator).create_file_wrapper("captured_screens/006_before_widget.jpg");
         inorder.verify(locator).create_file_wrapper("captured_screens/006_later_widget.jpg");
         assertEquals(widget_stub, result);
     }
 
+    @Test
+    public void test_find_widget_should_call_find_widget_in_another_Locator_and_do_nothing_if_no_widget_is_found ()
+                throws IOException {
+        Locator locator_mock = mock(Locator.class);
+        TakesScreenshot takes_mock = mock(TakesScreenshot.class);
+        File screenshot_stub = mock(File.class),
+             new_file_stub = mock(File.class),
+             screenshot_stub_2 = mock(File.class),
+             new_file_stub_2 = mock(File.class);
+        WebElement target_stub = mock(WebElement.class),
+                   result = null;
+        when(locator_mock.find_widget(target_stub)).thenReturn(null);
+        when(takes_mock.getScreenshotAs(OutputType.FILE)).thenReturn(screenshot_stub).thenReturn(screenshot_stub_2);
+
+        ScreenshotWidgetLocator locator = new ScreenshotWidgetLocator(locator_mock, takes_mock, "captured_screens/");
+        locator = spy(locator);
+        when(locator.create_file_wrapper("captured_screens/001_before_widget.jpg")).thenReturn(new_file_stub);
+        when(locator.create_file_wrapper("captured_screens/001_later_widget.jpg")).thenReturn(new_file_stub_2);
+        doNothing().when(locator).copy_file_wrapper(screenshot_stub, new_file_stub);
+        doNothing().when(locator).copy_file_wrapper(screenshot_stub_2, new_file_stub_2);
+        result = locator.find_widget(target_stub);
+
+        verify(locator, never()).create_file_wrapper("captured_screens/001_before_widget.jpg");
+        verify(locator, never()).copy_file_wrapper(screenshot_stub, new_file_stub);
+        verify(locator_mock).find_widget(target_stub);
+        verify(locator, never()).create_file_wrapper("captured_screens/001_later_widget.jpg");
+        verify(locator, never()).copy_file_wrapper(screenshot_stub_2, new_file_stub_2);
+        assertEquals(null, result);
+    }
 }
