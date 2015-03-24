@@ -25,15 +25,23 @@ public class ScreenshotWidgetLocator implements Locator {
     }
 
     public WebElement find_widget (WebElement target) {
-        String new_file_path = this.folder + "001_before_widget.jpg";
         File screenshot = this.takes.getScreenshotAs(OutputType.FILE),
-             new_file = this.create_file_wrapper(new_file_path);
+             new_file = this.create_file_wrapper(this.folder + "001_before_widget.jpg");
+        WebElement widget = null;
         try {
             this.copy_file_wrapper(screenshot, new_file);
         } catch (IOException io) {
-            System.out.println("Error copying screenshot file to path: " + new_file_path);
+            System.out.println("Error copying screenshot file to path: before widget");
         }
-        return this.decorable.find_widget(target);
+        widget = this.decorable.find_widget(target);
+        screenshot = this.takes.getScreenshotAs(OutputType.FILE);
+        new_file = this.create_file_wrapper(this.folder + "001_later_widget.jpg");
+        try {
+            this.copy_file_wrapper(screenshot, new_file);
+        } catch (IOException io) {
+            System.out.println("Error copying screenshot file to path: later widget");
+        }
+        return widget;
     }
 
     public File create_file_wrapper (String name) {
