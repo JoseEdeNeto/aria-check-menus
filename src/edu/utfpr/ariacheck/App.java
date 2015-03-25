@@ -24,8 +24,10 @@ public class App {
     public List <Map <String, String>> find_all_widgets () {
         List <WebElement> elements = this.driver.findElements(By.cssSelector("body *"));
         List <Map <String, String>> results = new ArrayList <Map <String, String>> ();
+        int count = 0;
 
         for (WebElement element : elements) {
+            System.out.println("Examining " + (++count) + " of " + elements.size() + " remaining elements...");
             WebElement widget = null;
             String activator_html = null;
             if (element.isDisplayed()) {
