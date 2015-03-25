@@ -11,7 +11,7 @@ import edu.utfpr.ariacheck.locators.ScreenshotWidgetLocator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
 
 public class Main  {
-    public static void main (String[] args) {
+    public static void main (String[] args) throws Exception {
         FirefoxDriver driver = new FirefoxDriver();
         Locator locator = new HTMLLogLocator(
             new ScreenshotWidgetLocator(
@@ -23,8 +23,8 @@ public class Main  {
             ),
             "captured_widgets/"
         );
-        driver.get("http://jqueryui.com/resources/demos/tooltip/default.html");
-        App app = new App(driver, locator);
+        driver.get("http://www.google.com.br");
+        App app = new App(driver, locator, true);
         app.find_all_widgets();
         driver.quit();
     }
