@@ -22,20 +22,20 @@ public class HTMLLogLocator implements Locator {
         if (result == null)
             return null;
         try {
-            PrintWriter writer = this.new_writer_wrapper(this.directory + (String.format("%03d", this.counter)) + "_widget_activator.html");
+            PrintWriter writer = this.new_writer_wrapper(this.directory + (String.format("%03d", this.counter)) + "_widget_activator.txt");
             writer.print(target.getAttribute("outerHTML"));
             writer.close();
         } catch (FileNotFoundException e) {
             System.out.println("File " + this.directory + (String.format("%03d", this.counter)) +
-                    "_widget_activator.html was not found or cannot be writer...");
+                    "_widget_activator.txt was not found or cannot be writer...");
         }
         try {
-            PrintWriter writer = this.new_writer_wrapper(this.directory + (String.format("%03d", this.counter)) + "_widget_element.html");
+            PrintWriter writer = this.new_writer_wrapper(this.directory + (String.format("%03d", this.counter)) + "_widget_element.txt");
             writer.print(result.getAttribute("outerHTML"));
             writer.close();
         } catch (FileNotFoundException e) {
             System.out.println("File " + this.directory + (String.format("%03d", this.counter)) +
-                    "_widget_element.html was not found or cannot be writer...");
+                    "_widget_element.txt was not found or cannot be writer...");
         }
         this.counter++;
         return result;

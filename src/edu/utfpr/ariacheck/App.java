@@ -15,10 +15,18 @@ public class App {
 
     private Locator locator;
     private WebDriver driver;
+    private boolean log;
 
     public App (WebDriver driver, Locator locator) {
         this.driver = driver;
         this.locator = locator;
+        this.log = false;
+    }
+
+    public App (WebDriver driver, Locator locator, boolean log) {
+        this.driver = driver;
+        this.locator = locator;
+        this.log = true;
     }
 
     public List <Map <String, String>> find_all_widgets () {
@@ -27,7 +35,8 @@ public class App {
         int count = 0;
 
         for (WebElement element : elements) {
-            System.out.println("Examining " + (++count) + " of " + elements.size() + " remaining elements...");
+            if (this.log)
+                System.out.println("Examining " + (++count) + " of " + elements.size() + " remaining elements...");
             WebElement widget = null;
             String activator_html = null;
             if (element.isDisplayed()) {
