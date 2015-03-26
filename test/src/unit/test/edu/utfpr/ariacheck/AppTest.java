@@ -108,4 +108,75 @@ public class AppTest {
         verify(spy, never()).find_widget(childs_list.get(2));
         verify(spy, never()).find_widget(childs_list.get(3));
     }
+
+    @Test
+    public void test_find_all_widgets_should_restrict_search_given_an_specific_start_element_in_the_interval () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        Locator spy = mock(Locator.class);
+        App app = new App(driver_mock, spy);
+
+        List <Map<String, String>> result_widget;
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        List <WebElement> widget_list = new ArrayList <WebElement> ();
+        widget_list.add(mock(WebElement.class));
+
+        when(childs_list.get(0).isDisplayed()).thenReturn(true);
+        when(childs_list.get(1).isDisplayed()).thenReturn(true);
+        when(childs_list.get(2).isDisplayed()).thenReturn(true);
+        when(childs_list.get(3).isDisplayed()).thenReturn(true);
+        when(childs_list.get(4).isDisplayed()).thenReturn(true);
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        doReturn(widget_list.get(0)).when(spy).find_widget(childs_list.get(0));
+        doReturn(null).when(spy).find_widget(childs_list.get(1));
+        doReturn(null).when(spy).find_widget(childs_list.get(2));
+        doReturn(null).when(spy).find_widget(childs_list.get(3));
+        doReturn(null).when(spy).find_widget(childs_list.get(4));
+        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("<a href=\"#\">activator 1</a>");
+        when(widget_list.get(0).getAttribute("outerHTML")).thenReturn("<span>widget 1</span>");
+
+        result_widget = app.find_all_widgets(1, 4);
+        assertEquals(0, result_widget.size());
+    }
+
+    @Test
+    public void test_find_all_widgets_should_restrict_search_given_an_specific_start_and_end_element_in_the_interval () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        Locator spy = mock(Locator.class);
+        App app = new App(driver_mock, spy);
+
+        List <Map<String, String>> result_widget;
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        List <WebElement> widget_list = new ArrayList <WebElement> ();
+        widget_list.add(mock(WebElement.class));
+
+        when(childs_list.get(0).isDisplayed()).thenReturn(true);
+        when(childs_list.get(1).isDisplayed()).thenReturn(true);
+        when(childs_list.get(2).isDisplayed()).thenReturn(true);
+        when(childs_list.get(3).isDisplayed()).thenReturn(true);
+        when(childs_list.get(4).isDisplayed()).thenReturn(true);
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        doReturn(widget_list.get(0)).when(spy).find_widget(childs_list.get(0));
+        doReturn(null).when(spy).find_widget(childs_list.get(1));
+        doReturn(null).when(spy).find_widget(childs_list.get(2));
+        doReturn(null).when(spy).find_widget(childs_list.get(3));
+        doReturn(widget_list.get(0)).when(spy).find_widget(childs_list.get(4));
+        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("<a href=\"#\">activator 1</a>");
+        when(childs_list.get(4).getAttribute("outerHTML")).thenReturn("<a href=\"#\">activator 1</a>");
+        when(widget_list.get(0).getAttribute("outerHTML")).thenReturn("<span>widget 1</span>");
+
+        result_widget = app.find_all_widgets(1, 3);
+        assertEquals(0, result_widget.size());
+    }
 }

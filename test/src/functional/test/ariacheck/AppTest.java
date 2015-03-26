@@ -76,4 +76,33 @@ public class AppTest {
         driver.quit();
     }
 
+    @Test
+    public void test_widget_locator_should_look_for_all_widget_instances_in_an_start_and_end_interval () throws IOException {
+        FirefoxDriver driver = new FirefoxDriver();
+        Actions actions = new Actions((WebDriver) driver);
+        List <Map<String, String>> result_widget;
+
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/sanity_check02.html");
+
+        Locator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
+        App app = new App(driver, locator);
+
+        result_widget = app.find_all_widgets(4, 7);
+        assertEquals(1, result_widget.size());
+        assertEquals(
+        "<a id=\"link2\" href=\"#\">\n" +
+"            Tooltip 2\n" +
+"            <span id=\"useful2\" class=\"tooltip\">\n" +
+"                <span class=\"arrow\"></span>\n" +
+"                Useful message 2\n" +
+"            </span>\n" +
+"        </a>", result_widget.get(0).get("activator"));
+        assertEquals(
+            "<span id=\"useful2\" class=\"tooltip open\">\n" +
+"                <span class=\"arrow\"></span>\n" +
+"                Useful message 2\n" +
+"            </span>", result_widget.get(0).get("widget"));
+        driver.quit();
+    }
+
 }
