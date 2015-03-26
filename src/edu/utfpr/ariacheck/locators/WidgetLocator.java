@@ -21,6 +21,7 @@ public class WidgetLocator implements Locator {
         "if ( ! window.observer) {" +
         "    window.setInterval = function () {};" +
         "    for (var i = 0; i < 10000; i++) { clearTimeout(i); clearInterval(i); };" +
+        "    window.setTimeout = function (callback, time) { callback(); };" +
         "    window.observer = new MutationObserver(function (mutations) {" +
         "        mutations.forEach(function (mutation) {" +
         "            if (mutation.addedNodes && mutation.addedNodes.length > 0 &&" +
