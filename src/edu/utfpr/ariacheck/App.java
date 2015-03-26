@@ -31,26 +31,7 @@ public class App {
 
     public List <Map <String, String>> find_all_widgets () {
         List <WebElement> elements = this.driver.findElements(By.cssSelector("body *"));
-        List <Map <String, String>> results = new ArrayList <Map <String, String>> ();
-        int count = 0;
-
-        for (WebElement element : elements) {
-            if (this.log)
-                System.out.println("Examining " + (++count) + " of " + elements.size() + " remaining elements...");
-            WebElement widget = null;
-            String activator_html = null;
-            if (element.isDisplayed()) {
-                activator_html = element.getAttribute("outerHTML");
-                widget = this.locator.find_widget(element);
-            } if (widget != null) {
-                Map <String, String> widget_map = new HashMap <String, String> ();
-                widget_map.put("activator", activator_html);
-                widget_map.put("widget", widget.getAttribute("outerHTML"));
-                results.add(widget_map);
-            }
-        }
-
-        return results;
+        return this.find_all_widgets(0, elements.size());
     }
 
     public List <Map <String, String>> find_all_widgets (int start, int end) {
