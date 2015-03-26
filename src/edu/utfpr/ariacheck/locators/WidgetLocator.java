@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ public class WidgetLocator implements Locator {
     private WebDriver driver;
     private JavascriptExecutor executor;
     private Actions actions;
+    private List <WebElement> invisibles = null;
 
     private static String JS_SET_MUTATION_OBSERVER =
         "if ( ! window.observer) {" +
@@ -39,30 +41,41 @@ public class WidgetLocator implements Locator {
         this.driver = driver;
         this.actions = actions;
         this.executor = executor;
+        this.invisibles = null;
+    }
+
+    private List <WebElement> find_invisibles () {
+        List <WebElement> child_elements = this.driver.findElements(By.cssSelector("body *"));
+        List <WebElement> invisibles = new ArrayList <WebElement> ();
+        for (WebElement child : child_elements) {
+            if ( ! child.isDisplayed())
+                invisibles.add(child);
+        }
+        return invisibles;
     }
 
     public WebElement find_widget (WebElement target) {
-        List <WebElement> child_elements = this.driver.findElements(By.cssSelector("body *"));
-        List <WebElement> invisibles = new ArrayList <WebElement> ();
         List <WebElement> mutation_widgets = new ArrayList <WebElement> ();
         WebElement potential_widget = null;
 
         this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
 
-        for (WebElement child : child_elements) {
-            if ( ! child.isDisplayed())
-                invisibles.add(child);
-        }
+        if (this.invisibles == null)
+            this.invisibles = this.find_invisibles();
 
         this.actions.moveByOffset(-1500, -1500)
                     .moveToElement(target)
                     .build()
                     .perform();
 
-        for (WebElement inv : invisibles) {
-            if (inv.isDisplayed() && (potential_widget == null ||
-                        potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length()))
-                potential_widget = inv;
+        Iterator <WebElement>iterator = this.invisibles.iterator();
+        while (iterator.hasNext()) {
+            WebElement inv = (WebElement) (iterator.next());
+            if (inv.isDisplayed()) {
+                if (potential_widget == null || potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length())
+                    potential_widget = inv;
+                iterator.remove();
+            }
         }
 
         mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget"));
