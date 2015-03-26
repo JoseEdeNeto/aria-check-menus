@@ -408,4 +408,42 @@ public class WidgetLocatorTest {
         verify(driver_mock, times(1)).findElements(By.cssSelector("body *"));
     }
 
+    @Test
+    public void test_widget_locator_should_remove_multiple_potential_widgets_from_cache_list () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
+        WebElement target_mock = mock(WebElement.class),
+                   mutation_widget = mock(WebElement.class),
+                   result;
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(false).thenReturn(false).thenThrow(new RuntimeException());
+        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("abobrinha");
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(true)
+            .thenThrow(new RuntimeException("The second element should be removed from cache list..."));
+        when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("abo");
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(true)
+            .thenThrow(new RuntimeException("The second element should be removed from cache list..."));
+        when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("<a href=\"#\">abo</a>");
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(new ArrayList <WebElement> ());
+
+        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
+        when(actions_mock.build()).thenReturn(action_mock);
+
+        result = locator.find_widget(target_mock);
+        assertEquals(childs_list.get(2), result);
+        result = locator.find_widget(target_mock);
+        assertEquals(null, result);
+
+        verify(driver_mock, times(1)).findElements(By.cssSelector("body *"));
+    }
+
 }
