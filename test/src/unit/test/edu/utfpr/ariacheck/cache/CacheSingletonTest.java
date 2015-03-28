@@ -45,4 +45,16 @@ public class CacheSingletonTest {
         assertTrue(cache.is_there("bri"));
     }
 
+    @Test
+    public void test_cache_should_chear_all_stored_entries () {
+        CacheSingleton cache = CacheSingleton.createInstance();
+        cache.store("abobrinha");
+        cache.store("pepino");
+        cache.store("limao");
+        cache.clear();
+
+        assertFalse(cache.is_there("mao"));
+        assertFalse(cache.is_there("pi"));
+        assertFalse(cache.is_there("bri"));
+    }
 }

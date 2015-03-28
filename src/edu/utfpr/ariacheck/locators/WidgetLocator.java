@@ -10,12 +10,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
+import edu.utfpr.ariacheck.cache.CacheSingleton;
+
 public class WidgetLocator implements Locator {
 
     private WebDriver driver;
     private JavascriptExecutor executor;
     private Actions actions;
     private List <WebElement> invisibles = null;
+    private CacheSingleton cache = null;
 
     private static String JS_SET_MUTATION_OBSERVER =
         "if ( ! window.observer) {" +
@@ -45,6 +48,14 @@ public class WidgetLocator implements Locator {
         this.invisibles = null;
     }
 
+    public WidgetLocator (WebDriver driver, JavascriptExecutor executor, Actions actions, CacheSingleton cache) {
+        this.driver = driver;
+        this.actions = actions;
+        this.executor = executor;
+        this.invisibles = null;
+        this.cache = cache;
+    }
+
     private List <WebElement> find_invisibles () {
         List <WebElement> child_elements = this.driver.findElements(By.cssSelector("body *"));
         List <WebElement> invisibles = new ArrayList <WebElement> ();
@@ -56,6 +67,8 @@ public class WidgetLocator implements Locator {
     }
 
     public WebElement find_widget (WebElement target) {
+        if (this.cache != null && this.cache.is_there(target.getAttribute("outerHTML")))
+            return null;
         List <WebElement> mutation_widgets = new ArrayList <WebElement> ();
         WebElement potential_widget = null;
 
@@ -87,6 +100,9 @@ public class WidgetLocator implements Locator {
                     potential_widget.getAttribute("outerHTML").length() < mutation.getAttribute("outerHTML").length())
                 potential_widget = mutation;
         }
+
+        if (this.cache != null)
+            this.cache.store(target.getAttribute("outerHTML"));
 
         return potential_widget;
     }

@@ -7,7 +7,11 @@ public class CacheSingleton {
 
     private List <String> cache_list;
 
-    public CacheSingleton () {
+    private CacheSingleton () {
+        this.cache_list = new ArrayList <String> ();
+    }
+
+    public void clear () {
         this.cache_list = new ArrayList <String> ();
     }
 
