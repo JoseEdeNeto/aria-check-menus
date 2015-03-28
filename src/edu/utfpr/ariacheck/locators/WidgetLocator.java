@@ -69,7 +69,7 @@ public class WidgetLocator implements Locator {
     public WebElement find_widget (WebElement target) {
         if (this.cache != null && this.cache.is_there(target.getAttribute("outerHTML")))
             return null;
-        List <WebElement> mutation_widgets = new ArrayList <WebElement> ();
+        List <WebElement> mutation_widgets;
         WebElement potential_widget = null;
 
         this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
