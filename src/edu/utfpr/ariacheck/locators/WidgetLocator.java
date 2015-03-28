@@ -101,7 +101,7 @@ public class WidgetLocator implements Locator {
                 potential_widget = mutation;
         }
 
-        if (this.cache != null)
+        if (this.cache != null && potential_widget != null)
             this.cache.store(target.getAttribute("outerHTML"));
 
         return potential_widget;

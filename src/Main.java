@@ -7,6 +7,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 
 import edu.utfpr.ariacheck.App;
+import edu.utfpr.ariacheck.cache.CacheSingleton;
 import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.locators.HTMLLogLocator;
 import edu.utfpr.ariacheck.locators.ScreenshotWidgetLocator;
@@ -19,7 +20,7 @@ import java.util.List;
 public class Main implements Runnable {
     public static void main (String[] args) throws Exception {
         String url = "http://www.google.com.br";
-        int number_of_threads = 4;
+        int number_of_threads = 1;
 
         FirefoxDriver driver = new FirefoxDriver();
         driver.get(url);
@@ -50,7 +51,10 @@ public class Main implements Runnable {
         Locator locator = new HTMLLogLocator(
             new ScreenshotWidgetLocator(
                 new WidgetLocator(
-                    (WebDriver) driver, (JavascriptExecutor) driver, new Actions(driver)
+                    (WebDriver) driver,
+                    (JavascriptExecutor) driver,
+                    new Actions(driver),
+                    CacheSingleton.createInstance()
                 ),
                 (TakesScreenshot) driver,
                 "captured_widgets/" + this.start + "_"
