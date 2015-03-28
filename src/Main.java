@@ -12,6 +12,7 @@ import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.locators.HTMLLogLocator;
 import edu.utfpr.ariacheck.locators.ScreenshotWidgetLocator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
+import edu.utfpr.ariacheck.locators.ActivatorCacheDecorator;
 
 import java.lang.Runnable;
 import java.lang.Thread;
@@ -50,11 +51,12 @@ public class Main implements Runnable {
         FirefoxDriver driver = new FirefoxDriver();
         Locator locator = new HTMLLogLocator(
             new ScreenshotWidgetLocator(
-                new WidgetLocator(
-                    (WebDriver) driver,
-                    (JavascriptExecutor) driver,
-                    new Actions(driver),
-                    CacheSingleton.createInstance()
+                new ActivatorCacheDecorator(
+                    new WidgetLocator(
+                        (WebDriver) driver,
+                        (JavascriptExecutor) driver,
+                        new Actions(driver)
+                    )
                 ),
                 (TakesScreenshot) driver,
                 "captured_widgets/" + this.start + "_"

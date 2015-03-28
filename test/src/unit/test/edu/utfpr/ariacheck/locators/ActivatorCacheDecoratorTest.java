@@ -1,5 +1,6 @@
 package unit.test.edu.utfpr.ariacheck.locators;
 
+import edu.utfpr.ariacheck.locators.ActivatorCacheDecorator;
 import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
 import edu.utfpr.ariacheck.cache.CacheSingleton;
@@ -33,7 +34,7 @@ public class ActivatorCacheDecoratorTest {
         WebElement target_mock = mock(WebElement.class),
                    mutation_widget = mock(WebElement.class),
                    result;
-        Locator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock, CacheSingleton.createInstance());
+        Locator locator = new ActivatorCacheDecorator(new WidgetLocator(driver_mock, executor_mock, actions_mock));
         CacheSingleton.createInstance().clear();
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
@@ -75,7 +76,7 @@ public class ActivatorCacheDecoratorTest {
         WebElement target_mock = mock(WebElement.class),
                    mutation_widget = mock(WebElement.class),
                    result;
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock, CacheSingleton.createInstance());
+        Locator locator = new ActivatorCacheDecorator(new WidgetLocator(driver_mock, executor_mock, actions_mock));
         CacheSingleton.createInstance().clear();
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
