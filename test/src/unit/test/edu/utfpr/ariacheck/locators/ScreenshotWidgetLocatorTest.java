@@ -2,7 +2,7 @@ package unit.test.edu.utfpr.ariacheck.locators;
 
 import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
-import edu.utfpr.ariacheck.locators.ScreenshotWidgetLocator;
+import edu.utfpr.ariacheck.locators.decorators.ScreenshotWidgetLocator;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;

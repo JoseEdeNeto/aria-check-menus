@@ -9,10 +9,10 @@ import org.openqa.selenium.interactions.Actions;
 import edu.utfpr.ariacheck.App;
 import edu.utfpr.ariacheck.cache.CacheSingleton;
 import edu.utfpr.ariacheck.locators.Locator;
-import edu.utfpr.ariacheck.locators.HTMLLogLocator;
-import edu.utfpr.ariacheck.locators.ScreenshotWidgetLocator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
-import edu.utfpr.ariacheck.locators.ActivatorCacheDecorator;
+import edu.utfpr.ariacheck.locators.decorators.ActivatorCacheDecorator;
+import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocator;
+import edu.utfpr.ariacheck.locators.decorators.ScreenshotWidgetLocator;
 
 import java.lang.Runnable;
 import java.lang.Thread;

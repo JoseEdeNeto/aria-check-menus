@@ -1,6 +1,6 @@
 package unit.test.edu.utfpr.ariacheck.locators;
 
-import edu.utfpr.ariacheck.locators.ActivatorCacheDecorator;
+import edu.utfpr.ariacheck.locators.decorators.ActivatorCacheDecorator;
 import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
 import edu.utfpr.ariacheck.cache.CacheSingleton;

@@ -1,6 +1,6 @@
 package unit.test.edu.utfpr.ariacheck.locators;
 
-import edu.utfpr.ariacheck.locators.HTMLLogLocator;
+import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocator;
 import edu.utfpr.ariacheck.locators.Locator;
 
 import static org.mockito.Mockito.*;

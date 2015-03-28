@@ -1,5 +1,6 @@
-package edu.utfpr.ariacheck.locators;
+package edu.utfpr.ariacheck.locators.decorators;
 
+import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.cache.CacheSingleton;
 
 import org.openqa.selenium.WebElement;
