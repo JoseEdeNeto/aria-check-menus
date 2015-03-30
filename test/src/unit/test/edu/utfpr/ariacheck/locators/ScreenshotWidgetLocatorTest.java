@@ -2,7 +2,7 @@ package unit.test.edu.utfpr.ariacheck.locators;
 
 import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
-import edu.utfpr.ariacheck.locators.decorators.ScreenshotWidgetLocator;
+import edu.utfpr.ariacheck.locators.decorators.ScreenshotWidgetLocatorDecorator;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
@@ -40,7 +40,7 @@ public class ScreenshotWidgetLocatorTest {
         when(locator_mock.find_widget(target_stub)).thenReturn(widget_stub);
         when(takes_mock.getScreenshotAs(OutputType.FILE)).thenReturn(screenshot_stub).thenReturn(screenshot_stub_2);
 
-        ScreenshotWidgetLocator locator = new ScreenshotWidgetLocator(locator_mock, takes_mock, "captured_screens/");
+        ScreenshotWidgetLocatorDecorator locator = new ScreenshotWidgetLocatorDecorator(locator_mock, takes_mock, "captured_screens/");
         locator = spy(locator);
         inorder = inOrder(locator, locator_mock, takes_mock);
         when(locator.create_file_wrapper("captured_screens/001_before_widget.jpg")).thenReturn(new_file_stub);
@@ -72,7 +72,7 @@ public class ScreenshotWidgetLocatorTest {
         when(locator_mock.find_widget(target_stub)).thenReturn(widget_stub);
         when(takes_mock.getScreenshotAs(OutputType.FILE)).thenReturn(screenshot_stub);
 
-        ScreenshotWidgetLocator locator = new ScreenshotWidgetLocator(locator_mock, takes_mock, "captured_screens/");
+        ScreenshotWidgetLocatorDecorator locator = new ScreenshotWidgetLocatorDecorator(locator_mock, takes_mock, "captured_screens/");
         locator = spy(locator);
         inorder = inOrder(locator, locator_mock);
         when(locator.create_file_wrapper(anyString())).thenReturn(new_file_stub);
@@ -119,7 +119,7 @@ public class ScreenshotWidgetLocatorTest {
         when(locator_mock.find_widget(target_stub)).thenReturn(null);
         when(takes_mock.getScreenshotAs(OutputType.FILE)).thenReturn(screenshot_stub).thenReturn(screenshot_stub_2);
 
-        ScreenshotWidgetLocator locator = new ScreenshotWidgetLocator(locator_mock, takes_mock, "captured_screens/");
+        ScreenshotWidgetLocatorDecorator locator = new ScreenshotWidgetLocatorDecorator(locator_mock, takes_mock, "captured_screens/");
         locator = spy(locator);
         when(locator.create_file_wrapper("captured_screens/001_before_widget.jpg")).thenReturn(new_file_stub);
         when(locator.create_file_wrapper("captured_screens/001_later_widget.jpg")).thenReturn(new_file_stub_2);

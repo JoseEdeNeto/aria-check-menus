@@ -1,6 +1,6 @@
 package unit.test.edu.utfpr.ariacheck.locators;
 
-import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocator;
+import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocatorDecorator;
 import edu.utfpr.ariacheck.locators.Locator;
 
 import static org.mockito.Mockito.*;
@@ -20,13 +20,13 @@ public class HTMLLogLocatorTest {
     @Test
     public void test_html_logger_exists () {
         Locator locator_mock = mock(Locator.class);
-        Locator locator = new HTMLLogLocator(locator_mock, "logs/");
+        Locator locator = new HTMLLogLocatorDecorator(locator_mock, "logs/");
     }
 
     @Test
     public void test_html_logger_find_widget_implements_decorator_strategy () throws FileNotFoundException {
         Locator locator_mock = mock(Locator.class);
-        HTMLLogLocator locator = spy(new HTMLLogLocator(locator_mock, "logs/"));
+        HTMLLogLocatorDecorator locator = spy(new HTMLLogLocatorDecorator(locator_mock, "logs/"));
         WebElement target_stub = mock(WebElement.class),
                    result_stub = mock(WebElement.class),
                    result;
@@ -43,7 +43,7 @@ public class HTMLLogLocatorTest {
     @Test
     public void test_html_logger_find_widget_should_save_activator_html_extract_if_a_widget_is_found () throws FileNotFoundException {
         Locator locator_mock = mock(Locator.class);
-        HTMLLogLocator locator = spy(new HTMLLogLocator(locator_mock, "logs/"));
+        HTMLLogLocatorDecorator locator = spy(new HTMLLogLocatorDecorator(locator_mock, "logs/"));
         WebElement target_stub = mock(WebElement.class),
                    result_stub = mock(WebElement.class),
                    result;
@@ -67,7 +67,7 @@ public class HTMLLogLocatorTest {
     @Test
     public void test_html_logger_find_widget_should_save_widget_html_extract_if_a_widget_is_found () throws FileNotFoundException {
         Locator locator_mock = mock(Locator.class);
-        HTMLLogLocator locator = spy(new HTMLLogLocator(locator_mock, "something/"));
+        HTMLLogLocatorDecorator locator = spy(new HTMLLogLocatorDecorator(locator_mock, "something/"));
         WebElement target_stub = mock(WebElement.class),
                    result_stub = mock(WebElement.class),
                    result;
@@ -91,7 +91,7 @@ public class HTMLLogLocatorTest {
     @Test
     public void test_html_logger_find_widget_should_not_save_any_file_if_no_widget_is_found () throws FileNotFoundException {
         Locator locator_mock = mock(Locator.class);
-        HTMLLogLocator locator = spy(new HTMLLogLocator(locator_mock, "anotherthing/"));
+        HTMLLogLocatorDecorator locator = spy(new HTMLLogLocatorDecorator(locator_mock, "anotherthing/"));
         WebElement target_stub = mock(WebElement.class),
                    result;
         PrintWriter new_writer_mock = mock(PrintWriter.class),
@@ -114,7 +114,7 @@ public class HTMLLogLocatorTest {
     @Test
     public void test_html_logger_find_widget_should_save_multiple_files_with_different_names () throws FileNotFoundException {
         Locator locator_mock = mock(Locator.class);
-        HTMLLogLocator locator = spy(new HTMLLogLocator(locator_mock, "another_folder/"));
+        HTMLLogLocatorDecorator locator = spy(new HTMLLogLocatorDecorator(locator_mock, "another_folder/"));
         WebElement target_mock = mock(WebElement.class),
                    result_mock = mock(WebElement.class);
         PrintWriter writer_mock = mock(PrintWriter.class);

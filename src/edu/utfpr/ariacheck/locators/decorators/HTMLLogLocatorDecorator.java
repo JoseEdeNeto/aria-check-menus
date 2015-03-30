@@ -7,13 +7,13 @@ import org.openqa.selenium.WebElement;
 import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 
-public class HTMLLogLocator implements Locator {
+public class HTMLLogLocatorDecorator implements Locator {
 
     private Locator locator;
     private String directory;
     private int counter;
 
-    public HTMLLogLocator (Locator locator, String log_directory) {
+    public HTMLLogLocatorDecorator (Locator locator, String log_directory) {
         this.locator = locator;
         this.directory = log_directory;
         this.counter = 1;

@@ -11,8 +11,8 @@ import edu.utfpr.ariacheck.cache.CacheSingleton;
 import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
 import edu.utfpr.ariacheck.locators.decorators.ActivatorCacheDecorator;
-import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocator;
-import edu.utfpr.ariacheck.locators.decorators.ScreenshotWidgetLocator;
+import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocatorDecorator;
+import edu.utfpr.ariacheck.locators.decorators.ScreenshotWidgetLocatorDecorator;
 
 import java.lang.Runnable;
 import java.lang.Thread;
@@ -49,8 +49,8 @@ public class Main implements Runnable {
 
     public void run () {
         FirefoxDriver driver = new FirefoxDriver();
-        Locator locator = new HTMLLogLocator(
-            new ScreenshotWidgetLocator(
+        Locator locator = new HTMLLogLocatorDecorator(
+            new ScreenshotWidgetLocatorDecorator(
                 new ActivatorCacheDecorator(
                     new WidgetLocator(
                         (WebDriver) driver,

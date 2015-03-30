@@ -14,14 +14,14 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
-public class ScreenshotWidgetLocator implements Locator {
+public class ScreenshotWidgetLocatorDecorator implements Locator {
 
     private Locator decorable;
     private TakesScreenshot takes;
     private String folder;
     private int counter = 1;
 
-    public ScreenshotWidgetLocator (Locator locator, TakesScreenshot takes, String folder) {
+    public ScreenshotWidgetLocatorDecorator (Locator locator, TakesScreenshot takes, String folder) {
         this.decorable = locator;
         this.takes = takes;
         this.folder = folder;
