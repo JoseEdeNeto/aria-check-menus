@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
@@ -18,10 +19,13 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.OutputType;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+
+import java.io.File;
 
 @RunWith(JUnit4.class)
 public class WidgetLocatorTest {
@@ -90,7 +94,7 @@ public class WidgetLocatorTest {
     }
 
     @Test
-    public void test_widget_locator_should_return_only_initially_invisible_elements_with_became_visible () {
+    public void test_widget_locator_should_return_only_initially_invisible_elements_which_became_visible () {
         WebDriver driver_mock = mock(WebDriver.class);
         JavascriptExecutor executor = mock(JavascriptExecutor.class);
         Actions actions_mock = mock(Actions.class);
@@ -529,6 +533,91 @@ public class WidgetLocatorTest {
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         result = locator.find_widget(target_mock);
+
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void test_widget_locator_should_not_check_visibility_if_there_are_no_screenshot_differences () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
+        WebElement target_mock = mock(WebElement.class), result;
+        Dimension dimension_mock = mock(Dimension.class);
+        TakesScreenshot takes_mock = mock(TakesScreenshot.class);
+        InOrder inorder = inOrder(takes_mock, actions_mock, action_mock);
+        File screenshot_stub = mock(File.class),
+             screenshot_stub_2 = mock(File.class);
+        double comp_result = 0;
+
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(200);
+        when(dimension_mock.getHeight()).thenReturn(90);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(new ArrayList());
+        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
+        when(actions_mock.build()).thenReturn(action_mock);
+        doNothing().when(action_mock).perform();
+
+        when(takes_mock.getScreenshotAs(OutputType.FILE)).thenReturn(screenshot_stub).thenReturn(screenshot_stub_2);
+
+        WidgetLocator locator = spy(new WidgetLocator(driver_mock, executor_mock, actions_mock, takes_mock));
+        doReturn(comp_result).when(locator).compareImages(screenshot_stub, screenshot_stub_2);
+
+        result = locator.find_widget(target_mock);
+
+        inorder.verify(takes_mock).getScreenshotAs(OutputType.FILE);
+        inorder.verify(actions_mock).moveByOffset(-1500, -1500);
+        inorder.verify(actions_mock).moveToElement(target_mock);
+        inorder.verify(actions_mock).build();
+        inorder.verify(action_mock).perform();
+        inorder.verify(takes_mock).getScreenshotAs(OutputType.FILE);
+
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void test_widget_locator_should_not_check_visibility_if_there_is_not_significant_screenshot_differences () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
+        WebElement target_mock = mock(WebElement.class), result;
+        Dimension dimension_mock = mock(Dimension.class);
+        TakesScreenshot takes_mock = mock(TakesScreenshot.class);
+        InOrder inorder = inOrder(takes_mock, actions_mock, action_mock);
+        File screenshot_stub = mock(File.class),
+             screenshot_stub_2 = mock(File.class);
+        double comp_result = 0.5;
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
+        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("abobrinha");
+
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(200);
+        when(dimension_mock.getHeight()).thenReturn(90);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
+        when(actions_mock.build()).thenReturn(action_mock);
+        doNothing().when(action_mock).perform();
+
+        when(takes_mock.getScreenshotAs(OutputType.FILE)).thenReturn(screenshot_stub).thenReturn(screenshot_stub_2);
+
+        WidgetLocator locator = spy(new WidgetLocator(driver_mock, executor_mock, actions_mock, takes_mock));
+        doReturn(comp_result).when(locator).compareImages(screenshot_stub, screenshot_stub_2);
+
+        result = locator.find_widget(target_mock);
+
+        inorder.verify(takes_mock).getScreenshotAs(OutputType.FILE);
+        inorder.verify(actions_mock).moveByOffset(-1500, -1500);
+        inorder.verify(actions_mock).moveToElement(target_mock);
+        inorder.verify(actions_mock).build();
+        inorder.verify(action_mock).perform();
+        inorder.verify(takes_mock).getScreenshotAs(OutputType.FILE);
 
         assertEquals(null, result);
     }

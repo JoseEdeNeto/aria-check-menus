@@ -1,14 +1,21 @@
 package edu.utfpr.ariacheck.locators;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.OutputType;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+
+import java.io.File;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
 public class WidgetLocator implements Locator {
 
@@ -16,9 +23,11 @@ public class WidgetLocator implements Locator {
     private JavascriptExecutor executor;
     private Actions actions;
     private List <WebElement> invisibles = null;
+    private TakesScreenshot takes = null;
 
     private int MAX_WIDTH = 300;
     private int MAX_HEIGHT = 100;
+    private double SIG_DIFFERENCE = 0.6;
 
     private static String JS_SET_MUTATION_OBSERVER =
         "if ( ! window.observer) {" +
@@ -48,6 +57,14 @@ public class WidgetLocator implements Locator {
         this.invisibles = null;
     }
 
+    public WidgetLocator (WebDriver driver, JavascriptExecutor executor, Actions actions, TakesScreenshot takes) {
+        this.driver = driver;
+        this.actions = actions;
+        this.executor = executor;
+        this.invisibles = null;
+        this.takes = takes;
+    }
+
     private List <WebElement> find_invisibles () {
         List <WebElement> child_elements = this.driver.findElements(By.cssSelector("body *"));
         List <WebElement> invisibles = new ArrayList <WebElement> ();
@@ -61,6 +78,8 @@ public class WidgetLocator implements Locator {
     public WebElement find_widget (WebElement target) {
         List <WebElement> mutation_widgets;
         WebElement potential_widget = null;
+        File before = null,
+             later = null;
 
         if (target.getSize().getWidth() > this.MAX_WIDTH || target.getSize().getHeight() > this.MAX_HEIGHT)
             return null;
@@ -70,10 +89,19 @@ public class WidgetLocator implements Locator {
         if (this.invisibles == null)
             this.invisibles = this.find_invisibles();
 
+        if (this.takes != null)
+            before = this.takes.getScreenshotAs(OutputType.FILE);
+
         this.actions.moveByOffset(-1500, -1500)
                     .moveToElement(target)
                     .build()
                     .perform();
+
+        if (this.takes != null) {
+            later = this.takes.getScreenshotAs(OutputType.FILE);
+            if (this.compareImages(before, later) < this.SIG_DIFFERENCE)
+                return null;
+        }
 
         Iterator <WebElement>iterator = this.invisibles.iterator();
         while (iterator.hasNext()) {
@@ -95,6 +123,43 @@ public class WidgetLocator implements Locator {
         }
 
         return potential_widget;
+    }
+
+    public double compareImages (File before, File after) {
+        BufferedImage img1 = null,
+                      img2 = null;
+        try {
+            img1 = ImageIO.read(new File("001_before_widget.jpg"));
+            img2 = ImageIO.read(new File("001_later_widget.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int width1 = img1.getWidth(null),
+            width2 = img2.getWidth(null),
+            height1 = img1.getHeight(null),
+            height2 = img2.getHeight(null);
+        if ((width1 != width2) || (height1 != height2)) {
+            return 100;
+        }
+        long diff = 0;
+        for (int y = 0; y < height1; y++) {
+            for (int x = 0; x < width1; x++) {
+                int rgb1 = img1.getRGB(x, y);
+                int rgb2 = img2.getRGB(x, y);
+                int r1 = (rgb1 >> 16) & 0xff;
+                int g1 = (rgb1 >>  8) & 0xff;
+                int b1 = (rgb1      ) & 0xff;
+                int r2 = (rgb2 >> 16) & 0xff;
+                int g2 = (rgb2 >>  8) & 0xff;
+                int b2 = (rgb2      ) & 0xff;
+                diff += Math.abs(r1 - r2);
+                diff += Math.abs(g1 - g2);
+                diff += Math.abs(b1 - b2);
+            }
+        }
+        double n = width1 * height1 * 3;
+        double p = diff / n / 255.0;
+        return (p * 100.0);
     }
 
 }
