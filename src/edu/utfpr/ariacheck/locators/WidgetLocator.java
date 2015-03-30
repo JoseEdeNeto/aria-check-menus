@@ -99,7 +99,9 @@ public class WidgetLocator implements Locator {
 
         if (this.takes != null) {
             later = this.takes.getScreenshotAs(OutputType.FILE);
-            if (this.compareImages(before, later) < this.SIG_DIFFERENCE)
+            double result = this.compareImages(before, later);
+            System.out.println("Comparisson: " + result);
+            if (result < this.SIG_DIFFERENCE)
                 return null;
         }
 
@@ -129,8 +131,8 @@ public class WidgetLocator implements Locator {
         BufferedImage img1 = null,
                       img2 = null;
         try {
-            img1 = ImageIO.read(new File("001_before_widget.jpg"));
-            img2 = ImageIO.read(new File("001_later_widget.jpg"));
+            img1 = ImageIO.read(before);
+            img2 = ImageIO.read(after);
         } catch (IOException e) {
             e.printStackTrace();
         }
