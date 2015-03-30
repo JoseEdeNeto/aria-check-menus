@@ -157,4 +157,21 @@ public class WidgetLocatorTest {
         driver.quit();
     }
 
+    @Test
+    public void test_widget_locator_should_not_report_false_positive_for_centered_widget_container () throws IOException {
+        FirefoxDriver driver = new FirefoxDriver();
+        Actions actions = new Actions((WebDriver) driver);
+        WebElement target, result_widget;
+
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/centered_false_positive.html");
+        target = driver.findElement(By.cssSelector("#false_positive"));
+
+        WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
+        result_widget = locator.find_widget(target);
+
+        assertEquals(null, result_widget);
+
+        driver.quit();
+    }
+
 }

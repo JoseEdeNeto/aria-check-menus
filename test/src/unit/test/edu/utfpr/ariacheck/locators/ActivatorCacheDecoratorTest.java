@@ -16,6 +16,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
 
@@ -34,6 +35,10 @@ public class ActivatorCacheDecoratorTest {
         WebElement target_mock = mock(WebElement.class),
                    mutation_widget = mock(WebElement.class),
                    result;
+        Dimension dimension_mock = mock(Dimension.class);
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(200);
+
         Locator locator = new ActivatorCacheDecorator(new WidgetLocator(driver_mock, executor_mock, actions_mock));
         CacheSingleton.createInstance().clear();
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -76,6 +81,10 @@ public class ActivatorCacheDecoratorTest {
         WebElement target_mock = mock(WebElement.class),
                    mutation_widget = mock(WebElement.class),
                    result;
+        Dimension dimension_mock = mock(Dimension.class);
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(200);
+
         Locator locator = new ActivatorCacheDecorator(new WidgetLocator(driver_mock, executor_mock, actions_mock));
         CacheSingleton.createInstance().clear();
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -102,6 +111,8 @@ public class ActivatorCacheDecoratorTest {
         when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>the coolest and biggest widget</div>");
 
         target_mock = mock(WebElement.class);
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(200);
         when(target_mock.getAttribute("outerHTML")).thenReturn("<span>Some activation guy</span>");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);

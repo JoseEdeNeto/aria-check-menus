@@ -17,6 +17,9 @@ public class WidgetLocator implements Locator {
     private Actions actions;
     private List <WebElement> invisibles = null;
 
+    private int MAX_WIDTH = 300;
+    private int MAX_HEIGHT = 100;
+
     private static String JS_SET_MUTATION_OBSERVER =
         "if ( ! window.observer) {" +
         "    window.setInterval = function () {};" +
@@ -58,6 +61,9 @@ public class WidgetLocator implements Locator {
     public WebElement find_widget (WebElement target) {
         List <WebElement> mutation_widgets;
         WebElement potential_widget = null;
+
+        if (target.getSize().getWidth() > this.MAX_WIDTH || target.getSize().getHeight() > this.MAX_HEIGHT)
+            return null;
 
         this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
 
