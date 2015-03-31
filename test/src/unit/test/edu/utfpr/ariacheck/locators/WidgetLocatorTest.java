@@ -292,6 +292,45 @@ public class WidgetLocatorTest {
             "    mutation_widget[i].className = mutation_widget[i].className.split(\"mutation_widget\").join(\"\");"
         );
     }
+    @Test
+    public void test_widget_locator_should_return_only_the_biggest_changed_element_pririzing_mutations () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
+        WebElement target_mock = mock(WebElement.class),
+                   mutation_widget = mock(WebElement.class),
+                   result;
+        Dimension dimension_mock = mock(Dimension.class);
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(200);
+
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
+        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("<div><div>Some very cool thing</div></div>");
+        List <WebElement> mutations_list = new ArrayList <WebElement> ();
+        mutations_list.add(mock(WebElement.class));
+        when(mutations_list.get(0).isDisplayed()).thenReturn(true);
+        when(mutations_list.get(0).getAttribute("outerHTML")).thenReturn("<div>nothing</div>");
+        mutations_list.add(mock(WebElement.class));
+        when(mutations_list.get(1).isDisplayed()).thenReturn(true);
+        when(mutations_list.get(1).getAttribute("outerHTML")).thenReturn("<div>small</div>");
+        mutations_list.add(mock(WebElement.class));
+        when(mutations_list.get(2).isDisplayed()).thenReturn(true);
+        when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>not so cool</div>");
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
+        when(actions_mock.build()).thenReturn(action_mock);
+
+        result = locator.find_widget(target_mock);
+
+        assertEquals(mutations_list.get(2), result);
+    }
 
     @Test
     public void test_widget_locator_should_return_only_the_biggest_changed_element_from_the_visibles () {
@@ -318,15 +357,6 @@ public class WidgetLocatorTest {
         when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(false);
         when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("<div><div>Some very cool thing</div></div>");
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
-        mutations_list.add(mock(WebElement.class));
-        when(mutations_list.get(0).isDisplayed()).thenReturn(true);
-        when(mutations_list.get(0).getAttribute("outerHTML")).thenReturn("<div>not so cool</div>");
-        mutations_list.add(mock(WebElement.class));
-        when(mutations_list.get(1).isDisplayed()).thenReturn(true);
-        when(mutations_list.get(1).getAttribute("outerHTML")).thenReturn("<div>small</div>");
-        mutations_list.add(mock(WebElement.class));
-        when(mutations_list.get(2).isDisplayed()).thenReturn(true);
-        when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>nothing</div>");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
@@ -589,7 +619,7 @@ public class WidgetLocatorTest {
         InOrder inorder = inOrder(takes_mock, actions_mock, action_mock);
         File screenshot_stub = mock(File.class),
              screenshot_stub_2 = mock(File.class);
-        double comp_result = 0.5;
+        double comp_result = 0.05;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
 
         childs_list.add(mock(WebElement.class));

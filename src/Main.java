@@ -20,8 +20,8 @@ import java.util.List;
 
 public class Main implements Runnable {
     public static void main (String[] args) throws Exception {
-        String url = "http://www.google.com.br";
-        int number_of_threads = 4;
+        String url = "http://www.icmc.usp.br";
+        int number_of_threads = 1;
 
         FirefoxDriver driver = new FirefoxDriver();
         driver.get(url);

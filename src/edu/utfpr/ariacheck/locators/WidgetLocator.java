@@ -27,7 +27,7 @@ public class WidgetLocator implements Locator {
 
     private int MAX_WIDTH = 300;
     private int MAX_HEIGHT = 100;
-    private double SIG_DIFFERENCE = 0.6;
+    private double SIG_DIFFERENCE = 0.1;
 
     private static String JS_SET_MUTATION_OBSERVER =
         "if ( ! window.observer) {" +
@@ -81,10 +81,10 @@ public class WidgetLocator implements Locator {
         File before = null,
              later = null;
 
+        this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
+
         if (target.getSize().getWidth() > this.MAX_WIDTH || target.getSize().getHeight() > this.MAX_HEIGHT)
             return null;
-
-        this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
 
         if (this.invisibles == null)
             this.invisibles = this.find_invisibles();
@@ -100,19 +100,8 @@ public class WidgetLocator implements Locator {
         if (this.takes != null) {
             later = this.takes.getScreenshotAs(OutputType.FILE);
             double result = this.compareImages(before, later);
-            System.out.println("Comparisson: " + result);
             if (result < this.SIG_DIFFERENCE)
                 return null;
-        }
-
-        Iterator <WebElement>iterator = this.invisibles.iterator();
-        while (iterator.hasNext()) {
-            WebElement inv = (WebElement) (iterator.next());
-            if (inv.isDisplayed()) {
-                if (potential_widget == null || potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length())
-                    potential_widget = inv;
-                iterator.remove();
-            }
         }
 
         mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget"));
@@ -123,6 +112,20 @@ public class WidgetLocator implements Locator {
                     potential_widget.getAttribute("outerHTML").length() < mutation.getAttribute("outerHTML").length())
                 potential_widget = mutation;
         }
+        if (potential_widget != null)
+            return potential_widget;
+
+        Iterator <WebElement>iterator = this.invisibles.iterator();
+        while (iterator.hasNext()) {
+            WebElement inv = (WebElement) (iterator.next());
+            if (inv.isDisplayed()) {
+                if (potential_widget == null || potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length())
+                    potential_widget = inv;
+                iterator.remove();
+            }
+            System.out.print(".");
+        }
+        System.out.println("");
 
         return potential_widget;
     }
@@ -161,6 +164,7 @@ public class WidgetLocator implements Locator {
         }
         double n = width1 * height1 * 3;
         double p = diff / n / 255.0;
+        System.out.println("Comparisson: " + (p * 100.0));
         return (p * 100.0);
     }
 
