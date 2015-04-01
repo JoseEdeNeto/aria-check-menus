@@ -3,6 +3,7 @@ package edu.utfpr.ariacheck;
 import edu.utfpr.ariacheck.locators.Locator;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 
@@ -15,7 +16,23 @@ public class App {
 
     private Locator locator;
     private WebDriver driver;
+    private JavascriptExecutor executor;
     private boolean log;
+
+    private static int SLIDESHOW_WAIT = 20;
+
+    private static String JS_SET_SLIDESHOW_MUTATION_OBSERVER =
+        "window.slideshowObserver = new MutationObserver(function (mutations) {" +
+        "   mutations.forEach(function (mutation) {" +
+        "       if (mutation.target.parentElement)" +
+        "           mutation.target.parentElement.removeChild(mutation.target);" +
+        "   });" +
+        "});" +
+        "window.slideshowObserver.observe(document.body, {attributes: true, subtree: true});";
+
+    private static String JS_REMOVE_SLIDESHOW_MUTATION_OBSERVER =
+        "window.slideshowObserver.disconnect();";
+
 
     public App (WebDriver driver, Locator locator) {
         this.driver = driver;
@@ -27,6 +44,13 @@ public class App {
         this.driver = driver;
         this.locator = locator;
         this.log = true;
+    }
+
+    public App (WebDriver driver, Locator locator, JavascriptExecutor executor) {
+        this.driver = driver;
+        this.locator = locator;
+        this.executor = executor;
+        this.log = false;
     }
 
     public List <Map <String, String>> find_all_widgets () {
@@ -60,5 +84,16 @@ public class App {
         return results;
     }
 
+    public void remove_slideshow () {
+        this.executor.executeScript(App.JS_SET_SLIDESHOW_MUTATION_OBSERVER);
+        this.sleep_wrapper();
+        this.executor.executeScript(App.JS_REMOVE_SLIDESHOW_MUTATION_OBSERVER);
+    }
+
+    public void sleep_wrapper () {
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {}
+    }
 }
 

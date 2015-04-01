@@ -179,4 +179,30 @@ public class AppTest {
         result_widget = app.find_all_widgets(1, 3);
         assertEquals(0, result_widget.size());
     }
+
+    @Test
+    public void test_remove_slide_show_method_calls_js_and_wait_for_15_seconds () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        Locator spy = mock(Locator.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+
+        when(executor_mock.executeScript(anyString())).thenReturn(null).thenReturn(null);
+
+        App app = spy(new App(driver_mock, spy, executor_mock));
+        InOrder inorder = inOrder(app, executor_mock);
+        doNothing().when(app).sleep_wrapper();
+        app.remove_slideshow();
+
+        inorder.verify(executor_mock).executeScript(
+            "window.slideshowObserver = new MutationObserver(function (mutations) {" +
+            "   mutations.forEach(function (mutation) {" +
+            "       if (mutation.target.parentElement)" +
+            "           mutation.target.parentElement.removeChild(mutation.target);" +
+            "   });" +
+            "});" +
+            "window.slideshowObserver.observe(document.body, {attributes: true, subtree: true});"
+        );
+        inorder.verify(app).sleep_wrapper();
+        inorder.verify(executor_mock).executeScript("window.slideshowObserver.disconnect();");
+    }
 }

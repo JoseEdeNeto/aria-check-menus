@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Main implements Runnable {
     public static void main (String[] args) throws Exception {
-        String url = "http://www.icmc.usp.br";
+        String url = "file:///Users/watinha/workspace/aria-check-menus/test/fixture/carousel_01.html";
         int number_of_threads = 1;
 
         FirefoxDriver driver = new FirefoxDriver();
