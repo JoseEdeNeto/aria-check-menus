@@ -37,6 +37,7 @@ public class AppTest {
 
         Locator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(driver, locator, (JavascriptExecutor) driver);
+        app.set_wait(1);
 
         result_widget = app.find_all_widgets();
         assertEquals(3, result_widget.size());
@@ -86,6 +87,7 @@ public class AppTest {
 
         Locator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(driver, locator, (JavascriptExecutor) driver);
+        app.set_wait(1);
 
         result_widget = app.find_all_widgets(4, 7);
         assertEquals(1, result_widget.size());

@@ -19,7 +19,7 @@ public class App {
     private JavascriptExecutor executor;
     private boolean log;
 
-    private static int SLIDESHOW_WAIT = 20;
+    private int wait_seconds = 20;
 
     private static String JS_SET_SLIDESHOW_MUTATION_OBSERVER =
         "window.slideshowObserver = new MutationObserver(function (mutations) {" +
@@ -53,6 +53,8 @@ public class App {
     }
 
     public List <Map <String, String>> find_all_widgets (int start, int end) {
+        this.remove_slideshow();
+
         List <WebElement> elements = this.driver.findElements(By.cssSelector("body *"));
         List <Map <String, String>> results = new ArrayList <Map <String, String>> ();
         WebElement element;
@@ -86,8 +88,12 @@ public class App {
 
     public void sleep_wrapper () {
         try {
-            Thread.sleep(20000);
+            Thread.sleep(this.wait_seconds * 1000);
         } catch (InterruptedException e) {}
+    }
+
+    public void set_wait (int wait) {
+        this.wait_seconds = wait;
     }
 }
 

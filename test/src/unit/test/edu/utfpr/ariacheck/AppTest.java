@@ -30,7 +30,9 @@ public class AppTest {
         WebDriver driver_mock = mock(WebDriver.class);
         Locator spy = mock(Locator.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        App app = new App(driver_mock, spy, executor_mock);
+        App app = spy(new App(driver_mock, spy, executor_mock));
+
+        doNothing().when(app).remove_slideshow();
 
         List <Map<String, String>> result_widget;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -71,6 +73,7 @@ public class AppTest {
         assertEquals("<span>widget 2</span>", result_widget.get(1).get("widget"));
         assertEquals("<a href=\"#\">activator 3</a>", result_widget.get(2).get("activator"));
         assertEquals("<span>widget 3</span>", result_widget.get(2).get("widget"));
+        verify(app).remove_slideshow();
     }
 
     @Test
@@ -78,7 +81,8 @@ public class AppTest {
         WebDriver driver_mock = mock(WebDriver.class);
         Locator spy = mock(Locator.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        App app = new App(driver_mock, spy, executor_mock);
+        App app = spy(new App(driver_mock, spy, executor_mock));
+        doNothing().when(app).remove_slideshow();
 
         List <Map<String, String>> result_widget;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -116,7 +120,8 @@ public class AppTest {
         WebDriver driver_mock = mock(WebDriver.class);
         Locator spy = mock(Locator.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        App app = new App(driver_mock, spy, executor_mock);
+        App app = spy(new App(driver_mock, spy, executor_mock));
+        doNothing().when(app).remove_slideshow();
 
         List <Map<String, String>> result_widget;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -152,7 +157,8 @@ public class AppTest {
         WebDriver driver_mock = mock(WebDriver.class);
         Locator spy = mock(Locator.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        App app = new App(driver_mock, spy, executor_mock);
+        App app = spy(new App(driver_mock, spy, executor_mock));
+        doNothing().when(app).remove_slideshow();
 
         List <Map<String, String>> result_widget;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
