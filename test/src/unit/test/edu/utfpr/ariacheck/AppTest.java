@@ -29,7 +29,8 @@ public class AppTest {
     public void test_find_all_widgets_should_do_multiple_calls_to_find_widget () {
         WebDriver driver_mock = mock(WebDriver.class);
         Locator spy = mock(Locator.class);
-        App app = new App(driver_mock, spy);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        App app = new App(driver_mock, spy, executor_mock);
 
         List <Map<String, String>> result_widget;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -76,7 +77,8 @@ public class AppTest {
     public void test_find_all_widgets_should_do_multiple_calls_to_find_widget_only_in_visible_elements () {
         WebDriver driver_mock = mock(WebDriver.class);
         Locator spy = mock(Locator.class);
-        App app = new App(driver_mock, spy);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        App app = new App(driver_mock, spy, executor_mock);
 
         List <Map<String, String>> result_widget;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -113,7 +115,8 @@ public class AppTest {
     public void test_find_all_widgets_should_restrict_search_given_an_specific_start_element_in_the_interval () {
         WebDriver driver_mock = mock(WebDriver.class);
         Locator spy = mock(Locator.class);
-        App app = new App(driver_mock, spy);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        App app = new App(driver_mock, spy, executor_mock);
 
         List <Map<String, String>> result_widget;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -148,7 +151,8 @@ public class AppTest {
     public void test_find_all_widgets_should_restrict_search_given_an_specific_start_and_end_element_in_the_interval () {
         WebDriver driver_mock = mock(WebDriver.class);
         Locator spy = mock(Locator.class);
-        App app = new App(driver_mock, spy);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        App app = new App(driver_mock, spy, executor_mock);
 
         List <Map<String, String>> result_widget;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -205,4 +209,5 @@ public class AppTest {
         inorder.verify(app).sleep_wrapper();
         inorder.verify(executor_mock).executeScript("window.slideshowObserver.disconnect();");
     }
+
 }

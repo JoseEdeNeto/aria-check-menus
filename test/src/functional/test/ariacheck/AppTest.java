@@ -36,7 +36,7 @@ public class AppTest {
         driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/sanity_check02.html");
 
         Locator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
-        App app = new App(driver, locator);
+        App app = new App(driver, locator, (JavascriptExecutor) driver);
 
         result_widget = app.find_all_widgets();
         assertEquals(3, result_widget.size());
@@ -85,7 +85,7 @@ public class AppTest {
         driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/sanity_check02.html");
 
         Locator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
-        App app = new App(driver, locator);
+        App app = new App(driver, locator, (JavascriptExecutor) driver);
 
         result_widget = app.find_all_widgets(4, 7);
         assertEquals(1, result_widget.size());

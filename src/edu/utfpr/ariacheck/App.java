@@ -33,24 +33,18 @@ public class App {
     private static String JS_REMOVE_SLIDESHOW_MUTATION_OBSERVER =
         "window.slideshowObserver.disconnect();";
 
-
-    public App (WebDriver driver, Locator locator) {
-        this.driver = driver;
-        this.locator = locator;
-        this.log = false;
-    }
-
-    public App (WebDriver driver, Locator locator, boolean log) {
-        this.driver = driver;
-        this.locator = locator;
-        this.log = true;
-    }
-
     public App (WebDriver driver, Locator locator, JavascriptExecutor executor) {
         this.driver = driver;
         this.locator = locator;
         this.executor = executor;
         this.log = false;
+    }
+
+    public App (WebDriver driver, Locator locator, JavascriptExecutor executor, boolean log) {
+        this.driver = driver;
+        this.locator = locator;
+        this.executor = executor;
+        this.log = true;
     }
 
     public List <Map <String, String>> find_all_widgets () {
