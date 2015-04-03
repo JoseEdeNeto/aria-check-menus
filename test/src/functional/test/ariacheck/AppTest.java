@@ -117,7 +117,7 @@ public class AppTest {
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(driver, locator, (JavascriptExecutor) driver);
-        app.set_wait(10);
+        app.set_wait(1);
 
         result_widget = app.find_all_widgets();
         assertEquals(1, result_widget.size());

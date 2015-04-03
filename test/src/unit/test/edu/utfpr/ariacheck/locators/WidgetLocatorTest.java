@@ -228,21 +228,26 @@ public class WidgetLocatorTest {
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
         mutations_list.add(mutation_widget);
-        String javascript_code = "if ( ! window.observer) {" +
-                                 "    window.setInterval = function () {};" +
-                                 "    for (var i = 0; i < 10000; i++) { clearTimeout(i); clearInterval(i); };" +
-                                 "    window.setTimeout = function (callback, time) { callback(); };" +
-                                 "    window.observer = new MutationObserver(function (mutations) {" +
-                                 "        mutations.forEach(function (mutation) {" +
-                                 "            if (mutation.addedNodes && mutation.addedNodes.length > 0 &&" +
-                                 "                mutation.addedNodes[0].nodeType === 1 &&" +
-                                 "                mutation.addedNodes[0].parentElement.getAttribute(\"role\") !== \"log\") {" +
-                                 "                mutation.addedNodes[0].className += \" mutation_widget\";" +
-                                 "            }" +
-                                 "        });" +
-                                 "    });" +
-                                 "    window.observer.observe(document.body, {childList: true, subtree: true});" +
-                                 "}";
+        String javascript_code =
+            "if ( ! window.observer) {" +
+            "    var real_setTimeout = window.setTimeout;" +
+            "    for (var i = 0; i < 10000; i++) { clearTimeout(i); clearInterval(i); };" +
+            "    window.setTimeout = function () {" +
+            "       var a = []; for (var i = 0; i < arguments.length; i++) a[i] = arguments[i];" +
+            "       a[1] = 0; real_setTimeout.apply(this, a);" +
+            "    };" +
+            "    window.observer = new MutationObserver(function (mutations) {" +
+            "        mutations.forEach(function (mutation) {" +
+            "            if (mutation.addedNodes && mutation.addedNodes.length > 0 &&" +
+            "                mutation.addedNodes[0].nodeType === 1 &&" +
+            "                mutation.addedNodes[0].parentElement.getAttribute(\"role\") !== \"log\") {" +
+            "                mutation.addedNodes[0].className += \" mutation_widget\";" +
+            "            }" +
+            "        });" +
+            "    });" +
+            "    window.observer.observe(document.body, {childList: true, subtree: true});" +
+            "}";
+
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);

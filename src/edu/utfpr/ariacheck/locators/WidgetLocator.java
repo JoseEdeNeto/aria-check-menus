@@ -31,9 +31,12 @@ public class WidgetLocator implements Locator {
 
     private static String JS_SET_MUTATION_OBSERVER =
         "if ( ! window.observer) {" +
-        "    window.setInterval = function () {};" +
+        "    var real_setTimeout = window.setTimeout;" +
         "    for (var i = 0; i < 10000; i++) { clearTimeout(i); clearInterval(i); };" +
-        "    window.setTimeout = function (callback, time) { callback(); };" +
+        "    window.setTimeout = function () {" +
+        "       var a = []; for (var i = 0; i < arguments.length; i++) a[i] = arguments[i];" +
+        "       a[1] = 0; real_setTimeout.apply(this, a);" +
+        "    };" +
         "    window.observer = new MutationObserver(function (mutations) {" +
         "        mutations.forEach(function (mutation) {" +
         "            if (mutation.addedNodes && mutation.addedNodes.length > 0 &&" +
