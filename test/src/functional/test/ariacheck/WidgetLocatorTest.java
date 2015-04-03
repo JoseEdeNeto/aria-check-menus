@@ -124,40 +124,6 @@ public class WidgetLocatorTest {
     }
 
     @Test
-    public void test_widget_locator_should_ignore_carousels () throws IOException {
-        FirefoxDriver driver = new FirefoxDriver();
-        Actions actions = new Actions((WebDriver) driver);
-        WebElement result_widget;
-
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/carousel_01.html");
-
-        WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
-
-        result_widget = locator.find_widget(driver.findElement(By.cssSelector("#link2")));
-        assertEquals("Useful 3", result_widget.getText());
-        assertEquals("div", result_widget.getTagName());
-
-        driver.quit();
-    }
-
-    @Test
-    public void test_widget_locator_should_ignore_carousels_which_restart () throws IOException {
-        FirefoxDriver driver = new FirefoxDriver();
-        Actions actions = new Actions((WebDriver) driver);
-        WebElement result_widget;
-
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/carousel_02.html");
-
-        WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
-
-        result_widget = locator.find_widget(driver.findElement(By.cssSelector("#link2")));
-        assertEquals("Useful 3", result_widget.getText());
-        assertEquals("div", result_widget.getTagName());
-
-        driver.quit();
-    }
-
-    @Test
     public void test_widget_locator_should_not_report_false_positive_for_centered_widget_container () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);

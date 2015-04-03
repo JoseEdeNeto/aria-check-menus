@@ -107,4 +107,49 @@ public class AppTest {
         driver.quit();
     }
 
+    @Test
+    public void test_widget_locator_should_ignore_carousels () throws IOException {
+        FirefoxDriver driver = new FirefoxDriver();
+        Actions actions = new Actions((WebDriver) driver);
+        List <Map <String, String>> result_widget;
+
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/carousel_01.html");
+
+        WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
+        App app = new App(driver, locator, (JavascriptExecutor) driver);
+        app.set_wait(10);
+
+        result_widget = app.find_all_widgets();
+        assertEquals(1, result_widget.size());
+        assertEquals("<a id=\"link2\" href=\"#\">\n" +
+                     "            Tooltip 3\n" +
+                     "</a>", result_widget.get(0).get("activator"));
+        assertEquals("div", result_widget.get(0).get("widget"));
+
+        driver.quit();
+    }
+
+    @Test
+    public void test_widget_locator_should_ignore_carousels_which_restart () throws IOException {
+        FirefoxDriver driver = new FirefoxDriver();
+        Actions actions = new Actions((WebDriver) driver);
+        List <Map <String, String>> result_widget;
+
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/carousel_02.html");
+
+        WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
+        App app = new App(driver, locator, (JavascriptExecutor) driver);
+        app.set_wait(1);
+
+        result_widget = app.find_all_widgets();
+        assertEquals(1, result_widget.size());
+        assertEquals("<a id=\"link2\" href=\"#\">\n" +
+                     "            Tooltip 3\n" +
+                     "</a>", result_widget.get(0).get("activator"));
+        assertEquals("div", result_widget.get(0).get("widget"));
+
+        driver.quit();
+    }
+
+
 }

@@ -31,6 +31,7 @@ public class App {
         "window.slideshowObserver.observe(document.body, {attributes: true, subtree: true});";
 
     private static String JS_REMOVE_SLIDESHOW_MUTATION_OBSERVER =
+        "for (var i = 0; i < 100000; i++) {clearTimeout(i); clearInterval(i);}" +
         "window.slideshowObserver.disconnect();";
 
     public App (WebDriver driver, Locator locator, JavascriptExecutor executor) {
@@ -60,7 +61,7 @@ public class App {
         WebElement element;
         int count = 0;
 
-        for (int i = start; i < end; i++) {
+        for (int i = start; (i < end && i < elements.size()); i++) {
             element = elements.get(i);
             if (this.log)
                 System.out.println("Examining " + (++count) + " of " + elements.size() + " remaining elements...");
