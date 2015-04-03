@@ -123,8 +123,10 @@ public class AppTest {
         assertEquals(1, result_widget.size());
         assertEquals("<a id=\"link2\" href=\"#\">\n" +
                      "            Tooltip 3\n" +
-                     "</a>", result_widget.get(0).get("activator"));
-        assertEquals("div", result_widget.get(0).get("widget"));
+                     "        </a>", result_widget.get(0).get("activator"));
+        assertEquals("<div class=\" \"><span style=\"top: 30%;\" class=\"tooltip open \">Us" +
+                     "eful 3<span class=\"arrow\"></span></span></div>",
+                     result_widget.get(0).get("widget"));
 
         driver.quit();
     }
@@ -145,8 +147,11 @@ public class AppTest {
         assertEquals(1, result_widget.size());
         assertEquals("<a id=\"link2\" href=\"#\">\n" +
                      "            Tooltip 3\n" +
-                     "</a>", result_widget.get(0).get("activator"));
-        assertEquals("div", result_widget.get(0).get("widget"));
+                     "        </a>", result_widget.get(0).get("activator"));
+        assertEquals("<div class=\" \"><span style=\"top: 30%;\" class=\"tooltip open \">Us" +
+                     "eful 3<span class=\"arrow\"></span></span></div>",
+                     result_widget.get(0).get("widget"));
+
 
         driver.quit();
     }
