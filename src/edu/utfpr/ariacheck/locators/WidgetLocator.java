@@ -165,7 +165,10 @@ public class WidgetLocator implements Locator {
                 diff += Math.abs(b1 - b2);
             }
         }
-        double n = width1 * height1 * 3;
+        double window_size = (this.driver.manage().window().getSize().getHeight() *
+                              this.driver.manage().window().getSize().getWidth());
+        //double n = width1 * height1 * 3;
+        double n = window_size * 3;
         double p = diff / n / 255.0;
         System.out.println("Comparisson: " + (p * 100.0));
         return (p * 100.0);

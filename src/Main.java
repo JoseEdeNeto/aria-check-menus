@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Main implements Runnable {
     public static void main (String[] args) throws Exception {
-        String url = "file:///Users/watinha/workspace/aria-check-menus/test/fixture/carousel_01.html";
+        String url = "http://dainf.pg.utfpr.edu.br";
         int number_of_threads = 1;
 
         FirefoxDriver driver = new FirefoxDriver();
@@ -65,7 +65,8 @@ public class Main implements Runnable {
             "captured_widgets/" + this.start + "_"
         );
         driver.get(this.url);
-        App app = new App(driver, locator, true);
+        App app = new App(
+                driver, locator, (JavascriptExecutor) driver, true);
         app.find_all_widgets(this.start, this.end);
         driver.quit();
     }
