@@ -34,6 +34,21 @@ public class App {
         "for (var i = 0; i < 100000; i++) {clearTimeout(i); clearInterval(i);}" +
         "window.slideshowObserver.disconnect();";
 
+    private static String JS_REMOVE_ANIMATIONS =
+        "(function () {" +
+        "    var images = document.querySelectorAll(\"img\")," +
+        "        gifs = [];" +
+        "    for (var i = 0; i < images.length; i++) {" +
+        "        if (images[i].getAttribute(\"src\").search(/(.+).gif(.*)/) === 0)" +
+        "            images[i].setAttribute(\"src\", \"\");" +
+        "    }" +
+        "   var all_other = document.querySelectorAll(\"object,embed,applet\");" +
+        "   for (var j = 0; j < all_other.length; j++) {" +
+        "       if (all_other[j])" +
+        "           all_other[j].parentElement.removeChild(all_other[j]);" +
+        "   }" +
+        "}());";
+
     public App (WebDriver driver, Locator locator, JavascriptExecutor executor) {
         this.driver = driver;
         this.locator = locator;
@@ -55,6 +70,7 @@ public class App {
 
     public List <Map <String, String>> find_all_widgets (int start, int end) {
         this.remove_slideshow();
+        this.remove_all_animations();
 
         List <WebElement> elements = this.driver.findElements(By.cssSelector("body *"));
         List <Map <String, String>> results = new ArrayList <Map <String, String>> ();
@@ -85,6 +101,10 @@ public class App {
         this.executor.executeScript(App.JS_SET_SLIDESHOW_MUTATION_OBSERVER);
         this.sleep_wrapper();
         this.executor.executeScript(App.JS_REMOVE_SLIDESHOW_MUTATION_OBSERVER);
+    }
+
+    public void remove_all_animations () {
+        this.executor.executeScript(App.JS_REMOVE_ANIMATIONS);
     }
 
     public void sleep_wrapper () {
