@@ -299,6 +299,10 @@ public class AppTest {
             "       if (all_other[j])" +
             "           all_other[j].parentElement.removeChild(all_other[j]);" +
             "   }" +
+            "   var videos = document.querySelectorAll(\"video\");" +
+            "   for (var h = 0; h < videos.length; h++) {" +
+            "       videos[h].pause();" +
+            "   }" +
             "}());");
     }
 
