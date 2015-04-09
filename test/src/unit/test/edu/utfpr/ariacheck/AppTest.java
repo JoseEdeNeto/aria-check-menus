@@ -261,6 +261,7 @@ public class AppTest {
         doNothing().when(app).sleep_wrapper();
         app.remove_slideshow();
 
+        inorder.verify(app).sleep_wrapper();
         inorder.verify(executor_mock).executeScript(
             "window.slideshowObserver = new MutationObserver(function (mutations) {" +
             "   mutations.forEach(function (mutation) {" +

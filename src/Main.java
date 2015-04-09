@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Main implements Runnable {
     public static void main (String[] args) throws Exception {
-        String url = "http://dainf.pg.utfpr.edu.br";
+        String url = "http://icmc.usp.br";
         int number_of_threads = 1;
 
         FirefoxDriver driver = new FirefoxDriver();

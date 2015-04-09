@@ -102,6 +102,7 @@ public class App {
     }
 
     public void remove_slideshow () {
+        this.sleep_wrapper();
         this.executor.executeScript(App.JS_SET_SLIDESHOW_MUTATION_OBSERVER);
         this.sleep_wrapper();
         this.executor.executeScript(App.JS_REMOVE_SLIDESHOW_MUTATION_OBSERVER);
