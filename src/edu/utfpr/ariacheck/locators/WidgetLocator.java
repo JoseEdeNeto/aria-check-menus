@@ -108,13 +108,13 @@ public class WidgetLocator implements Locator {
         }
 
         mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget"));
-        this.executor.executeScript(WidgetLocator.JS_CLEAN_MUTATION_RECORDS);
 
         for (WebElement mutation : mutation_widgets) {
             if (potential_widget == null ||
                     potential_widget.getAttribute("outerHTML").length() < mutation.getAttribute("outerHTML").length())
                 potential_widget = mutation;
         }
+        this.executor.executeScript(WidgetLocator.JS_CLEAN_MUTATION_RECORDS);
         if (potential_widget != null)
             return potential_widget;
 
