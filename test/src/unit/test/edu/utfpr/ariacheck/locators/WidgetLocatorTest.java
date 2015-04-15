@@ -240,6 +240,7 @@ public class WidgetLocatorTest {
             "        mutations.forEach(function (mutation) {" +
             "            if (mutation.addedNodes && mutation.addedNodes.length > 0 &&" +
             "                mutation.addedNodes[0].nodeType === 1 &&" +
+            "                mutation.addedNodes[0].parentElement &&" +
             "                mutation.addedNodes[0].parentElement.getAttribute(\"role\") !== \"log\") {" +
             "                mutation.addedNodes[0].className += \" mutation_widget\";" +
             "            }" +
