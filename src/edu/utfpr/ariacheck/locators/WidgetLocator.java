@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
 
 import java.util.Iterator;
 import java.util.List;
@@ -111,9 +112,12 @@ public class WidgetLocator implements Locator {
         mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget"));
 
         for (WebElement mutation : mutation_widgets) {
-            if (potential_widget == null ||
-                    potential_widget.getAttribute("outerHTML").length() < mutation.getAttribute("outerHTML").length())
-                potential_widget = mutation;
+            try {
+                if ((potential_widget == null) && (mutation.getAttribute("outerHTML") != null)||
+                        potential_widget.getAttribute("outerHTML").length() <
+                        mutation.getAttribute("outerHTML").length())
+                    potential_widget = mutation;
+            } catch (StaleElementReferenceException ex) { }
         }
         this.executor.executeScript(WidgetLocator.JS_CLEAN_MUTATION_RECORDS);
         if (potential_widget != null)
