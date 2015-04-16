@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
 
@@ -97,10 +98,14 @@ public class WidgetLocator implements Locator {
         if (this.takes != null)
             before = this.takes.getScreenshotAs(OutputType.FILE);
 
-        this.actions.moveByOffset(-1500, -1500)
-                    .moveToElement(target)
-                    .build()
-                    .perform();
+        try {
+            this.actions.moveByOffset(-1500, -1500)
+                        .moveToElement(target)
+                        .build()
+                        .perform();
+        } catch (MoveTargetOutOfBoundsException ex) {
+            return null;
+        }
 
         if (this.takes != null) {
             later = this.takes.getScreenshotAs(OutputType.FILE);
