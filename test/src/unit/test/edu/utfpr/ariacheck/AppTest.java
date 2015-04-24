@@ -292,7 +292,8 @@ public class AppTest {
             "    var images = document.querySelectorAll(\"img\")," +
             "        gifs = [];" +
             "    for (var i = 0; i < images.length; i++) {" +
-            "        if (images[i].getAttribute(\"src\").search(/(.+).gif(.*)/) === 0)" +
+            "        if (images[i].getAttribute(\"src\") &&" +
+            "            images[i].getAttribute(\"src\").search(/(.+).gif(.*)/) === 0)" +
             "            images[i].setAttribute(\"src\", \"\");" +
             "    }" +
             "   var all_other = document.querySelectorAll(\"object,embed,applet\");" +
