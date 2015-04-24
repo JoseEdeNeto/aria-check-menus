@@ -20,6 +20,7 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
     private TakesScreenshot takes;
     private String folder;
     private int counter = 1;
+    private String image_filetype = ".jpg";
 
     public ScreenshotWidgetLocatorDecorator (Locator locator, TakesScreenshot takes, String folder) {
         this.decorable = locator;
@@ -34,14 +35,16 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
         widget = this.decorable.find_widget(target);
         if (widget == null)
             return widget;
-        new_file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter)) + "_before_widget.jpg");
+        new_file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter)) +
+                                            "_before_widget" + this.image_filetype);
         try {
             this.copy_file_wrapper(screenshot, new_file);
         } catch (IOException io) {
             System.out.println("Error copying screenshot file to path: before widget");
         }
         screenshot = this.takes.getScreenshotAs(OutputType.FILE);
-        new_file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter++)) + "_later_widget.jpg");
+        new_file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter++)) +
+                                            "_later_widget" + this.image_filetype);
         try {
             this.copy_file_wrapper(screenshot, new_file);
         } catch (IOException io) {
@@ -56,6 +59,10 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
 
     public void copy_file_wrapper (File screenshot, File new_file) throws IOException {
         FileUtils.copyFile(screenshot, new_file);
+    }
+
+    public void set_image_filetype (String filetype) {
+        this.image_filetype = filetype;
     }
 
 }
