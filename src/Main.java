@@ -64,21 +64,22 @@ public class Main implements Runnable {
         profile.setPreference("browser.translation.neverForLanguages", "en-us,pt-br,en");
         profile.setPreference("browser.translation.ui.show", "false");
         FirefoxDriver driver = new FirefoxDriver();
-        Locator locator = new HTMLLogLocatorDecorator(
-            new ScreenshotWidgetLocatorDecorator(
-                new ActivatorCacheDecorator(
-                    new WidgetLocator(
-                        (WebDriver) driver,
-                        (JavascriptExecutor) driver,
-                        new Actions(driver),
-                        (TakesScreenshot) driver
-                    )
-                ),
-                (TakesScreenshot) driver,
-                "captured_widgets/" + this.start + "_"
+        ScreenshotWidgetLocatorDecorator screenshot_decorator = new ScreenshotWidgetLocatorDecorator(
+            new ActivatorCacheDecorator(
+                new WidgetLocator(
+                    (WebDriver) driver,
+                    (JavascriptExecutor) driver,
+                    new Actions(driver),
+                    (TakesScreenshot) driver
+                )
             ),
+            (TakesScreenshot) driver,
             "captured_widgets/" + this.start + "_"
         );
+        if (System.getProperty("os.name").equals("Linux"))
+            screenshot_decorator.set_image_filetype(".png");
+        Locator locator = new HTMLLogLocatorDecorator(
+                screenshot_decorator, "captured_widgets/" + this.start + "_");
         driver.get(this.url);
         App app = new App(
                 driver, locator, (JavascriptExecutor) driver, true);
