@@ -83,7 +83,8 @@ public class WidgetLocator implements Locator {
 
     public WebElement find_widget (WebElement target) {
         List <WebElement> mutation_widgets;
-        WebElement potential_widget = null;
+        WebElement potential_widget = null,
+                   old_potential_widget = potential_widget;
         File before = null,
              later = null;
 
@@ -128,12 +129,14 @@ public class WidgetLocator implements Locator {
         if (potential_widget != null)
             return potential_widget;
 
+        potential_widget = null;
         Iterator <WebElement>iterator = this.invisibles.iterator();
         while (iterator.hasNext()) {
             WebElement inv = (WebElement) (iterator.next());
             try {
                 if (inv.isDisplayed()) {
-                    if (potential_widget == null || potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length())
+                    if ((potential_widget == null && inv.getAttribute("outerHTML") != null) ||
+                            potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length())
                         potential_widget = inv;
                     iterator.remove();
                 }

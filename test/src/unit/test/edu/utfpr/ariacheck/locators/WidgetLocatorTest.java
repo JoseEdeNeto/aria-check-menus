@@ -48,6 +48,7 @@ public class WidgetLocatorTest {
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         childs_list.add(mock(WebElement.class));
         when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
+        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("some html");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
@@ -112,6 +113,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(3).isDisplayed()).thenReturn(true);
         when(childs_list.get(4).isDisplayed()).thenReturn(true);
         when(childs_list.get(5).isDisplayed()).thenReturn(false).thenReturn(true);
+        when(childs_list.get(5).getAttribute("outerHTML")).thenReturn("some html");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
@@ -147,6 +149,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(false);
         when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(false);
         when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(true);
+        when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("some html");
         when(childs_list.get(3).isDisplayed()).thenReturn(false).thenReturn(false);
         when(childs_list.get(4).isDisplayed()).thenReturn(false).thenReturn(false);
         when(childs_list.get(5).isDisplayed()).thenReturn(false).thenReturn(false);
@@ -497,6 +500,47 @@ public class WidgetLocatorTest {
         result = locator.find_widget(target_mock);
 
         assertEquals(mutations_list.get(2).getAttribute("outerHTML"), result.getAttribute("outerHTML"));
+    }
+
+    @Test
+    public void test_widget_locator_should_deal_with_stale_exception_as_the_other_widgets_are_searched_into () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
+        WebElement target_mock = mock(WebElement.class),
+                   mutation_widget = mock(WebElement.class),
+                   result;
+        Dimension dimension_mock = mock(Dimension.class);
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(200);
+
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
+        when(childs_list.get(0).getAttribute("outerHTML")).thenThrow(new StaleElementReferenceException("oops"));
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(true);
+        when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("<div><div>Some cool thing</div></div>");
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(false);
+        when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("insignificant content");
+        List <WebElement> mutations_list = new ArrayList <WebElement> ();
+        mutations_list.add(mock(WebElement.class));
+        when(mutations_list.get(0).isDisplayed()).thenReturn(true);
+        when(mutations_list.get(0).getAttribute("outerHTML"))
+                                  .thenThrow(new StaleElementReferenceException("oops"));
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
+        when(actions_mock.build()).thenReturn(action_mock);
+
+        result = locator.find_widget(target_mock);
+
+        assertEquals(childs_list.get(1), result);
     }
 
     @Test
