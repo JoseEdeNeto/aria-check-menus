@@ -131,11 +131,13 @@ public class WidgetLocator implements Locator {
         Iterator <WebElement>iterator = this.invisibles.iterator();
         while (iterator.hasNext()) {
             WebElement inv = (WebElement) (iterator.next());
-            if (inv.isDisplayed()) {
-                if (potential_widget == null || potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length())
-                    potential_widget = inv;
-                iterator.remove();
-            }
+            try {
+                if (inv.isDisplayed()) {
+                    if (potential_widget == null || potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length())
+                        potential_widget = inv;
+                    iterator.remove();
+                }
+            } catch (StaleElementReferenceException ex) { }
             System.out.print(".");
         }
         System.out.println("");
