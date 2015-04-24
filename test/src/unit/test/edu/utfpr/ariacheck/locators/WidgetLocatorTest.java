@@ -703,7 +703,7 @@ public class WidgetLocatorTest {
         InOrder inorder = inOrder(takes_mock, actions_mock, action_mock);
         File screenshot_stub = mock(File.class),
              screenshot_stub_2 = mock(File.class);
-        double comp_result = 0.05;
+        double comp_result = 0.04;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
 
         childs_list.add(mock(WebElement.class));

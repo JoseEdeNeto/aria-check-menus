@@ -29,7 +29,7 @@ public class WidgetLocator implements Locator {
 
     private int MAX_WIDTH = 300;
     private int MAX_HEIGHT = 100;
-    private double SIG_DIFFERENCE = 0.1;
+    private double SIG_DIFFERENCE = 0.05;
 
     private static String JS_SET_MUTATION_OBSERVER =
         "if ( ! window.observer) {" +
