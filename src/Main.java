@@ -4,6 +4,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.interactions.Actions;
 
 import edu.utfpr.ariacheck.App;
@@ -20,10 +21,15 @@ import java.util.List;
 
 public class Main implements Runnable {
     public static void main (String[] args) throws Exception {
-        String url = "http://icmc.usp.br";
+        String url = "http://www.globo.com";
         int number_of_threads = 1;
 
-        FirefoxDriver driver = new FirefoxDriver();
+        FirefoxProfile profile = new FirefoxProfile();
+        profile.setPreference("intl.accept_languages", "en-us,pt-br,en");
+        profile.setPreference("browser.translation.detectLanguage", "false");
+        profile.setPreference("browser.translation.ui.show", "false");
+        profile.setPreference("browser.translation.neverForLanguages", "en-us,pt-br,en");
+        FirefoxDriver driver = new FirefoxDriver(profile);
         driver.get(url);
         int size = driver.findElements(By.cssSelector("body *")).size();
         driver.quit();
@@ -48,6 +54,11 @@ public class Main implements Runnable {
     }
 
     public void run () {
+        FirefoxProfile profile = new FirefoxProfile();
+        profile.setPreference("intl.accept_languages", "en-us,pt-br,en");
+        profile.setPreference("browser.translation.detectLanguage", "false");
+        profile.setPreference("browser.translation.neverForLanguages", "en-us,pt-br,en");
+        profile.setPreference("browser.translation.ui.show", "false");
         FirefoxDriver driver = new FirefoxDriver();
         Locator locator = new HTMLLogLocatorDecorator(
             new ScreenshotWidgetLocatorDecorator(
