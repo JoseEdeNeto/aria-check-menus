@@ -21,7 +21,11 @@ import java.util.List;
 
 public class Main implements Runnable {
     public static void main (String[] args) throws Exception {
-        String url = "http://www.globo.com";
+        if (args.length == 0) {
+            System.out.println("Nothing to do here...");
+            return ;
+        }
+        String url = args[0];
         int number_of_threads = 1;
 
         FirefoxProfile profile = new FirefoxProfile();
