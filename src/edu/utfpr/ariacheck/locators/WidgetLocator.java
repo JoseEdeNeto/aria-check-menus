@@ -83,8 +83,7 @@ public class WidgetLocator implements Locator {
 
     public WebElement find_widget (WebElement target) {
         List <WebElement> mutation_widgets;
-        WebElement potential_widget = null,
-                   old_potential_widget = potential_widget;
+        WebElement potential_widget = null;
         File before = null,
              later = null;
 
