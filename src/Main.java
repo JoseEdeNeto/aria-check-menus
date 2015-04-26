@@ -26,7 +26,7 @@ public class Main implements Runnable {
             return ;
         }
         String url = args[0];
-        int number_of_threads = 1;
+        int number_of_threads;
 
         FirefoxProfile profile = new FirefoxProfile();
         profile.setPreference("intl.accept_languages", "en-us,pt-br,en");
@@ -37,6 +37,8 @@ public class Main implements Runnable {
         driver.get(url);
         int size = driver.findElements(By.cssSelector("body *")).size();
         driver.quit();
+
+        number_of_threads = size / 300 + 1;
 
         for (int i = 0; i < number_of_threads; i++) {
             int start = (i * (size / number_of_threads)),
