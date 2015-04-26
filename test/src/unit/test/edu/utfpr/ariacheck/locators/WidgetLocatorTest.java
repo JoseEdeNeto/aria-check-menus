@@ -60,7 +60,7 @@ public class WidgetLocatorTest {
     }
 
     @Test
-    public void test_widget_locator_should_return_null_if_exception_is_thrown_on_mouse_move () {
+    public void test_widget_locator_should_return_null_if_move_target_out_of_bound_exception_is_thrown_on_mouse_move () {
         WebDriver driver_mock = mock(WebDriver.class);
         JavascriptExecutor executor = mock(JavascriptExecutor.class);
         Actions actions_mock = mock(Actions.class);
@@ -80,6 +80,33 @@ public class WidgetLocatorTest {
         when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
         when(actions_mock.moveToElement(target_mock))
             .thenThrow(mock(MoveTargetOutOfBoundsException.class));
+        when(actions_mock.build()).thenReturn(action_mock);
+
+        result = locator.find_widget(target_mock);
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void test_widget_locator_should_return_null_if_stale_exception_is_thrown_on_mouse_move () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
+        WebElement target_mock = mock(WebElement.class),
+                   result;
+        Dimension dimension_mock = mock(Dimension.class);
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(200);
+
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(actions_mock.moveToElement(target_mock))
+            .thenThrow(mock(StaleElementReferenceException.class));
         when(actions_mock.build()).thenReturn(action_mock);
 
         result = locator.find_widget(target_mock);

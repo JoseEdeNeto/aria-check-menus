@@ -105,6 +105,8 @@ public class WidgetLocator implements Locator {
                         .perform();
         } catch (MoveTargetOutOfBoundsException ex) {
             return null;
+        } catch (StaleElementReferenceException ex) {
+            return null;
         }
 
         if (this.takes != null) {
