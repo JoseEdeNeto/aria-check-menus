@@ -89,17 +89,17 @@ public class App {
                 System.out.println("Examining " + (++count) + " of " + elements.size() + " remaining elements...");
             WebElement widget = null;
             String activator_html = null;
-            if (element.isDisplayed()) {
-                activator_html = element.getAttribute("outerHTML");
-                widget = this.locator.find_widget(element);
-            } if (widget != null) {
-                try {
-                    Map <String, String> widget_map = new HashMap <String, String> ();
-                    widget_map.put("activator", activator_html);
-                    widget_map.put("widget", widget.getAttribute("outerHTML"));
-                    results.add(widget_map);
-                } catch (StaleElementReferenceException ex) {}
-            }
+            try {
+                if (element.isDisplayed()) {
+                    activator_html = element.getAttribute("outerHTML");
+                    widget = this.locator.find_widget(element);
+                } if (widget != null) {
+                        Map <String, String> widget_map = new HashMap <String, String> ();
+                        widget_map.put("activator", activator_html);
+                        widget_map.put("widget", widget.getAttribute("outerHTML"));
+                        results.add(widget_map);
+                }
+            } catch (StaleElementReferenceException ex) {}
         }
 
         return results;
