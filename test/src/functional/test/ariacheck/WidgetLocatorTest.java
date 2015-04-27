@@ -47,6 +47,22 @@ public class WidgetLocatorTest {
     }
 
     @Test
+    public void test_widget_locator_should_find_className_change_only_tooltip () throws IOException {
+        FirefoxDriver driver = new FirefoxDriver();
+        Actions actions = new Actions((WebDriver) driver);
+        WebElement target, result_widget;
+
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/sanity_check03.html");
+        target = driver.findElement(By.cssSelector("#link1"));
+
+        WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
+        result_widget = locator.find_widget(target);
+
+        assertEquals("Useful message 1", result_widget.getText());
+        driver.quit();
+    }
+
+    @Test
     public void test_widget_locator_should_find_widget_dynamically_inserted_in_the_DOM () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
