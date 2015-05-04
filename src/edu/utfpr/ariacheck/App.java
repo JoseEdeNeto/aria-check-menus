@@ -94,10 +94,10 @@ public class App {
                     activator_html = element.getAttribute("outerHTML");
                     widget = this.locator.find_widget(element);
                 } if (widget != null) {
-                        Map <String, String> widget_map = new HashMap <String, String> ();
-                        widget_map.put("activator", activator_html);
-                        widget_map.put("widget", widget.getAttribute("outerHTML"));
-                        results.add(widget_map);
+                    Map <String, String> widget_map = new HashMap <String, String> ();
+                    widget_map.put("activator", activator_html);
+                    widget_map.put("widget", widget.getAttribute("outerHTML"));
+                    results.add(widget_map);
                 }
             } catch (StaleElementReferenceException ex) {}
         }
