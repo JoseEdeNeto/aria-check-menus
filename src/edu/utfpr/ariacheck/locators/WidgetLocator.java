@@ -112,8 +112,9 @@ public class WidgetLocator implements Locator {
         if (this.takes != null) {
             later = this.takes.getScreenshotAs(OutputType.FILE);
             double result = this.compareImages(before, later);
-            if (result < this.SIG_DIFFERENCE)
+            if (result < this.SIG_DIFFERENCE) {
                 return null;
+            }
         }
 
         mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget"));

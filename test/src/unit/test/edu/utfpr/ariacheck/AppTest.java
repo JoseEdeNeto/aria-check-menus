@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
 import org.mockito.InOrder;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -272,6 +273,50 @@ public class AppTest {
         verify(spy, never()).find_widget(childs_list.get(1));
         verify(spy, never()).find_widget(childs_list.get(2));
         verify(spy, never()).find_widget(childs_list.get(3));
+    }
+
+    @Test
+    public void test_find_all_widgets_should_also_lookin_newly_visible_widget_elements () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        Locator spy = mock(Locator.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        App app = spy(new App(driver_mock, spy, executor_mock));
+        doNothing().when(app).remove_slideshow();
+        doNothing().when(app).remove_all_animations();
+
+        List <Map<String, String>> result_widget;
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        List <WebElement> widget_list = new ArrayList <WebElement> (),
+                          widget_list_2 = new ArrayList <WebElement> ();
+        childs_list.add(mock(WebElement.class));
+        widget_list.add(mock(WebElement.class));
+        widget_list.add(mock(WebElement.class));
+        widget_list.add(mock(WebElement.class));
+        widget_list_2.add(mock(WebElement.class));
+
+        when(childs_list.get(0).isDisplayed()).thenReturn(true);
+        when(widget_list.get(0).isDisplayed()).thenReturn(true);
+        when(widget_list.get(1).isDisplayed()).thenReturn(false);
+        when(widget_list.get(2).isDisplayed()).thenReturn(true);
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        doReturn(widget_list.get(0)).when(spy).find_widget(childs_list.get(0));
+        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("<a href=\"#\">activator 1</a>");
+        when(widget_list.get(0).getAttribute("outerHTML")).thenReturn("<span>widget 1</span>");
+        when(widget_list.get(0).findElements(By.cssSelector("*"))).thenReturn(widget_list);
+        doReturn(widget_list_2.get(0)).when(spy).find_widget(widget_list.get(2));
+        when(widget_list.get(2).getAttribute("outerHTML")).thenReturn("<a href=\"#\">activator 2</a>");
+        when(widget_list_2.get(0).getAttribute("outerHTML")).thenReturn("<span>widget 2</span>");
+
+        result_widget = app.find_all_widgets();
+        verify(spy).find_widget(childs_list.get(0));
+        verify(spy).find_widget(widget_list.get(0));
+        verify(spy).find_widget(widget_list.get(2));
+        assertEquals(2, result_widget.size());
+        assertEquals("<a href=\"#\">activator 1</a>", result_widget.get(0).get("activator"));
+        assertEquals("<span>widget 1</span>", result_widget.get(0).get("widget"));
+        assertEquals("<a href=\"#\">activator 2</a>", result_widget.get(1).get("activator"));
+        assertEquals("<span>widget 2</span>", result_widget.get(1).get("widget"));
     }
 
     @Test
