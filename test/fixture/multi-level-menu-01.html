@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Exercício Pseudo-classes</title>
+        <style type="text/css" media="screen">
+            ul li {
+                height: 100px;
+                width: 200px;
+                display: block;
+            }
+            ul li li {
+                display: none;
+            }
+            ul li:hover > ul > li,
+            ul li > ul > li:hover {
+                display: block;
+                position: relative;
+                left: 160px;
+                border: 1px solid black;
+            }
+            ul li li:hover {
+                background-color: #7799EE;
+            }
+            .red {
+                background-color: red;
+            }
+            .blue {
+                background-color: blue;
+            }
+            .orange {
+                background-color: #FF6666;
+            }
+            .yellow {
+                background-color: yellow;
+            }
+            .green {
+                background-color: green;
+            }
+            .gray {
+                background-color: gray;
+            }
+        </style>
+    </head>
+    <body>
+        <ul>
+            <li class="red">
+                <ul>
+                    <li class="gray"></li>
+                    <li class="gray">
+                        <ul>
+                            <li class="gray"></li>
+                            <li class="gray"></li>
+                            <li class="gray"></li>
+                            <li class="gray"></li>
+                            <li class="gray"></li>
+                            <li class="gray"></li>
+                        </ul>
+                    </li>
+                    <li class="gray"></li>
+                </ul>
+            </li>
+            <li class="blue">
+                <ul>
+                    <li class="gray"></li>
+                    <li class="gray"></li>
+                    <li class="gray"></li>
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>
