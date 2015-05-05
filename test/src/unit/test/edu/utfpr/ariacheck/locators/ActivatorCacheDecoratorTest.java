@@ -17,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
 
@@ -38,6 +39,8 @@ public class ActivatorCacheDecoratorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         Locator locator = new ActivatorCacheDecorator(new WidgetLocator(driver_mock, executor_mock, actions_mock));
         CacheSingleton.createInstance().clear();
@@ -84,6 +87,8 @@ public class ActivatorCacheDecoratorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         Locator locator = new ActivatorCacheDecorator(new WidgetLocator(driver_mock, executor_mock, actions_mock));
         CacheSingleton.createInstance().clear();
@@ -114,6 +119,8 @@ public class ActivatorCacheDecoratorTest {
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
         when(target_mock.getAttribute("outerHTML")).thenReturn("<span>Some activation guy</span>");
+        point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);

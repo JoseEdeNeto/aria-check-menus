@@ -16,6 +16,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Action;
@@ -43,6 +44,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -70,6 +73,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -97,6 +102,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -124,6 +131,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -162,6 +171,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         InOrder inorder = inOrder(actions_mock, action_mock);
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
@@ -207,6 +218,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -244,6 +257,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -282,6 +297,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -335,6 +352,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -371,6 +390,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -411,6 +432,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -448,6 +471,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -494,6 +519,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -541,6 +568,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -582,6 +611,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -619,6 +650,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -656,6 +689,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -694,6 +729,8 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -734,6 +771,8 @@ public class WidgetLocatorTest {
 
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(500);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         result = locator.find_widget(target_mock);
@@ -748,10 +787,32 @@ public class WidgetLocatorTest {
         Actions actions_mock = mock(Actions.class);
         WebElement target_mock = mock(WebElement.class), result;
         Dimension dimension_mock = mock(Dimension.class);
+        Point point_mock = new Point(0, 0);
 
+        when(target_mock.getLocation()).thenReturn(point_mock);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
         when(dimension_mock.getHeight()).thenReturn(200);
+
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
+        result = locator.find_widget(target_mock);
+
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void test_widget_locator_should_only_inspect_elements_which_are_in_the_beginning_of_the_webpage () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        WebElement target_mock = mock(WebElement.class), result;
+        Dimension dimension_mock = mock(Dimension.class);
+        Point point_mock = new Point(0, 800);
+
+        when(target_mock.getLocation()).thenReturn(point_mock);
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(100);
+        when(dimension_mock.getHeight()).thenReturn(100);
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         result = locator.find_widget(target_mock);
@@ -772,6 +833,8 @@ public class WidgetLocatorTest {
         File screenshot_stub = mock(File.class),
              screenshot_stub_2 = mock(File.class);
         double comp_result = 0;
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
@@ -813,6 +876,8 @@ public class WidgetLocatorTest {
              screenshot_stub_2 = mock(File.class);
         double comp_result = 0.04;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
 
         childs_list.add(mock(WebElement.class));
         when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
