@@ -1,5 +1,6 @@
 package functional.test.ariacheck;
 
+import edu.utfpr.ariacheck.locators.decorators.ActivatorCacheDecorator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
 import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.App;
@@ -27,7 +28,7 @@ import java.util.Map;
 @RunWith(JUnit4.class)
 public class AppTest {
 
-    @Test
+    @Test @Ignore
     public void test_widget_locator_should_look_for_all_widget_instances_in_a_webpage () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -77,7 +78,7 @@ public class AppTest {
         driver.quit();
     }
 
-    @Test
+    @Test @Ignore
     public void test_widget_locator_should_look_for_all_widget_instances_in_an_start_and_end_interval () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -107,7 +108,7 @@ public class AppTest {
         driver.quit();
     }
 
-    @Test
+    @Test @Ignore
     public void test_widget_locator_should_ignore_carousels () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -131,7 +132,7 @@ public class AppTest {
         driver.quit();
     }
 
-    @Test
+    @Test @Ignore
     public void test_widget_locator_should_ignore_carousels_which_restart () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -151,7 +152,6 @@ public class AppTest {
         assertEquals("<div class=\" \"><span style=\"top: 30%;\" class=\"tooltip open \">Us" +
                      "eful 3<span class=\"arrow\"></span></span></div>",
                      result_widget.get(0).get("widget"));
-
 
         driver.quit();
     }
@@ -183,9 +183,12 @@ public class AppTest {
         driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/multi-level-menu-02.html");
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
-        App app = new App(driver, locator, (JavascriptExecutor) driver);
+        App app = new App(
+            driver,
+            locator,
+            (JavascriptExecutor) driver
+        );
         app.set_wait(1);
-
         result_widget = app.find_all_widgets();
         assertEquals(2, result_widget.size());
 

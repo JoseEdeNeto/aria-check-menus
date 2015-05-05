@@ -35,10 +35,6 @@ public class WidgetLocator implements Locator {
         "if ( ! window.observer) {" +
         "    var real_setTimeout = window.setTimeout;" +
         "    for (var i = 0; i < 10000; i++) { clearTimeout(i); clearInterval(i); };" +
-        "    window.setTimeout = function () {" +
-        "       var a = []; for (var i = 0; i < arguments.length; i++) a[i] = arguments[i];" +
-        "       a[1] = 0; real_setTimeout.apply(this, a);" +
-        "    };" +
         "    window.observer = new MutationObserver(function (mutations) {" +
         "        mutations.forEach(function (mutation) {" +
         "            if (mutation.addedNodes && mutation.addedNodes.length > 0 &&" +
@@ -54,7 +50,11 @@ public class WidgetLocator implements Locator {
     private static String JS_CLEAN_MUTATION_RECORDS =
         "var mutation_widget = document.querySelectorAll(\".mutation_widget\");" +
         "for (var i = 0; i < mutation_widget.length; i++)" +
-        "    mutation_widget[i].className = mutation_widget[i].className.split(\"mutation_widget\").join(\"\");";
+        "    mutation_widget[i].className = mutation_widget[i].className" +
+        "                                                     .split(\"mutation_widget\").join(\"\")" +
+        "                                                     .replace(/\\s+/g, \" \")" +
+        "                                                     .replace(/^\\s+/, \"\")" +
+        "                                                     .replace(/\\s$/,\"\");";
 
     public WidgetLocator (WebDriver driver, JavascriptExecutor executor, Actions actions) {
         this.driver = driver;
@@ -99,8 +99,7 @@ public class WidgetLocator implements Locator {
             before = this.takes.getScreenshotAs(OutputType.FILE);
 
         try {
-            this.actions.moveByOffset(-1500, -1500)
-                        .moveToElement(target)
+            this.actions.moveToElement(target)
                         .build()
                         .perform();
         } catch (MoveTargetOutOfBoundsException ex) {

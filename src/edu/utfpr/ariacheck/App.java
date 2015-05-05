@@ -90,6 +90,7 @@ public class App {
             WebElement widget = null;
             String activator_html = null;
             try {
+                System.out.print("Element: " + element.getAttribute("outerHTML"));
                 if (element.isDisplayed()) {
                     activator_html = element.getAttribute("outerHTML");
                     widget = this.locator.find_widget(element);
@@ -98,10 +99,12 @@ public class App {
                     List <WebElement> possible_new_elements = widget.findElements(By.cssSelector("*"));
                     widget_map.put("activator", activator_html);
                     widget_map.put("widget", widget.getAttribute("outerHTML"));
+                    System.out.println(" : " + widget.getAttribute("outerHTML"));
                     results.add(widget_map);
-                    elements.addAll(i + 1, possible_new_elements);
                     end += possible_new_elements.size();
+                    elements.addAll(i + 1, possible_new_elements);
                 }
+                System.out.println("");
             } catch (StaleElementReferenceException ex) {}
         }
 
