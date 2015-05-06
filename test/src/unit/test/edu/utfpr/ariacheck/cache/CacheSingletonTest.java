@@ -40,9 +40,9 @@ public class CacheSingletonTest {
         cache.store("pepino");
         cache.store("limao");
 
-        assertTrue(cache.is_there("mao"));
-        assertTrue(cache.is_there("pi"));
-        assertTrue(cache.is_there("bri"));
+        assertTrue(cache.is_there("abobrinha"));
+        assertTrue(cache.is_there("pepino"));
+        assertTrue(cache.is_there("limao"));
     }
 
     @Test

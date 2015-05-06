@@ -21,7 +21,7 @@ public class CacheSingleton {
 
     public boolean is_there (String value) {
         for (String cache_values : this.cache_list) {
-            if (cache_values.contains(value)) return true;
+            if (cache_values.equals(value)) return true;
         }
         return false;
     }

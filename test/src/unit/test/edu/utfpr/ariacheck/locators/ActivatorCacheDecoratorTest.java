@@ -64,7 +64,7 @@ public class ActivatorCacheDecoratorTest {
         assertEquals(mutations_list.get(2), result);
 
         target_mock = mock(WebElement.class);
-        when(target_mock.getAttribute("outerHTML")).thenReturn("<span>Some activation guy</span>");
+        when(target_mock.getAttribute("outerHTML")).thenReturn("<div><span>Some activation guy</span></div>");
         when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);

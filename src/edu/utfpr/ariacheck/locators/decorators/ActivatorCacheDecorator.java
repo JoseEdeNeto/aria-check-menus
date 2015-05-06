@@ -20,8 +20,7 @@ public class ActivatorCacheDecorator implements Locator {
         if (this.cache.is_there(target.getAttribute("outerHTML")))
             return null;
         potential_widget = this.locator.find_widget(target);
-        if (potential_widget != null)
-            this.cache.store(target.getAttribute("outerHTML"));
+        this.cache.store(target.getAttribute("outerHTML"));
         return potential_widget;
     }
 

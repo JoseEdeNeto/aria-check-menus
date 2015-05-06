@@ -165,7 +165,8 @@ public class AppTest {
         driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/multi-level-menu-01.html");
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
-        App app = new App(driver, locator, (JavascriptExecutor) driver);
+        App app = new App(driver,
+                new ActivatorCacheDecorator(locator), (JavascriptExecutor) driver);
         app.set_wait(1);
 
         result_widget = app.find_all_widgets();
@@ -225,7 +226,7 @@ public class AppTest {
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_find_multi_level_menus_with_mutations () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
