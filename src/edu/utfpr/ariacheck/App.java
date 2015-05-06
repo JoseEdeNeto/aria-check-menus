@@ -101,8 +101,15 @@ public class App {
                                                    .replaceAll("old_mutation", "")
                                                    .trim());
                     results.add(widget_map);
-                    end += possible_new_elements.size();
+                    int previous_size = elements.size();
+                    for (int j = 0; j < elements.size(); j++) {
+                        if (j <= i && possible_new_elements.contains(elements.get(j)))
+                            possible_new_elements.remove(elements.get(j));
+                        if (j > i && possible_new_elements.contains(elements.get(j)))
+                            elements.remove(j);
+                    }
                     elements.addAll(i + 1, possible_new_elements);
+                    end += (elements.size() - previous_size);
                 }
             } catch (StaleElementReferenceException ex) {}
         }

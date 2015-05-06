@@ -276,6 +276,61 @@ public class AppTest {
     }
 
     @Test
+    public void test_find_all_widgets_should_also_lookin_newly_visible_widget_elements_removing_elements_which_already_exist () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        Locator spy = mock(Locator.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        App app = spy(new App(driver_mock, spy, executor_mock));
+        doNothing().when(app).remove_slideshow();
+        doNothing().when(app).remove_all_animations();
+
+        List <Map<String, String>> result_widget;
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        List <WebElement> widget_list = new ArrayList <WebElement> (),
+                          widget_list_2 = new ArrayList <WebElement> ();
+        InOrder inorder = inOrder(spy);
+
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(0).isDisplayed()).thenReturn(true);
+        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("<a href=\"#\">activator 1</a>");
+        childs_list.add(mock(WebElement.class));
+        when(childs_list.get(1).isDisplayed()).thenReturn(true);
+        when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("<a href=\"#\">activator NOT</a>");
+
+        WebElement first_widget = mock(WebElement.class);
+        when(first_widget.isDisplayed()).thenReturn(true);
+        when(first_widget.getAttribute("outerHTML")).thenReturn("<span>widget 1</span>");
+        when(first_widget.findElements(By.cssSelector("*"))).thenReturn(widget_list);
+
+        widget_list.add(mock(WebElement.class));
+        when(widget_list.get(0).isDisplayed()).thenReturn(false);
+        when(widget_list.get(0).getAttribute("outerHTML")).thenReturn("<a href=\"#\">activator NOT 2</a>");
+        widget_list.add(mock(WebElement.class));
+        when(widget_list.get(1).isDisplayed()).thenReturn(true);
+        when(widget_list.get(1).getAttribute("outerHTML")).thenReturn("<a href=\"#\">activator 2</a>");
+
+        widget_list.add(childs_list.get(1)); // old element should not be included again
+
+        widget_list_2.add(mock(WebElement.class));
+        when(widget_list_2.get(0).getAttribute("outerHTML")).thenReturn("<span>widget 2</span>");
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        doReturn(first_widget).when(spy).find_widget(childs_list.get(0));
+        doReturn(null).when(spy).find_widget(childs_list.get(1));
+        doReturn(widget_list_2.get(0)).when(spy).find_widget(widget_list.get(1));
+
+        result_widget = app.find_all_widgets();
+        verify(spy).find_widget(childs_list.get(0));
+        verify(spy).find_widget(widget_list.get(1));
+        verify(spy).find_widget(widget_list.get(2));
+        assertEquals(2, result_widget.size());
+        assertEquals("<a href=\"#\">activator 1</a>", result_widget.get(0).get("activator"));
+        assertEquals("<span>widget 1</span>", result_widget.get(0).get("widget"));
+        assertEquals("<a href=\"#\">activator 2</a>", result_widget.get(1).get("activator"));
+        assertEquals("<span>widget 2</span>", result_widget.get(1).get("widget"));
+    }
+
+    @Test
     public void test_find_all_widgets_should_also_lookin_newly_visible_widget_elements () {
         WebDriver driver_mock = mock(WebDriver.class);
         Locator spy = mock(Locator.class);
