@@ -170,11 +170,62 @@ public class AppTest {
 
         result_widget = app.find_all_widgets();
         assertEquals(3, result_widget.size());
+        assertEquals("<li class=\"red\">\n" +
+"                Aloha 1\n" +
+"                <ul>\n" +
+"                    <li class=\"gray 1\">Nothing here</li>\n" +
+"                    <li class=\"gray 2\">\n" +
+"                        Aloha 2\n" +
+"                        <ul>\n" +
+"                            <li class=\"gray 3\">Something level 2</li>\n" +
+"                            <li class=\"gray 4\">Something level 2</li>\n" +
+"                            <li class=\"gray 5\">Something level 2</li>\n" +
+"                        </ul>\n" +
+"                    </li>\n" +
+"                    <li class=\"gray 9\">Nothing here</li>\n" +
+"                </ul>\n" +
+"            </li>" ,result_widget.get(0).get("activator"));
+        assertEquals("<ul>\n" +
+"                    <li class=\"gray 1\">Nothing here</li>\n" +
+"                    <li class=\"gray 2\">\n" +
+"                        Aloha 2\n" +
+"                        <ul>\n" +
+"                            <li class=\"gray 3\">Something level 2</li>\n" +
+"                            <li class=\"gray 4\">Something level 2</li>\n" +
+"                            <li class=\"gray 5\">Something level 2</li>\n" +
+"                        </ul>\n" +
+"                    </li>\n" +
+"                    <li class=\"gray 9\">Nothing here</li>\n" +
+"                </ul>" ,result_widget.get(0).get("widget"));
+        assertEquals("<li class=\"gray 2\">\n" +
+"                        Aloha 2\n" +
+"                        <ul>\n" +
+"                            <li class=\"gray 3\">Something level 2</li>\n" +
+"                            <li class=\"gray 4\">Something level 2</li>\n" +
+"                            <li class=\"gray 5\">Something level 2</li>\n" +
+"                        </ul>\n" +
+"                    </li>" ,result_widget.get(1).get("activator"));
+        assertEquals("<ul>\n" +
+"                            <li class=\"gray 3\">Something level 2</li>\n" +
+"                            <li class=\"gray 4\">Something level 2</li>\n" +
+"                            <li class=\"gray 5\">Something level 2</li>\n" +
+"                        </ul>" ,result_widget.get(1).get("widget"));
+        assertEquals("<li class=\"blue\">\n" +
+"                Aloha 3\n" +
+"                <ul>\n" +
+"                    <li class=\"gray 10\">Nothing</li>\n" +
+"                    <li class=\"gray 11\">Nothing</li>\n" +
+"                </ul>\n" +
+"            </li>", result_widget.get(2).get("activator"));
+        assertEquals("<ul>\n" +
+"                    <li class=\"gray 10\">Nothing</li>\n" +
+"                    <li class=\"gray 11\">Nothing</li>\n" +
+"                </ul>", result_widget.get(2).get("widget"));
 
         driver.quit();
     }
 
-    @Test
+    @Test @Ignore
     public void test_widget_locator_should_find_multi_level_menus_with_mutations () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -185,7 +236,7 @@ public class AppTest {
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(
             driver,
-            locator,
+            new ActivatorCacheDecorator(locator),
             (JavascriptExecutor) driver
         );
         app.set_wait(1);

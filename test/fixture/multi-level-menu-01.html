@@ -9,8 +9,11 @@
                 width: 150px;
                 display: block;
             }
-            ul li li {
+            ul ul {
                 display: none;
+            }
+            ul > li:hover > ul {
+                display: block;
             }
             ul li:hover > ul > li,
             ul li > ul > li:hover {
@@ -54,9 +57,6 @@
                             <li class="gray 3">Something level 2</li>
                             <li class="gray 4">Something level 2</li>
                             <li class="gray 5">Something level 2</li>
-                            <li class="gray 6">Something level 2</li>
-                            <li class="gray 7">Something level 2</li>
-                            <li class="gray 8">Something level 2</li>
                         </ul>
                     </li>
                     <li class="gray 9">Nothing here</li>
@@ -67,7 +67,6 @@
                 <ul>
                     <li class="gray 10">Nothing</li>
                     <li class="gray 11">Nothing</li>
-                    <li class="gray 12">Nothing</li>
                 </ul>
             </li>
         </ul>
