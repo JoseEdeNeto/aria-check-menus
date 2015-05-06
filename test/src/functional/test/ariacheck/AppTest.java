@@ -170,7 +170,6 @@ public class AppTest {
         app.set_wait(1);
 
         result_widget = app.find_all_widgets();
-        assertEquals(3, result_widget.size());
         assertEquals("<li class=\"red\">\n" +
 "                Aloha 1\n" +
 "                <ul>\n" +
@@ -242,7 +241,13 @@ public class AppTest {
         );
         app.set_wait(1);
         result_widget = app.find_all_widgets();
-        assertEquals(2, result_widget.size());
+
+        assertEquals("<li class=\"blue\"> Aloha 3 </li>", result_widget.get(0).get("activator"));
+        assertEquals("<ul class=\" \"><li>aloha 3.1</li><li>aloha 3.2</li></ul>",
+                result_widget.get(0).get("widget"));
+        assertEquals("<li>aloha 3.2</li>", result_widget.get(1).get("activator"));
+        assertEquals("<ul class=\" \"><li>aloha 3.2.1</li><li>aloha 3.2.2</li></ul>",
+                result_widget.get(1).get("widget"));
 
         driver.quit();
     }

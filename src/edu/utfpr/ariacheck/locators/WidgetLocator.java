@@ -51,10 +51,7 @@ public class WidgetLocator implements Locator {
         "var mutation_widget = document.querySelectorAll(\".mutation_widget\");" +
         "for (var i = 0; i < mutation_widget.length; i++)" +
         "    mutation_widget[i].className = mutation_widget[i].className" +
-        "                                                     .split(\"mutation_widget\").join(\"\")" +
-        "                                                     .replace(/\\s+/g, \" \")" +
-        "                                                     .replace(/^\\s+/, \"\")" +
-        "                                                     .replace(/\\s$/,\"\");";
+        "                                           .replace(\"mutation_widget\",\"old_mutation\");";
 
     public WidgetLocator (WebDriver driver, JavascriptExecutor executor, Actions actions) {
         this.driver = driver;
@@ -116,7 +113,7 @@ public class WidgetLocator implements Locator {
             }
         }
 
-        mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget"));
+        mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"));
 
         for (WebElement mutation : mutation_widgets) {
             try {

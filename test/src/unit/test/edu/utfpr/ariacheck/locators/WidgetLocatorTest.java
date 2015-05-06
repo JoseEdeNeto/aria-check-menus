@@ -299,7 +299,7 @@ public class WidgetLocatorTest {
 
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
         when(executor_mock.executeScript(javascript_code)).thenReturn(null);
@@ -331,22 +331,20 @@ public class WidgetLocatorTest {
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         mutations_list.add(mutation_widget);
         when(mutation_widget.getAttribute("outerHTML")).thenReturn("some element");
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)")))
+                        .thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
         result = locator.find_widget(target_mock);
 
         assertEquals(mutation_widget, result);
-        inorder.verify(driver_mock).findElements(By.cssSelector(".mutation_widget"));
+        inorder.verify(driver_mock).findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"));
         inorder.verify(executor_mock).executeScript(
         "var mutation_widget = document.querySelectorAll(\".mutation_widget\");" +
         "for (var i = 0; i < mutation_widget.length; i++)" +
         "    mutation_widget[i].className = mutation_widget[i].className" +
-        "                                                     .split(\"mutation_widget\").join(\"\")" +
-        "                                                     .replace(/\\s+/g, \" \")" +
-        "                                                     .replace(/^\\s+/, \"\")" +
-        "                                                     .replace(/\\s$/,\"\");"
+        "                                           .replace(\"mutation_widget\",\"old_mutation\");"
         );
     }
     @Test
@@ -379,7 +377,7 @@ public class WidgetLocatorTest {
         when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>not so cool</div>");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -415,7 +413,7 @@ public class WidgetLocatorTest {
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -460,7 +458,7 @@ public class WidgetLocatorTest {
         when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>the coolest and biggest widget</div>");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -506,7 +504,7 @@ public class WidgetLocatorTest {
         when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>the coolest and biggest widget</div>");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -546,7 +544,7 @@ public class WidgetLocatorTest {
                                   .thenThrow(new StaleElementReferenceException("oops 2"));
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -582,7 +580,7 @@ public class WidgetLocatorTest {
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -614,7 +612,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("abo");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(new ArrayList <WebElement> ());
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(new ArrayList <WebElement> ());
 
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
@@ -651,7 +649,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("abo");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(new ArrayList <WebElement> ());
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(new ArrayList <WebElement> ());
 
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
@@ -692,7 +690,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("<a href=\"#\">abo</a>");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(new ArrayList <WebElement> ());
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(new ArrayList <WebElement> ());
 
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);

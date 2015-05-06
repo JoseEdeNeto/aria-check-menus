@@ -97,7 +97,9 @@ public class App {
                     Map <String, String> widget_map = new HashMap <String, String> ();
                     List <WebElement> possible_new_elements = widget.findElements(By.cssSelector("*"));
                     widget_map.put("activator", activator_html);
-                    widget_map.put("widget", widget.getAttribute("outerHTML"));
+                    widget_map.put("widget", widget.getAttribute("outerHTML")
+                                                   .replaceAll("old_mutation", "")
+                                                   .trim());
                     results.add(widget_map);
                     end += possible_new_elements.size();
                     elements.addAll(i + 1, possible_new_elements);

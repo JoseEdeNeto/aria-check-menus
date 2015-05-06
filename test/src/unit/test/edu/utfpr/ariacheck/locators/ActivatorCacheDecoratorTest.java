@@ -54,7 +54,7 @@ public class ActivatorCacheDecoratorTest {
         when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>the coolest and biggest widget</div>");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
@@ -91,8 +91,7 @@ public class ActivatorCacheDecoratorTest {
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
-        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
+        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -113,11 +112,10 @@ public class ActivatorCacheDecoratorTest {
         target_mock = mock(WebElement.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
-        when(target_mock.getAttribute("outerHTML")).thenReturn("<span>Some activation guy</span>");
+        when(target_mock.getAttribute("outerHTML")).thenReturn("<div><span>Some activation guy</span></div>");
 
         when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget"))).thenReturn(mutations_list);
-        when(actions_mock.moveByOffset(-1500, -1500)).thenReturn(actions_mock);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
