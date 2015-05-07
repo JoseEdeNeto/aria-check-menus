@@ -84,7 +84,10 @@
             arrow2.className = "arrow";
             dialog3.appendChild(arrow2);
             document.querySelector("#link3").onmouseover = function () {
-                this.appendChild(dialog3);
+                if (dialog3.parentElement !== this) {
+                    console.log("yiyui");
+                    this.appendChild(dialog3);
+                }
                 dialog3.className = "tooltip open";
             };
             document.querySelector("#link3").onmouseout = function () {

@@ -25,7 +25,7 @@ import java.util.Map;
 @RunWith(JUnit4.class)
 public class WidgetLocatorTest {
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_find_css_only_tooltip () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -46,7 +46,7 @@ public class WidgetLocatorTest {
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_find_className_change_only_tooltip () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -62,7 +62,7 @@ public class WidgetLocatorTest {
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_find_widget_dynamically_inserted_in_the_DOM () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -79,7 +79,7 @@ public class WidgetLocatorTest {
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_deal_with_multiple_mutations () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -101,7 +101,7 @@ public class WidgetLocatorTest {
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_deal_with_multiple_mutations_cleaning_mutation_previously_recorded () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -122,7 +122,7 @@ public class WidgetLocatorTest {
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_ignore_mutations_in_log_elements () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -139,7 +139,7 @@ public class WidgetLocatorTest {
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_not_report_false_positive_for_centered_widget_container () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -156,7 +156,7 @@ public class WidgetLocatorTest {
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void a_test_widget_locator_should_find_multilevel_menu_widgets () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);

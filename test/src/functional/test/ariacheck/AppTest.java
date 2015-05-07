@@ -28,7 +28,7 @@ import java.util.Map;
 @RunWith(JUnit4.class)
 public class AppTest {
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_look_for_all_widget_instances_in_a_webpage () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -41,7 +41,6 @@ public class AppTest {
         app.set_wait(1);
 
         result_widget = app.find_all_widgets();
-        assertEquals(3, result_widget.size());
         assertEquals(
         "<a id=\"link1\" class=\"tooltip_link\" href=\"#\">\n" +
 "            Tooltip 1\n" +
@@ -75,10 +74,11 @@ public class AppTest {
                 result_widget.get(2).get("activator"));
         assertEquals("<span class=\"tooltip open \">Useful 3<span class=\"arrow\"></span></span>",
                 result_widget.get(2).get("widget"));
+        assertEquals(3, result_widget.size());
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_look_for_all_widget_instances_in_an_start_and_end_interval () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -108,7 +108,7 @@ public class AppTest {
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_ignore_carousels () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
@@ -132,7 +132,7 @@ public class AppTest {
         driver.quit();
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_ignore_carousels_which_restart () throws IOException {
         FirefoxDriver driver = new FirefoxDriver();
         Actions actions = new Actions((WebDriver) driver);
