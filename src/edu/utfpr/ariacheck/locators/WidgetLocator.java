@@ -27,6 +27,7 @@ public class WidgetLocator implements Locator {
     private List <WebElement> invisibles = null;
     private TakesScreenshot takes = null;
 
+    private int MAX_TOP = 700;
     private int MAX_WIDTH = 300;
     private int MAX_HEIGHT = 100;
     private double SIG_DIFFERENCE = 0.05;
@@ -87,6 +88,9 @@ public class WidgetLocator implements Locator {
         this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
 
         if (target.getSize().getWidth() > this.MAX_WIDTH || target.getSize().getHeight() > this.MAX_HEIGHT)
+            return null;
+
+        if (target.getLocation().getY() > this.MAX_TOP)
             return null;
 
         if (this.invisibles == null)
