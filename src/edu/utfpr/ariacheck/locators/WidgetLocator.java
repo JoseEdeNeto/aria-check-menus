@@ -152,8 +152,10 @@ public class WidgetLocator implements Locator {
                     iterator.remove();
                 } else {
                     inv_childs = inv.findElements(By.cssSelector("*"));
-                    for (int i = 0; i < inv_childs.size() && iterator.hasNext(); i++)
+                    for (int i = 0; i < inv_childs.size() && iterator.hasNext(); i++) {
                         iterator.next();
+                        System.out.print("S");
+                    }
                 }
             } catch (StaleElementReferenceException ex) { }
             System.out.print(".");
