@@ -72,9 +72,17 @@ public class WidgetLocator implements Locator {
     private List <WebElement> find_invisibles () {
         List <WebElement> child_elements = this.driver.findElements(By.cssSelector("body *"));
         List <WebElement> invisibles = new ArrayList <WebElement> ();
-        for (WebElement child : child_elements) {
-            if ( ! child.isDisplayed())
+        List <WebElement> inv_childs;
+        WebElement child;
+
+        for (int i = 0; i < child_elements.size(); i++) {
+            child = child_elements.get(i);
+            if ( ! child.isDisplayed()) {
                 invisibles.add(child);
+                inv_childs = child.findElements(By.cssSelector("*"));
+                invisibles.addAll(inv_childs);
+                i += inv_childs.size();
+            }
         }
         return invisibles;
     }
@@ -133,6 +141,7 @@ public class WidgetLocator implements Locator {
 
         potential_widget = null;
         Iterator <WebElement>iterator = this.invisibles.iterator();
+        List <WebElement> inv_childs = null;
         while (iterator.hasNext()) {
             WebElement inv = (WebElement) (iterator.next());
             try {
@@ -141,6 +150,10 @@ public class WidgetLocator implements Locator {
                             potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length())
                         potential_widget = inv;
                     iterator.remove();
+                } else {
+                    inv_childs = inv.findElements(By.cssSelector("*"));
+                    for (int i = 0; i < inv_childs.size() && iterator.hasNext(); i++)
+                        iterator.next();
                 }
             } catch (StaleElementReferenceException ex) { }
             System.out.print(".");

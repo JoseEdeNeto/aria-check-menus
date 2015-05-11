@@ -202,6 +202,53 @@ public class WidgetLocatorTest {
     }
 
     @Test
+    public void test_widget_locator_should_return_return_newly_visible_element_without_looking_in_child_elements () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        Action action_mock = mock(Action.class);
+        WebElement target_mock = mock(WebElement.class),
+                   result;
+        Dimension dimension_mock = mock(Dimension.class);
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(200);
+        Point point_mock = new Point(0, 0);
+        when(target_mock.getLocation()).thenReturn(point_mock);
+
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
+        List <WebElement> childs_list = new ArrayList <WebElement> ();
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+        childs_list.add(mock(WebElement.class));
+
+        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(false);
+        when(childs_list.get(0).findElements(By.cssSelector("*"))).thenReturn(childs_list.subList(1, 2));
+        //when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(false);
+        when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(true);
+        when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("some html");
+        when(childs_list.get(2).findElements(By.cssSelector("*"))).thenReturn(new ArrayList <WebElement> ());
+        when(childs_list.get(3).isDisplayed()).thenReturn(false).thenReturn(false);
+        when(childs_list.get(3).findElements(By.cssSelector("*"))).thenReturn(childs_list.subList(4, 6));
+        //when(childs_list.get(4).isDisplayed()).thenReturn(false).thenReturn(false);
+        //when(childs_list.get(5).isDisplayed()).thenReturn(false).thenReturn(false);
+
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
+        when(actions_mock.build()).thenReturn(action_mock);
+
+        result = locator.find_widget(target_mock);
+
+        verify(childs_list.get(1), never()).isDisplayed();
+        verify(childs_list.get(4), never()).isDisplayed();
+        verify(childs_list.get(5), never()).isDisplayed();
+
+        assertEquals(childs_list.get(2), result);
+    }
+
+    @Test
     public void test_widget_locator_should_return_null_if_no_invisible_elements_became_visible () {
         WebDriver driver_mock = mock(WebDriver.class);
         JavascriptExecutor executor = mock(JavascriptExecutor.class);
