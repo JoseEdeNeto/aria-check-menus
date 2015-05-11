@@ -1,0 +1,50 @@
+#!/bin/sh
+echo Start time: `date` > ~/hover_widgets_identification/amazon.com/meta.txt
+java -jar package.jar http://www.amazon.com
+echo End time: `date` >> ~/hover_widgets_identification/amazon.com/meta.txt
+mv captured_widgets/* ~/hover_widgets_identification/amazon.com
+
+echo Start time: `date` > ~/hover_widgets_identification/americanas.com.br/meta.txt
+java -jar package.jar http://www.americanas.com.br
+echo End time: `date` >> ~/hover_widgets_identification/americanas.com.br/meta.txt
+mv captured_widgets/* ~/hover_widgets_identification/americanas.com.br
+
+echo Start time: `date` > ~/hover_widgets_identification/folha.uol.com.br/meta.txt
+java -jar package.jar http://folha.uol.com.br
+echo End time: `date` >> ~/hover_widgets_identification/folha.uol.com.br/meta.txt
+mv captured_widgets/* ~/hover_widgets_identification/folha.uol.com.br
+
+echo Start time: `date` > ~/hover_widgets_identification/globo.com/meta.txt
+java -jar package.jar http://www.globo.com
+echo End time: `date` >> ~/hover_widgets_identification/globo.com/meta.txt
+mv captured_widgets/* ~/hover_widgets_identification/globo.com
+
+echo Start time: `date` > ~/hover_widgets_identification/itau.com.br/meta.txt
+java -jar package.jar http://www.itau.com.br
+echo End time: `date` >> ~/hover_widgets_identification/itau.com.br/meta.txt
+mv captured_widgets/* ~/hover_widgets_identification/itau.com.br
+
+echo Start time: `date` > ~/hover_widgets_identification/msn.com/meta.txt
+java -jar package.jar http://www.msn.com
+echo End time: `date` >> ~/hover_widgets_identification/msn.com/meta.txt
+mv captured_widgets/* ~/hover_widgets_identification/msn.com
+
+echo Start time: `date` > ~/hover_widgets_identification/netshoes.com.br/meta.txt
+java -jar package.jar http://www.netshoes.com.br
+echo End time: `date` >> ~/hover_widgets_identification/netshoes.com.br/meta.txt
+mv captured_widgets/* ~/hover_widgets_identification/netshoes.com.br
+
+echo Start time: `date` > ~/hover_widgets_identification/terra.com.br/meta.txt
+java -jar package.jar http://www.terra.com.br
+echo End time: `date` >> ~/hover_widgets_identification/terra.com.br/meta.txt
+mv captured_widgets/* ~/hover_widgets_identification/terra.com.br
+
+echo Start time: `date` > ~/hover_widgets_identification/uol.com.br/meta.txt
+java -jar package.jar http://www.uol.com.br
+echo End time: `date` >> ~/hover_widgets_identification/uol.com.br/meta.txt
+mv captured_widgets/* ~/hover_widgets_identification/uol.com.br
+
+echo Start time: `date` > ~/hover_widgets_identification/yahoo.com/meta.txt
+java -jar package.jar http://www.yahoo.com
+echo End time: `date` >> ~/hover_widgets_identification/yahoo.com/meta.txt
+mv captured_widgets/* ~/hover_widgets_identification/yahoo.com
