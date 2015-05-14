@@ -34,7 +34,6 @@ public class AppTest {
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         App app = spy(new App(driver_mock, spy, executor_mock));
 
-        doNothing().when(app).remove_slideshow();
         doNothing().when(app).remove_all_animations();
 
         List <Map<String, String>> result_widget;
@@ -76,7 +75,6 @@ public class AppTest {
         assertEquals("<span>widget 2</span>", result_widget.get(1).get("widget"));
         assertEquals("<a href=\"#\">activator 3</a>", result_widget.get(2).get("activator"));
         assertEquals("<span>widget 3</span>", result_widget.get(2).get("widget"));
-        verify(app).remove_slideshow();
         verify(app).remove_all_animations();
     }
 
@@ -87,7 +85,6 @@ public class AppTest {
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         App app = spy(new App(driver_mock, spy, executor_mock));
 
-        doNothing().when(app).remove_slideshow();
         doNothing().when(app).remove_all_animations();
 
         List <Map<String, String>> result_widget;
@@ -127,7 +124,6 @@ public class AppTest {
         assertEquals("<span>widget 2</span>", result_widget.get(0).get("widget"));
         assertEquals("<a href=\"#\">activator 3</a>", result_widget.get(1).get("activator"));
         assertEquals("<span>widget 3</span>", result_widget.get(1).get("widget"));
-        verify(app).remove_slideshow();
         verify(app).remove_all_animations();
     }
 
@@ -138,7 +134,6 @@ public class AppTest {
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         App app = spy(new App(driver_mock, spy, executor_mock));
 
-        doNothing().when(app).remove_slideshow();
         doNothing().when(app).remove_all_animations();
 
         List <Map<String, String>> result_widget;
@@ -178,7 +173,6 @@ public class AppTest {
         assertEquals("<span>widget 2</span>", result_widget.get(0).get("widget"));
         assertEquals("<a href=\"#\">activator 3</a>", result_widget.get(1).get("activator"));
         assertEquals("<span>widget 3</span>", result_widget.get(1).get("widget"));
-        verify(app).remove_slideshow();
         verify(app).remove_all_animations();
     }
 
@@ -189,7 +183,6 @@ public class AppTest {
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         App app = spy(new App(driver_mock, spy, executor_mock));
 
-        doNothing().when(app).remove_slideshow();
         doNothing().when(app).remove_all_animations();
 
         List <Map<String, String>> result_widget;
@@ -231,7 +224,6 @@ public class AppTest {
         assertEquals("<span>widget 1</span>", result_widget.get(0).get("widget"));
         assertEquals("<a href=\"#\">activator 2</a>", result_widget.get(1).get("activator"));
         assertEquals("<span>widget 2</span>", result_widget.get(1).get("widget"));
-        verify(app).remove_slideshow();
         verify(app).remove_all_animations();
     }
 
@@ -241,7 +233,6 @@ public class AppTest {
         Locator spy = mock(Locator.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         App app = spy(new App(driver_mock, spy, executor_mock));
-        doNothing().when(app).remove_slideshow();
         doNothing().when(app).remove_all_animations();
 
         List <Map<String, String>> result_widget;
@@ -281,7 +272,6 @@ public class AppTest {
         Locator spy = mock(Locator.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         App app = spy(new App(driver_mock, spy, executor_mock));
-        doNothing().when(app).remove_slideshow();
         doNothing().when(app).remove_all_animations();
 
         List <Map<String, String>> result_widget;
@@ -325,7 +315,6 @@ public class AppTest {
         Locator spy = mock(Locator.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         App app = spy(new App(driver_mock, spy, executor_mock));
-        doNothing().when(app).remove_slideshow();
         doNothing().when(app).remove_all_animations();
 
         List <Map<String, String>> result_widget;
@@ -363,7 +352,6 @@ public class AppTest {
         Locator spy = mock(Locator.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         App app = spy(new App(driver_mock, spy, executor_mock));
-        doNothing().when(app).remove_slideshow();
         doNothing().when(app).remove_all_animations();
 
         List <Map<String, String>> result_widget;
@@ -394,35 +382,6 @@ public class AppTest {
 
         result_widget = app.find_all_widgets(1, 3);
         assertEquals(0, result_widget.size());
-    }
-
-    @Test
-    public void test_remove_slide_show_method_calls_js_and_wait_for_15_seconds () {
-        WebDriver driver_mock = mock(WebDriver.class);
-        Locator spy = mock(Locator.class);
-        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-
-        when(executor_mock.executeScript(anyString())).thenReturn(null).thenReturn(null);
-
-        App app = spy(new App(driver_mock, spy, executor_mock));
-        InOrder inorder = inOrder(app, executor_mock);
-        doNothing().when(app).sleep_wrapper();
-        app.remove_slideshow();
-
-        inorder.verify(app).sleep_wrapper();
-        inorder.verify(executor_mock).executeScript(
-            "window.slideshowObserver = new MutationObserver(function (mutations) {" +
-            "   mutations.forEach(function (mutation) {" +
-            "       if (mutation.target.parentElement)" +
-            "           mutation.target.parentElement.removeChild(mutation.target);" +
-            "   });" +
-            "});" +
-            "window.slideshowObserver.observe(document.body, {attributes: true, subtree: true});"
-        );
-        inorder.verify(app).sleep_wrapper();
-        inorder.verify(executor_mock).executeScript(
-                "for (var i = 0; i < 100000; i++) {clearTimeout(i); clearInterval(i);}" +
-                "window.slideshowObserver.disconnect();");
     }
 
     @Test

@@ -22,18 +22,8 @@ public class App {
 
     private int wait_seconds = 20;
 
-    private static String JS_SET_SLIDESHOW_MUTATION_OBSERVER =
-        "window.slideshowObserver = new MutationObserver(function (mutations) {" +
-        "   mutations.forEach(function (mutation) {" +
-        "       if (mutation.target.parentElement)" +
-        "           mutation.target.parentElement.removeChild(mutation.target);" +
-        "   });" +
-        "});" +
-        "window.slideshowObserver.observe(document.body, {attributes: true, subtree: true});";
-
-    private static String JS_REMOVE_SLIDESHOW_MUTATION_OBSERVER =
-        "for (var i = 0; i < 100000; i++) {clearTimeout(i); clearInterval(i);}" +
-        "window.slideshowObserver.disconnect();";
+    private static String JS_CLEAR_TIMEOUTS =
+        "for (var i = 0; i < 100000; i++) {clearTimeout(i); clearInterval(i);}";
 
     private static String JS_REMOVE_ANIMATIONS =
         "(function () {" +
@@ -75,7 +65,6 @@ public class App {
     }
 
     public List <Map <String, String>> find_all_widgets (int start, int end) {
-        this.remove_slideshow();
         this.remove_all_animations();
 
         List <WebElement> elements = this.driver.findElements(By.cssSelector("body *"));
@@ -109,13 +98,6 @@ public class App {
         }
 
         return results;
-    }
-
-    public void remove_slideshow () {
-        this.sleep_wrapper();
-        this.executor.executeScript(App.JS_SET_SLIDESHOW_MUTATION_OBSERVER);
-        this.sleep_wrapper();
-        this.executor.executeScript(App.JS_REMOVE_SLIDESHOW_MUTATION_OBSERVER);
     }
 
     public void remove_all_animations () {
