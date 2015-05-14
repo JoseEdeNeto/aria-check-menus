@@ -83,11 +83,9 @@ public class Main implements Runnable {
         Locator locator = new HTMLLogLocatorDecorator(
                 screenshot_decorator, "captured_widgets/" + this.start + "_");
         driver.get(this.url);
+        driver.get(this.url);
         driver.manage().window().maximize();
-        if (this.url.equals("http://www.americanas.com.br")) {
-            driver.get(this.url);
-            driver.manage().window().maximize();
-        }
+
         App app = new App(
                 driver, locator, (JavascriptExecutor) driver, true);
         app.find_all_widgets(this.start, this.end);
