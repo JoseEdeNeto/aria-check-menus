@@ -101,6 +101,7 @@ public class App {
     }
 
     public void remove_all_animations () {
+        this.sleep_wrapper();
         this.executor.executeScript(App.JS_REMOVE_ANIMATIONS);
     }
 

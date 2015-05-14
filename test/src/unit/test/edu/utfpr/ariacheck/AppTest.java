@@ -391,9 +391,11 @@ public class AppTest {
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         when(executor_mock.executeScript(anyString())).thenReturn(null);
 
-        App app = new App(driver_mock, spy, executor_mock);
+        App app = spy(new App(driver_mock, spy, executor_mock));
+        doNothing().when(app).sleep_wrapper();
         app.remove_all_animations();
 
+        verify(app).sleep_wrapper();
         verify(executor_mock).executeScript(
             "(function () {" +
             "    var images = document.querySelectorAll(\"img\")," +
