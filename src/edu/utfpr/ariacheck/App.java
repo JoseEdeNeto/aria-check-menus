@@ -73,6 +73,7 @@ public class App {
         int count = 0;
 
         for (int i = start; (i < end && i < elements.size()); i++) {
+            this.executor.executeScript(this.JS_CLEAR_TIMEOUTS);
             element = elements.get(i);
             if (this.log)
                 System.out.println("Examining " + (++count) + " of " + elements.size() + " remaining elements...");

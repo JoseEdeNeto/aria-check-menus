@@ -234,6 +234,8 @@ public class AppTest {
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         App app = spy(new App(driver_mock, spy, executor_mock));
         doNothing().when(app).remove_all_animations();
+        doReturn(null).when(executor_mock).executeScript(
+            "for (var i = 0; i < 100000; i++) {clearTimeout(i); clearInterval(i);}");
 
         List <Map<String, String>> result_widget;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -264,6 +266,8 @@ public class AppTest {
         verify(spy, never()).find_widget(childs_list.get(1));
         verify(spy, never()).find_widget(childs_list.get(2));
         verify(spy, never()).find_widget(childs_list.get(3));
+        verify(executor_mock, times(5)).executeScript(
+            "for (var i = 0; i < 100000; i++) {clearTimeout(i); clearInterval(i);}");
     }
 
     @Test
@@ -273,6 +277,8 @@ public class AppTest {
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         App app = spy(new App(driver_mock, spy, executor_mock));
         doNothing().when(app).remove_all_animations();
+        doReturn(null).when(executor_mock).executeScript(
+            "for (var i = 0; i < 100000; i++) {clearTimeout(i); clearInterval(i);}");
 
         List <Map<String, String>> result_widget;
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -307,6 +313,8 @@ public class AppTest {
         assertEquals("<span>widget 1</span>", result_widget.get(0).get("widget"));
         assertEquals("<a href=\"#\">activator 2</a>", result_widget.get(1).get("activator"));
         assertEquals("<span>widget 2</span>", result_widget.get(1).get("widget"));
+        verify(executor_mock, times(4)).executeScript(
+            "for (var i = 0; i < 100000; i++) {clearTimeout(i); clearInterval(i);}");
     }
 
     @Test
