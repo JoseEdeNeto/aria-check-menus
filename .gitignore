@@ -2,3 +2,4 @@
 *.swp
 captured_widgets/*.png
 coverage.html
+target/*
