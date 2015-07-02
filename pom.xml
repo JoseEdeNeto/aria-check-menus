@@ -52,6 +52,7 @@
                 <goal>test</goal>
               </goals>
               <configuration>
+                <argLine>-Dhttp.nonProxyHosts=127.0.0.1</argLine>
                 <includes>
                   <include>functional/**/*.java</include>
                 </includes>

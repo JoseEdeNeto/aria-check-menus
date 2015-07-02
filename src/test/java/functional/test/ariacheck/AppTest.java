@@ -34,7 +34,7 @@ public class AppTest {
         Actions actions = new Actions((WebDriver) driver);
         List <Map<String, String>> result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/sanity_check02.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/sanity_check02.html");
 
         Locator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(driver, locator, (JavascriptExecutor) driver);
@@ -84,7 +84,7 @@ public class AppTest {
         Actions actions = new Actions((WebDriver) driver);
         List <Map<String, String>> result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/sanity_check02.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/sanity_check02.html");
 
         Locator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(driver, locator, (JavascriptExecutor) driver);
@@ -114,7 +114,7 @@ public class AppTest {
         Actions actions = new Actions((WebDriver) driver);
         List <Map <String, String>> result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/carousel_01.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/carousel_01.html");
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(driver, locator, (JavascriptExecutor) driver);
@@ -138,7 +138,7 @@ public class AppTest {
         Actions actions = new Actions((WebDriver) driver);
         List <Map <String, String>> result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/carousel_02.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/carousel_02.html");
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(driver, locator, (JavascriptExecutor) driver);
@@ -162,7 +162,7 @@ public class AppTest {
         Actions actions = new Actions((WebDriver) driver);
         List <Map <String, String>> result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/multi-level-menu-01.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/multi-level-menu-01.html");
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(driver,
@@ -231,7 +231,7 @@ public class AppTest {
         Actions actions = new Actions((WebDriver) driver);
         List <Map <String, String>> result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/multi-level-menu-02.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/multi-level-menu-02.html");
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(

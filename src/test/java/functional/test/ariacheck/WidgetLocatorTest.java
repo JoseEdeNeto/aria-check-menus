@@ -31,7 +31,7 @@ public class WidgetLocatorTest {
         Actions actions = new Actions((WebDriver) driver);
         WebElement target, result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/sanity_check01.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/sanity_check01.html");
         target = driver.findElement(By.cssSelector("#link1"));
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
@@ -52,7 +52,7 @@ public class WidgetLocatorTest {
         Actions actions = new Actions((WebDriver) driver);
         WebElement target, result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/sanity_check03.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/sanity_check03.html");
         target = driver.findElement(By.cssSelector("#link1"));
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
@@ -68,7 +68,7 @@ public class WidgetLocatorTest {
         Actions actions = new Actions((WebDriver) driver);
         WebElement target, result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/sanity_check02.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/sanity_check02.html");
         target = driver.findElement(By.cssSelector("#link3"));
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
@@ -85,7 +85,7 @@ public class WidgetLocatorTest {
         Actions actions = new Actions((WebDriver) driver);
         WebElement result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/multiple_mutations01.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/multiple_mutations01.html");
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
 
@@ -107,7 +107,7 @@ public class WidgetLocatorTest {
         Actions actions = new Actions((WebDriver) driver);
         WebElement result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/multiple_mutations02.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/multiple_mutations02.html");
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
 
@@ -128,7 +128,7 @@ public class WidgetLocatorTest {
         Actions actions = new Actions((WebDriver) driver);
         WebElement result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/multiple_mutations03.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/multiple_mutations03.html");
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
 
@@ -145,7 +145,7 @@ public class WidgetLocatorTest {
         Actions actions = new Actions((WebDriver) driver);
         WebElement target, result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/centered_false_positive.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/centered_false_positive.html");
         target = driver.findElement(By.cssSelector("#false_positive"));
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
@@ -162,7 +162,7 @@ public class WidgetLocatorTest {
         Actions actions = new Actions((WebDriver) driver);
         WebElement target, result_widget;
 
-        driver.get("file://" + (new File(".").getCanonicalPath()) + "/test/fixture/multi-level-menu-01.html");
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/multi-level-menu-01.html");
         target = driver.findElement(By.cssSelector(".red"));
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
