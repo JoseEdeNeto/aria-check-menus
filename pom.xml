@@ -3,23 +3,34 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>edu.utfpr</groupId>
-  <artifactId>GenericJava</artifactId>
+  <artifactId>aria-check-menus</artifactId>
   <version>0.1</version>
   <packaging>jar</packaging>
 
-  <name>GenericJava</name>
-  <url>http://maven.apache.org</url>
+  <name>aria-check-menus</name>
+  <url>https://github.com/watinha/aria-check-menus</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-all</artifactId>
+          <version>2.0.2-beta</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-java</artifactId>
+          <version>2.46.0</version>
+      </dependency>
   </dependencies>
 </project>
