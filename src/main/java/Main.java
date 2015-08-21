@@ -71,8 +71,7 @@ public class Main implements Runnable {
                 new WidgetLocator(
                     (WebDriver) driver,
                     (JavascriptExecutor) driver,
-                    new Actions(driver),
-                    (TakesScreenshot) driver
+                    new Actions(driver)
                 )
             ),
             (TakesScreenshot) driver,
