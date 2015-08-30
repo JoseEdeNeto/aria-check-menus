@@ -39,6 +39,7 @@ public class Main implements Runnable {
         driver.quit();
 
         number_of_threads = size / 300 + 1;
+        number_of_threads = 1;
 
         for (int i = 0; i < number_of_threads; i++) {
             int start = (i * (size / number_of_threads)),
