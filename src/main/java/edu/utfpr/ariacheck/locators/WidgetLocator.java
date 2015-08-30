@@ -133,7 +133,9 @@ public class WidgetLocator implements Locator {
                         potential_widget.getAttribute("outerHTML").length() <
                         mutation.getAttribute("outerHTML").length())
                     potential_widget = mutation;
-            } catch (StaleElementReferenceException ex) { }
+            } catch (StaleElementReferenceException ex) {
+                System.out.println("stale exception in mutation list");
+            }
         }
         this.executor.executeScript(WidgetLocator.JS_CLEAN_MUTATION_RECORDS);
         if (potential_widget != null)
@@ -157,7 +159,9 @@ public class WidgetLocator implements Locator {
                         System.out.print("S");
                     }
                 }
-            } catch (StaleElementReferenceException ex) { }
+            } catch (StaleElementReferenceException ex) {
+                System.out.println("stale exception in visible list");
+            }
             System.out.print(".");
         }
         System.out.println("");
