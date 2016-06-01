@@ -1,6 +1,5 @@
 package edu.utfpr.ariacheck.cssgenerator;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -14,15 +13,24 @@ public class PhantomGenerator {
         this.runtime = runtime;
     }
 
-    public String generate (String url) throws IOException, InterruptedException {
-        String selector = "";
+    public String generate (String url) throws Exception {
+        String selector = "",
+               error_message = "",
+               aux;
+        BufferedReader br = null;
         Process p = this.runtime.exec(PhantomGenerator.PHANTOM_COMMAND + url);
         p.waitFor();
 
-        if (p.exitValue() > 0)
-            return null;
+        if (p.exitValue() > 0) {
+            br = this.getBufferedReader(p.getErrorStream());
+            while ((aux = br.readLine()) != null) {
+                error_message += "\n" + aux;
+            }
+            br.close();
+            throw new Exception(error_message);
+        }
 
-        BufferedReader br = this.getBufferedReader(p.getInputStream());
+        br = this.getBufferedReader(p.getInputStream());
         selector = br.readLine();
         br.close();
         return selector;
