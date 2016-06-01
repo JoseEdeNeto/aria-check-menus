@@ -19,6 +19,7 @@ public class App {
     private WebDriver driver;
     private JavascriptExecutor executor;
     private boolean log;
+    private String query;
 
     private int wait_seconds = 20;
 
@@ -60,6 +61,7 @@ public class App {
         this.locator = locator;
         this.executor = executor;
         this.log = false;
+        this.query = "body *";
     }
 
     public App (WebDriver driver, Locator locator, JavascriptExecutor executor, boolean log) {
@@ -67,10 +69,19 @@ public class App {
         this.locator = locator;
         this.executor = executor;
         this.log = true;
+        this.query = "body *";
+    }
+
+    public App (WebDriver driver, Locator locator, JavascriptExecutor executor, boolean log, String query) {
+        this.driver = driver;
+        this.locator = locator;
+        this.executor = executor;
+        this.log = true;
+        this.query = query;
     }
 
     public List <Map <String, String>> find_all_widgets () {
-        List <WebElement> elements = this.driver.findElements(By.cssSelector("body *"));
+        List <WebElement> elements = this.driver.findElements(By.cssSelector(this.query));
         return this.find_all_widgets(0, elements.size());
     }
 
@@ -78,7 +89,7 @@ public class App {
         this.remove_slideshow();
         this.remove_all_animations();
 
-        List <WebElement> elements = this.driver.findElements(By.cssSelector("body *"));
+        List <WebElement> elements = this.driver.findElements(By.cssSelector(this.query));
         List <Map <String, String>> results = new ArrayList <Map <String, String>> ();
         WebElement element;
         int count = 0;

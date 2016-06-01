@@ -455,4 +455,35 @@ public class AppTest {
             "}());");
     }
 
+    @Test
+    public void test_find_all_widgets_should_use_css_query_argument () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        Locator spy = mock(Locator.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        App app = spy(new App(driver_mock, spy, executor_mock, false, "blablabla"));
+
+        doReturn(new ArrayList <WebElement> ()).when(driver_mock).findElements(By.cssSelector("blablabla"));
+        doReturn(new ArrayList <Map<String, String>>()).when(app).find_all_widgets(0, 0);
+
+        app.find_all_widgets();
+
+        verify(driver_mock).findElements(By.cssSelector("blablabla"));
+    }
+
+    @Test
+    public void test_find_all_widgets_with_arguments_should_use_css_query_argument () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        Locator spy = mock(Locator.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        App app = spy(new App(driver_mock, spy, executor_mock, false, "blablabla 2"));
+
+        doReturn(new ArrayList <WebElement> ()).when(driver_mock).findElements(By.cssSelector("blablabla 2"));
+        doNothing().when(app).remove_slideshow();
+        doNothing().when(app).remove_all_animations();
+
+        app.find_all_widgets(0, 0);
+
+        verify(driver_mock).findElements(By.cssSelector("blablabla 2"));
+    }
+
 }
