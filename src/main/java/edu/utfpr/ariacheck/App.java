@@ -105,7 +105,7 @@ public class App {
                     elements.addAll(i + 1, possible_new_elements);
                     end += (elements.size() - previous_size);
                 }
-            } catch (StaleElementReferenceException ex) {}
+            } catch (StaleElementReferenceException ex) { ex.printStackTrace(); }
         }
 
         return results;
