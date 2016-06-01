@@ -406,7 +406,7 @@ public class AppTest {
 
         App app = spy(new App(driver_mock, spy, executor_mock));
         InOrder inorder = inOrder(app, executor_mock);
-        doNothing().when(app).sleep_wrapper();
+        app.set_wait(0);
         app.remove_slideshow();
 
         inorder.verify(app).sleep_wrapper();
@@ -419,7 +419,6 @@ public class AppTest {
             "});" +
             "window.slideshowObserver.observe(document.body, {attributes: true, subtree: true});"
         );
-        inorder.verify(app).sleep_wrapper();
         inorder.verify(executor_mock).executeScript(
                 "for (var i = 0; i < 100000; i++) {clearTimeout(i); clearInterval(i);}" +
                 "window.slideshowObserver.disconnect();");
