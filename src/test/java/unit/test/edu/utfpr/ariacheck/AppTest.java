@@ -32,7 +32,7 @@ public class AppTest {
         WebDriver driver_mock = mock(WebDriver.class);
         Locator spy = mock(Locator.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        App app = spy(new App(driver_mock, spy, executor_mock));
+        App app = spy(new App(driver_mock, spy, executor_mock, true));
 
         doNothing().when(app).remove_slideshow();
         doNothing().when(app).remove_all_animations();
