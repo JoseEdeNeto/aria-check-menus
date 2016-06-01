@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 public class PhantomGenerator {
     private Runtime runtime = null;
 
-    private static String PHANTOM_COMMAND = "phantomjs cssgenerator.js ";
+    private static String PHANTOM_COMMAND = "phantomjs RIA_menu_event_controller.js ";
 
     public PhantomGenerator (Runtime runtime) {
         this.runtime = runtime;
