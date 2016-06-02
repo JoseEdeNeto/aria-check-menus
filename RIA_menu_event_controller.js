@@ -23,7 +23,8 @@ page.onInitialized = function () {
                         target.tagName.toLowerCase() + " > " + selector);
                     target = target.parentElement;
                 }
-                window.events.push(selector);
+                if (selector.length > 0)
+                    window.events.push(selector);
             }
             true_addEventListener.apply(this, arguments);
         };
@@ -44,7 +45,8 @@ page.open(system.args[1], function () {
                         target.tagName.toLowerCase() + " > " + selector);
                     target = target.parentElement;
                 }
-                window.events.push(selector);
+                if (selector.length > 0)
+                    window.events.push(selector);
             }
         };
 
