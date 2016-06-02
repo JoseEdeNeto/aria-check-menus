@@ -1,6 +1,5 @@
 package functional.test.ariacheck;
 
-import edu.utfpr.ariacheck.locators.decorators.ActivatorCacheDecorator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
 import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.App;
@@ -92,7 +91,7 @@ public class AppRIAControllerTest {
 
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(driver,
-                new ActivatorCacheDecorator(locator), (JavascriptExecutor) driver, false,
+                locator, (JavascriptExecutor) driver, false,
                 generator.generate("file://" + (new File(".").getCanonicalPath()) + "/fixture/multi-level-menu-01.html"));
         app.set_wait(1);
 
@@ -164,7 +163,7 @@ public class AppRIAControllerTest {
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         App app = new App(
             driver,
-            new ActivatorCacheDecorator(locator),
+            locator,
             (JavascriptExecutor) driver,
             false,
             generator.generate("file://" + (new File(".").getCanonicalPath()) + "/fixture/multi-level-menu-02.html")
