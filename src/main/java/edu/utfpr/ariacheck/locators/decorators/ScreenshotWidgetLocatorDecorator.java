@@ -79,9 +79,13 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
         int left = target.getLocation().getX(),
             top = target.getLocation().getY(),
             height = target.getSize().getHeight(),
-            width = target.getSize().getWidth();
+            width = target.getSize().getWidth(),
+            full_img_width = (left + width > full_image.getWidth() ?
+                    full_image.getWidth() : left + width),
+            full_img_height = (top + height > full_image.getHeight() ?
+                    full_image.getHeight() : top + height);
         sub_image = full_image.getSubimage(
-                left, top, left + width, top + height);
+                left, top, full_img_width, full_img_height);
         File file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter++)) +
                                             "_" + filename + this.image_filetype);
         this.imageio_write_wrapper(sub_image, file);
@@ -99,7 +103,7 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
 
     public void imageio_write_wrapper (BufferedImage buf_image, File file) {
         try {
-            ImageIO.write(buf_image, "jpg", file);
+            ImageIO.write(buf_image, "png", file);
         } catch (IOException ex) {
             System.out.println("Could not save buffered image...");
             ex.printStackTrace();
