@@ -83,6 +83,12 @@ public class Main implements Runnable {
         Locator locator = new HTMLLogLocatorDecorator(
                 screenshot_decorator, "captured_widgets/" + this.start + "_");
         driver.get(this.url);
+        try {
+            Thread.sleep(60000);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ;
+        }
         driver.get(this.url);
         driver.manage().window().maximize();
 
