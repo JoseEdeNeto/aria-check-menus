@@ -167,10 +167,8 @@ public class ScreenshotWidgetLocatorTest {
         doReturn(target_dimension_stub).when(target_stub).getSize();
         doReturn(77).when(target_dimension_stub).getWidth();
         doReturn(98).when(target_dimension_stub).getHeight();
-        doReturn(400).when(buf_mock).getWidth();
-        doReturn(500).when(buf_mock).getHeight();
         doReturn(subimage_buf_stub).when(buf_mock).getSubimage(
-                15, 75, 92, 173);
+                15, 75, 77, 98);
         doReturn(file_stub).when(locator).create_file_wrapper("captured_screens/013_widget_activator.jpg");
         locator.setCounter(13);
         doNothing().when(locator).imageio_write_wrapper(subimage_buf_stub, file_stub);
@@ -178,45 +176,7 @@ public class ScreenshotWidgetLocatorTest {
         locator.save_element_screenshot(target_stub, screenshot_stub, "widget_activator");
 
         verify(locator).imageio_read_wrapper(screenshot_stub);
-        verify(buf_mock).getSubimage(15, 75, 92, 173);
-        verify(locator).imageio_write_wrapper(subimage_buf_stub, file_stub);
-    }
-
-    @Test
-    public void test_save_element_screenshot_should_not_present_higher_dimensions () {
-        Locator locator_mock = mock(Locator.class);
-        TakesScreenshot takes_mock = mock(TakesScreenshot.class);
-        ScreenshotWidgetLocatorDecorator locator = spy(new ScreenshotWidgetLocatorDecorator(
-                    locator_mock, takes_mock, "captured_screens/"));
-        WebElement target_stub = mock(WebElement.class);
-        Point target_location_stub = mock(Point.class);
-        Dimension target_dimension_stub = mock(Dimension.class);
-        File screenshot_stub = mock(File.class);
-        BufferedImage buf_mock = mock(BufferedImage.class),
-                      subimage_buf_stub = mock(BufferedImage.class);
-        File file_stub = mock(File.class);
-
-        doReturn(buf_mock).when(locator).imageio_read_wrapper(screenshot_stub);
-        doReturn(target_location_stub).when(target_stub).getLocation();
-        doReturn(31).when(target_location_stub).getX();
-        doReturn(20).when(target_location_stub).getY();
-        doReturn(target_dimension_stub).when(target_stub).getSize();
-        doReturn(99).when(target_dimension_stub).getWidth();
-        doReturn(90).when(target_dimension_stub).getHeight();
-        doReturn(120).when(buf_mock).getWidth();
-        doReturn(100).when(buf_mock).getHeight();
-        doReturn(subimage_buf_stub).when(buf_mock).getSubimage(
-                31, 20, 130, 110);
-        doReturn(subimage_buf_stub).when(buf_mock).getSubimage(
-                31, 20, 120, 100);
-        doReturn(file_stub).when(locator).create_file_wrapper("captured_screens/013_widget_activator.jpg");
-        locator.setCounter(13);
-        doNothing().when(locator).imageio_write_wrapper(subimage_buf_stub, file_stub);
-
-        locator.save_element_screenshot(target_stub, screenshot_stub, "widget_activator");
-
-        verify(locator).imageio_read_wrapper(screenshot_stub);
-        verify(buf_mock).getSubimage(31, 20, 120, 100);
+        verify(buf_mock).getSubimage(15, 75, 77, 98);
         verify(locator).imageio_write_wrapper(subimage_buf_stub, file_stub);
     }
 }
