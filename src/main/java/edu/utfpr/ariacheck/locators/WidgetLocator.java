@@ -70,8 +70,8 @@ public class WidgetLocator implements Locator {
         this.takes = takes;
     }
 
-    private List <WebElement> find_invisibles (WebElement target) {
-        List <WebElement> child_elements = target.findElements(By.cssSelector("body *"));
+    private List <WebElement> find_invisibles () {
+        List <WebElement> child_elements = this.driver.findElements(By.cssSelector("body *"));
         List <WebElement> invisibles = new ArrayList <WebElement> ();
         List <WebElement> inv_childs;
         WebElement child;
@@ -106,7 +106,8 @@ public class WidgetLocator implements Locator {
         if (target.getLocation().getY() > this.MAX_TOP)
             return null;
 
-        this.invisibles = this.find_invisibles(target);
+        if (this.invisibles == null)
+            this.invisibles = this.find_invisibles();
 
         if (this.takes != null)
             before = this.takes.getScreenshotAs(OutputType.FILE);

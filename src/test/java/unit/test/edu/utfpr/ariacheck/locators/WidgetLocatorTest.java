@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
 import org.mockito.InOrder;
 import org.junit.Test;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -54,7 +53,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
         when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("some html");
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -81,7 +80,7 @@ public class WidgetLocatorTest {
         childs_list.add(mock(WebElement.class));
         when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveToElement(target_mock))
             .thenThrow(mock(MoveTargetOutOfBoundsException.class));
         when(actions_mock.build()).thenReturn(action_mock);
@@ -109,7 +108,7 @@ public class WidgetLocatorTest {
         childs_list.add(mock(WebElement.class));
         when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveToElement(target_mock))
             .thenThrow(mock(StaleElementReferenceException.class));
         when(actions_mock.build()).thenReturn(action_mock);
@@ -149,7 +148,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(5).isDisplayed()).thenReturn(false).thenReturn(true);
         when(childs_list.get(5).getAttribute("outerHTML")).thenReturn("some html");
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -189,7 +188,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(4).isDisplayed()).thenReturn(false).thenReturn(false);
         when(childs_list.get(5).isDisplayed()).thenReturn(false).thenReturn(false);
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -236,7 +235,7 @@ public class WidgetLocatorTest {
         //when(childs_list.get(4).isDisplayed()).thenReturn(false).thenReturn(false);
         //when(childs_list.get(5).isDisplayed()).thenReturn(false).thenReturn(false);
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -279,7 +278,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(4).isDisplayed()).thenReturn(false);
         when(childs_list.get(5).isDisplayed()).thenReturn(false);
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -317,7 +316,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(4).isDisplayed()).thenReturn(true);
         when(childs_list.get(5).isDisplayed()).thenReturn(true);
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -363,7 +362,7 @@ public class WidgetLocatorTest {
             "}";
 
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
@@ -395,7 +394,7 @@ public class WidgetLocatorTest {
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
         InOrder inorder = inOrder(driver_mock, executor_mock);
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         mutations_list.add(mutation_widget);
         when(mutation_widget.getAttribute("outerHTML")).thenReturn("some element");
         when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)")))
@@ -445,7 +444,7 @@ public class WidgetLocatorTest {
         when(mutations_list.get(2).isDisplayed()).thenReturn(true);
         when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>not so cool</div>");
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
@@ -483,7 +482,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("<div><div>Some very cool thing</div></div>");
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
@@ -530,7 +529,7 @@ public class WidgetLocatorTest {
         when(mutations_list.get(2).isDisplayed()).thenReturn(true);
         when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>the coolest and biggest widget</div>");
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
@@ -578,7 +577,7 @@ public class WidgetLocatorTest {
         when(mutations_list.get(2).isDisplayed()).thenReturn(true);
         when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>the coolest and biggest widget</div>");
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
@@ -620,7 +619,7 @@ public class WidgetLocatorTest {
         when(mutations_list.get(0).getAttribute("outerHTML"))
                                   .thenThrow(new StaleElementReferenceException("oops 2"));
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
@@ -658,7 +657,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("<div><div>Some very cool thing</div></div>");
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
@@ -668,7 +667,7 @@ public class WidgetLocatorTest {
         assertEquals(childs_list.get(2).getAttribute("outerHTML"), result.getAttribute("outerHTML"));
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_cache_invisibles_list_in_multiple_calls_to_find_widget () {
         WebDriver driver_mock = mock(WebDriver.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
@@ -692,7 +691,7 @@ public class WidgetLocatorTest {
         when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(true).thenReturn(false).thenThrow(new RuntimeException());
         when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("abo");
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(new ArrayList <WebElement> ());
 
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
@@ -703,10 +702,10 @@ public class WidgetLocatorTest {
         result = locator.find_widget(target_mock);
         assertEquals(null, result);
 
-        verify(target_mock, times(1)).findElements(By.cssSelector("body *"));
+        verify(driver_mock, times(1)).findElements(By.cssSelector("body *"));
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_remove_previously_potential_widgets_from_cache_list () {
         WebDriver driver_mock = mock(WebDriver.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
@@ -731,7 +730,7 @@ public class WidgetLocatorTest {
             .thenThrow(new RuntimeException("The second element should be removed from cache list..."));
         when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("abo");
 
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(new ArrayList <WebElement> ());
 
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
@@ -745,7 +744,7 @@ public class WidgetLocatorTest {
         verify(driver_mock, times(1)).findElements(By.cssSelector("body *"));
     }
 
-    @Test @Ignore
+    @Test
     public void test_widget_locator_should_remove_multiple_potential_widgets_from_cache_list () {
         WebDriver driver_mock = mock(WebDriver.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
@@ -866,7 +865,7 @@ public class WidgetLocatorTest {
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
         when(dimension_mock.getHeight()).thenReturn(90);
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(new ArrayList());
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(new ArrayList());
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
         doNothing().when(action_mock).perform();
@@ -911,7 +910,7 @@ public class WidgetLocatorTest {
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
         when(dimension_mock.getHeight()).thenReturn(90);
-        when(target_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
         doNothing().when(action_mock).perform();

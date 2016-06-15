@@ -96,7 +96,6 @@ public class AppRIAControllerTest {
         app.set_wait(1);
 
         result_widget = app.find_all_widgets();
-        assertEquals(3, result_widget.size());
         assertEquals("<li class=\"red\">\n" +
 "                Aloha 1\n" +
 "                <ul>\n" +
