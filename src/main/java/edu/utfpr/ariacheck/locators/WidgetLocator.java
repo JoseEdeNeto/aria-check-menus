@@ -26,6 +26,7 @@ public class WidgetLocator implements Locator {
     private Actions actions;
     private List <WebElement> invisibles = null;
     private TakesScreenshot takes = null;
+    private List <WebElement> target_cache = new ArrayList <WebElement> ();
 
     private int MAX_TOP = 700;
     private int MAX_WIDTH = 300;
@@ -92,6 +93,10 @@ public class WidgetLocator implements Locator {
         WebElement potential_widget = null;
         File before = null,
              later = null;
+
+        if (this.target_cache.indexOf(target) >= 0)
+            return null;
+        this.target_cache.add(target);
 
         this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
 

@@ -931,5 +931,23 @@ public class WidgetLocatorTest {
         assertEquals(null, result);
     }
 
+    @Test
+    public void test_cache_for_target_in_widget_locator () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        TakesScreenshot takes_mock = mock(TakesScreenshot.class);
+        WebElement target_mock = mock(WebElement.class);
+        Dimension dimension_mock = mock(Dimension.class);
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock, takes_mock);
+
+        doReturn(dimension_mock).when(target_mock).getSize();
+        doReturn(90000).when(dimension_mock).getWidth(); // to ensure nothing will be executed later
+        doReturn(null).when(executor_mock).executeScript(anyString());
+
+        locator.find_widget(target_mock);
+        locator.find_widget(target_mock);
+        verify(executor_mock, times(1)).executeScript(anyString());
+    }
 
 }
