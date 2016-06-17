@@ -228,8 +228,11 @@ public class WidgetLocator implements Locator {
         this.executor.executeScript(WidgetLocator.JS_CLEAN_MUTATION_RECORDS);
         if (potential_widget != null)
             return potential_widget;
+        return this.getVisibilityChanges();
+    }
 
-        potential_widget = null;
+    private WebElement getVisibilityChanges () {
+        WebElement potential_widget = null;
         Iterator <WebElement>iterator = this.invisibles.iterator();
         List <WebElement> inv_childs = null;
         while (iterator.hasNext()) {
