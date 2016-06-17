@@ -160,6 +160,25 @@ public class WidgetLocator implements Locator {
         "    }" +
         "    return _isVisible(this);" +
         "};";
+    private static String JS_RECORD_INVISIBLES =
+        "        window.invisibles = [];" +
+        "        window.all = document.querySelectorAll('body *');" +
+        "        for (var i = 0; i < window.all.length; i++) {" +
+        "            if (window.all[i].isVisible())" +
+        "                window.invisibles.push(window.all[i]);" +
+        "        }" +
+        "        return window.invisibles;";
+    private static String JS_VERIFY_VISIBILITY_CHANGES =
+        "        window.potential_widget = null;" +
+        "        for (var i = 0; i < window.invisibles.length; i++) {" +
+        "            if (window.potential_widget == null && window.invisibles[i].isVisible()) {" +
+        "                window.potential_widget = window.invisibles[i];" +
+        "            } else if (window.invisibles[i].isVisible() &&" +
+        "                       window.invisibles[i].outerHTML.length > window.potential_widget.outerHTML.length) {" +
+        "                window.potential_widget = window.invisibles[i];" +
+        "            }" +
+        "        }" +
+        "        return window.potential_widget;";
 
     public WidgetLocator (WebDriver driver, JavascriptExecutor executor, Actions actions) {
         this.driver = driver;
@@ -170,21 +189,7 @@ public class WidgetLocator implements Locator {
     }
 
     private List <WebElement> find_invisibles () {
-        List <WebElement> child_elements = this.driver.findElements(By.cssSelector("body *"));
-        List <WebElement> invisibles = new ArrayList <WebElement> ();
-        List <WebElement> inv_childs;
-        WebElement child;
-
-        for (int i = 0; i < child_elements.size(); i++) {
-            child = child_elements.get(i);
-            if ( ! child.isDisplayed()) {
-                invisibles.add(child);
-                inv_childs = child.findElements(By.cssSelector("*"));
-                invisibles.addAll(inv_childs);
-                i += inv_childs.size();
-            }
-        }
-        return invisibles;
+        return (List <WebElement>) this.executor.executeScript(WidgetLocator.JS_RECORD_INVISIBLES);
     }
 
     public WebElement find_widget (WebElement target) {
@@ -200,8 +205,7 @@ public class WidgetLocator implements Locator {
         if (target.getSize().getWidth() > this.MAX_WIDTH || target.getSize().getHeight() > this.MAX_HEIGHT)
             return null;
 
-        if (this.invisibles == null)
-            this.invisibles = this.find_invisibles();
+        this.invisibles = this.find_invisibles();
 
         try {
             this.actions.moveToElement(target)
@@ -232,31 +236,6 @@ public class WidgetLocator implements Locator {
     }
 
     private WebElement getVisibilityChanges () {
-        WebElement potential_widget = null;
-        Iterator <WebElement>iterator = this.invisibles.iterator();
-        List <WebElement> inv_childs = null;
-        while (iterator.hasNext()) {
-            WebElement inv = (WebElement) (iterator.next());
-            try {
-                if (inv.isDisplayed()) {
-                    if ((potential_widget == null && inv.getAttribute("outerHTML") != null) ||
-                            potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length())
-                        potential_widget = inv;
-                    iterator.remove();
-                } else {
-                    inv_childs = inv.findElements(By.cssSelector("*"));
-                    for (int i = 0; i < inv_childs.size() && iterator.hasNext(); i++) {
-                        iterator.next();
-                        System.out.print("S");
-                    }
-                }
-            } catch (StaleElementReferenceException ex) {
-                System.out.println("stale exception in visible list");
-            }
-            System.out.print(".");
-        }
-        System.out.println("");
-
-        return potential_widget;
+        return (WebElement) this.executor.executeScript(WidgetLocator.JS_VERIFY_VISIBILITY_CHANGES);
     }
 }
