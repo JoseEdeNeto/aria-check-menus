@@ -826,26 +826,6 @@ public class WidgetLocatorTest {
     }
 
     @Test
-    public void test_widget_locator_should_only_inspect_elements_which_are_in_the_beginning_of_the_webpage () {
-        WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        WebElement target_mock = mock(WebElement.class), result;
-        Dimension dimension_mock = mock(Dimension.class);
-        Point point_mock = new Point(0, 800);
-
-        when(target_mock.getLocation()).thenReturn(point_mock);
-        when(target_mock.getSize()).thenReturn(dimension_mock);
-        when(dimension_mock.getWidth()).thenReturn(100);
-        when(dimension_mock.getHeight()).thenReturn(100);
-
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
-        result = locator.find_widget(target_mock);
-
-        assertEquals(null, result);
-    }
-
-    @Test
     public void test_cache_for_target_in_widget_locator () {
         WebDriver driver_mock = mock(WebDriver.class);
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);

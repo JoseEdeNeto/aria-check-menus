@@ -91,9 +91,6 @@ public class WidgetLocator implements Locator {
         if (target.getSize().getWidth() > this.MAX_WIDTH || target.getSize().getHeight() > this.MAX_HEIGHT)
             return null;
 
-        if (target.getLocation().getY() > this.MAX_TOP)
-            return null;
-
         if (this.invisibles == null)
             this.invisibles = this.find_invisibles();
 
