@@ -45,6 +45,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -73,6 +74,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -101,6 +103,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -129,6 +132,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -168,6 +172,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor).executeScript(anyString());
 
         InOrder inorder = inOrder(actions_mock, action_mock);
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
@@ -213,6 +218,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -260,6 +266,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -298,6 +305,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -337,6 +345,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -387,6 +396,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -426,6 +436,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -467,6 +478,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -505,6 +517,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -552,6 +565,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -600,6 +614,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -642,6 +657,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -680,6 +696,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -718,6 +735,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -757,6 +775,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(200);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
@@ -798,6 +817,7 @@ public class WidgetLocatorTest {
         when(dimension_mock.getWidth()).thenReturn(500);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         result = locator.find_widget(target_mock);
@@ -818,6 +838,7 @@ public class WidgetLocatorTest {
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
         when(dimension_mock.getHeight()).thenReturn(200);
+        doReturn(null).when(executor_mock).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         result = locator.find_widget(target_mock);
@@ -832,15 +853,240 @@ public class WidgetLocatorTest {
         Actions actions_mock = mock(Actions.class);
         WebElement target_mock = mock(WebElement.class);
         Dimension dimension_mock = mock(Dimension.class);
+        doReturn(null).when(executor_mock).executeScript(anyString());
+
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
 
         doReturn(dimension_mock).when(target_mock).getSize();
         doReturn(90000).when(dimension_mock).getWidth(); // to ensure nothing will be executed later
-        doReturn(null).when(executor_mock).executeScript(anyString());
 
         locator.find_widget(target_mock);
         locator.find_widget(target_mock);
-        verify(executor_mock, times(1)).executeScript(anyString());
+        verify(executor_mock, times(2)).executeScript(anyString());
+    }
+
+    @Test
+    public void test_isVisible_js_function_called_in_constructor () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+
+        doReturn(null).when(executor_mock).executeScript(
+        "/**" +
+        " * Author: Jason Farrell" +
+        " * Author URI: http://useallfive.com/" +
+        " *" +
+        " * Description: Checks if a DOM element is truly visible." +
+        " * Package URL: https://github.com/UseAllFive/true-visibility" +
+        " */" +
+        "Element.prototype.isVisible = function() {" +
+        "    'use strict';" +
+        "    /**" +
+        "     * Checks if a DOM element is visible. Takes into" +
+        "     * consideration its parents and overflow." +
+        "     *" +
+        "     * @param (el)      the DOM element to check if is visible" +
+        "     *" +
+        "     * These params are optional that are sent in recursively," +
+        "     * you typically won't use these:" +
+        "     *" +
+        "     * @param (t)       Top corner position number" +
+        "     * @param (r)       Right corner position number" +
+        "     * @param (b)       Bottom corner position number" +
+        "     * @param (l)       Left corner position number" +
+        "     * @param (w)       Element width number" +
+        "     * @param (h)       Element height number" +
+        "     */" +
+        "    function _isVisible(el, t, r, b, l, w, h) {" +
+        "        var p = el.parentNode," +
+        "                VISIBLE_PADDING = 2;" +
+        "        if ( !_elementInDocument(el) ) {" +
+        "            return false;" +
+        "        }" +
+        "        //-- Return true for document node" +
+        "        if ( 9 === p.nodeType ) {" +
+        "            return true;" +
+        "        }" +
+        "        //-- Return false if our element is invisible" +
+        "        if (" +
+        "             '0' === _getStyle(el, 'opacity') ||" +
+        "             'none' === _getStyle(el, 'display') ||" +
+        "             'hidden' === _getStyle(el, 'visibility')" +
+        "        ) {" +
+        "            return false;" +
+        "        }" +
+        "        if (" +
+        "            'undefined' === typeof(t) ||" +
+        "            'undefined' === typeof(r) ||" +
+        "            'undefined' === typeof(b) ||" +
+        "            'undefined' === typeof(l) ||" +
+        "            'undefined' === typeof(w) ||" +
+        "            'undefined' === typeof(h)" +
+        "        ) {" +
+        "            t = el.offsetTop;" +
+        "            l = el.offsetLeft;" +
+        "            b = t + el.offsetHeight;" +
+        "            r = l + el.offsetWidth;" +
+        "            w = el.offsetWidth;" +
+        "            h = el.offsetHeight;" +
+        "        }" +
+        "        //-- If we have a parent, let's continue:" +
+        "        if ( p ) {" +
+        "            //-- Check if the parent can hide its children." +
+        "            if ( ('hidden' === _getStyle(p, 'overflow') || 'scroll' === _getStyle(p, 'overflow')) ) {" +
+        "                //-- Only check if the offset is different for the parent" +
+        "                if (" +
+        "                    //-- If the target element is to the right of the parent elm" +
+        "                    l + VISIBLE_PADDING > p.offsetWidth + p.scrollLeft ||" +
+        "                    //-- If the target element is to the left of the parent elm" +
+        "                    l + w - VISIBLE_PADDING < p.scrollLeft ||" +
+        "                    //-- If the target element is under the parent elm" +
+        "                    t + VISIBLE_PADDING > p.offsetHeight + p.scrollTop ||" +
+        "                    //-- If the target element is above the parent elm" +
+        "                    t + h - VISIBLE_PADDING < p.scrollTop" +
+        "                ) {" +
+        "                    //-- Our target element is out of bounds:" +
+        "                    return false;" +
+        "                }" +
+        "            }" +
+        "            //-- Add the offset parent's left/top coords to our element's offset:" +
+        "            if ( el.offsetParent === p ) {" +
+        "                l += p.offsetLeft;" +
+        "                t += p.offsetTop;" +
+        "            }" +
+        "            //-- Let's recursively check upwards:" +
+        "            return _isVisible(p, t, r, b, l, w, h);" +
+        "        }" +
+        "        return true;" +
+        "    }" +
+        "    //-- Cross browser method to get style properties:" +
+        "    function _getStyle(el, property) {" +
+        "        if ( window.getComputedStyle ) {" +
+        "            return document.defaultView.getComputedStyle(el,null)[property];" +
+        "        }" +
+        "        if ( el.currentStyle ) {" +
+        "            return el.currentStyle[property];" +
+        "        }" +
+        "    }" +
+        "    function _elementInDocument(element) {" +
+        "        while (element = element.parentNode) {" +
+        "            if (element == document) {" +
+        "                    return true;" +
+        "            }" +
+        "        }" +
+        "        return false;" +
+        "    }" +
+        "    return _isVisible(this);" +
+        "};");
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
+
+        verify(executor_mock).executeScript(
+        "/**" +
+        " * Author: Jason Farrell" +
+        " * Author URI: http://useallfive.com/" +
+        " *" +
+        " * Description: Checks if a DOM element is truly visible." +
+        " * Package URL: https://github.com/UseAllFive/true-visibility" +
+        " */" +
+        "Element.prototype.isVisible = function() {" +
+        "    'use strict';" +
+        "    /**" +
+        "     * Checks if a DOM element is visible. Takes into" +
+        "     * consideration its parents and overflow." +
+        "     *" +
+        "     * @param (el)      the DOM element to check if is visible" +
+        "     *" +
+        "     * These params are optional that are sent in recursively," +
+        "     * you typically won't use these:" +
+        "     *" +
+        "     * @param (t)       Top corner position number" +
+        "     * @param (r)       Right corner position number" +
+        "     * @param (b)       Bottom corner position number" +
+        "     * @param (l)       Left corner position number" +
+        "     * @param (w)       Element width number" +
+        "     * @param (h)       Element height number" +
+        "     */" +
+        "    function _isVisible(el, t, r, b, l, w, h) {" +
+        "        var p = el.parentNode," +
+        "                VISIBLE_PADDING = 2;" +
+        "        if ( !_elementInDocument(el) ) {" +
+        "            return false;" +
+        "        }" +
+        "        //-- Return true for document node" +
+        "        if ( 9 === p.nodeType ) {" +
+        "            return true;" +
+        "        }" +
+        "        //-- Return false if our element is invisible" +
+        "        if (" +
+        "             '0' === _getStyle(el, 'opacity') ||" +
+        "             'none' === _getStyle(el, 'display') ||" +
+        "             'hidden' === _getStyle(el, 'visibility')" +
+        "        ) {" +
+        "            return false;" +
+        "        }" +
+        "        if (" +
+        "            'undefined' === typeof(t) ||" +
+        "            'undefined' === typeof(r) ||" +
+        "            'undefined' === typeof(b) ||" +
+        "            'undefined' === typeof(l) ||" +
+        "            'undefined' === typeof(w) ||" +
+        "            'undefined' === typeof(h)" +
+        "        ) {" +
+        "            t = el.offsetTop;" +
+        "            l = el.offsetLeft;" +
+        "            b = t + el.offsetHeight;" +
+        "            r = l + el.offsetWidth;" +
+        "            w = el.offsetWidth;" +
+        "            h = el.offsetHeight;" +
+        "        }" +
+        "        //-- If we have a parent, let's continue:" +
+        "        if ( p ) {" +
+        "            //-- Check if the parent can hide its children." +
+        "            if ( ('hidden' === _getStyle(p, 'overflow') || 'scroll' === _getStyle(p, 'overflow')) ) {" +
+        "                //-- Only check if the offset is different for the parent" +
+        "                if (" +
+        "                    //-- If the target element is to the right of the parent elm" +
+        "                    l + VISIBLE_PADDING > p.offsetWidth + p.scrollLeft ||" +
+        "                    //-- If the target element is to the left of the parent elm" +
+        "                    l + w - VISIBLE_PADDING < p.scrollLeft ||" +
+        "                    //-- If the target element is under the parent elm" +
+        "                    t + VISIBLE_PADDING > p.offsetHeight + p.scrollTop ||" +
+        "                    //-- If the target element is above the parent elm" +
+        "                    t + h - VISIBLE_PADDING < p.scrollTop" +
+        "                ) {" +
+        "                    //-- Our target element is out of bounds:" +
+        "                    return false;" +
+        "                }" +
+        "            }" +
+        "            //-- Add the offset parent's left/top coords to our element's offset:" +
+        "            if ( el.offsetParent === p ) {" +
+        "                l += p.offsetLeft;" +
+        "                t += p.offsetTop;" +
+        "            }" +
+        "            //-- Let's recursively check upwards:" +
+        "            return _isVisible(p, t, r, b, l, w, h);" +
+        "        }" +
+        "        return true;" +
+        "    }" +
+        "    //-- Cross browser method to get style properties:" +
+        "    function _getStyle(el, property) {" +
+        "        if ( window.getComputedStyle ) {" +
+        "            return document.defaultView.getComputedStyle(el,null)[property];" +
+        "        }" +
+        "        if ( el.currentStyle ) {" +
+        "            return el.currentStyle[property];" +
+        "        }" +
+        "    }" +
+        "    function _elementInDocument(element) {" +
+        "        while (element = element.parentNode) {" +
+        "            if (element == document) {" +
+        "                    return true;" +
+        "            }" +
+        "        }" +
+        "        return false;" +
+        "    }" +
+        "    return _isVisible(this);" +
+        "};");
     }
 
 }
