@@ -84,7 +84,7 @@ public class Main implements Runnable {
                 screenshot_decorator, "captured_widgets/" + this.start + "_");
         driver.get(this.url);
         try {
-            Thread.sleep(60000);
+            Thread.sleep(15000);
         } catch (Exception e) {
             e.printStackTrace();
             return ;
