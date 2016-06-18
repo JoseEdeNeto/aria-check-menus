@@ -169,7 +169,6 @@ public class WidgetLocator implements Locator {
     }
 
     public WebElement find_widget (WebElement target) {
-        List <WebElement> mutation_widgets;
         WebElement potential_widget = null;
 
         if (this.target_cache.indexOf(target) >= 0)
@@ -193,7 +192,16 @@ public class WidgetLocator implements Locator {
             return null;
         }
 
-        mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"));
+        potential_widget = this.getMutation();
+        this.executor.executeScript(WidgetLocator.JS_CLEAN_MUTATION_RECORDS);
+        if (potential_widget != null)
+            return potential_widget;
+        return this.getVisibilityChanges();
+    }
+
+    private WebElement getMutation () {
+        List <WebElement> mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"));
+        WebElement potential_widget = null;
 
         for (WebElement mutation : mutation_widgets) {
             try {
@@ -205,10 +213,7 @@ public class WidgetLocator implements Locator {
                 System.out.println("stale exception in mutation list");
             }
         }
-        this.executor.executeScript(WidgetLocator.JS_CLEAN_MUTATION_RECORDS);
-        if (potential_widget != null)
-            return potential_widget;
-        return this.getVisibilityChanges();
+        return potential_widget;
     }
 
     private WebElement getVisibilityChanges () {
