@@ -43,17 +43,33 @@ public class WidgetLocatorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
-        Point point_mock = new Point(0, 0);
-        when(target_mock.getLocation()).thenReturn(point_mock);
         doReturn(null).when(executor).executeScript(anyString());
 
         WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         childs_list.add(mock(WebElement.class));
-        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
+        when(childs_list.get(0).isDisplayed()).thenReturn(true);
         when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("some html");
-
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
+        doReturn(childs_list).when(executor).executeScript(
+        "        window.invisibles = [];" +
+        "        window.all = document.querySelectorAll('body *');" +
+        "        for (var i = 0; i < window.all.length; i++) {" +
+        "            if (window.all[i].isVisible())" +
+        "                window.invisibles.push(window.all[i]);" +
+        "        }" +
+        "        return window.invisibles;");
+        doReturn(childs_list.get(0))
+            .when(executor).executeScript(
+        "        window.potential_widget = null;" +
+        "        for (var i = 0; i < window.invisibles.length; i++) {" +
+        "            if (window.potential_widget == null && window.invisibles[i].isVisible()) {" +
+        "                window.potential_widget = window.invisibles[i];" +
+        "            } else if (window.invisibles[i].isVisible() &&" +
+        "                       window.invisibles[i].outerHTML.length > window.potential_widget.outerHTML.length) {" +
+        "                window.potential_widget = window.invisibles[i];" +
+        "            }" +
+        "        }" +
+        "        return window.potential_widget;");
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
@@ -117,140 +133,6 @@ public class WidgetLocatorTest {
 
         result = locator.find_widget(target_mock);
         assertEquals(null, result);
-    }
-
-    @Test
-    public void test_widget_locator_should_return_only_initially_invisible_elements () {
-        WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        Action action_mock = mock(Action.class);
-        WebElement target_mock = mock(WebElement.class),
-                   result;
-        Dimension dimension_mock = mock(Dimension.class);
-        when(target_mock.getSize()).thenReturn(dimension_mock);
-        when(dimension_mock.getWidth()).thenReturn(200);
-        Point point_mock = new Point(0, 0);
-        when(target_mock.getLocation()).thenReturn(point_mock);
-        doReturn(null).when(executor).executeScript(anyString());
-
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
-        List <WebElement> childs_list = new ArrayList <WebElement> ();
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-
-        when(childs_list.get(0).isDisplayed()).thenReturn(true);
-        when(childs_list.get(1).isDisplayed()).thenReturn(true);
-        when(childs_list.get(2).isDisplayed()).thenReturn(true);
-        when(childs_list.get(3).isDisplayed()).thenReturn(true);
-        when(childs_list.get(4).isDisplayed()).thenReturn(true);
-        when(childs_list.get(5).isDisplayed()).thenReturn(false).thenReturn(true);
-        when(childs_list.get(5).getAttribute("outerHTML")).thenReturn("some html");
-
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
-        when(actions_mock.build()).thenReturn(action_mock);
-
-        result = locator.find_widget(target_mock);
-        assertEquals(childs_list.get(5), result);
-    }
-
-    @Test
-    public void test_widget_locator_should_return_only_initially_invisible_elements_which_became_visible () {
-        WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        Action action_mock = mock(Action.class);
-        WebElement target_mock = mock(WebElement.class),
-                   result;
-        Dimension dimension_mock = mock(Dimension.class);
-        when(target_mock.getSize()).thenReturn(dimension_mock);
-        when(dimension_mock.getWidth()).thenReturn(200);
-        Point point_mock = new Point(0, 0);
-        when(target_mock.getLocation()).thenReturn(point_mock);
-        doReturn(null).when(executor).executeScript(anyString());
-
-        InOrder inorder = inOrder(actions_mock, action_mock);
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
-        List <WebElement> childs_list = new ArrayList <WebElement> ();
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-
-        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(false);
-        when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(false);
-        when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(true);
-        when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("some html");
-        when(childs_list.get(3).isDisplayed()).thenReturn(false).thenReturn(false);
-        when(childs_list.get(4).isDisplayed()).thenReturn(false).thenReturn(false);
-        when(childs_list.get(5).isDisplayed()).thenReturn(false).thenReturn(false);
-
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
-        when(actions_mock.build()).thenReturn(action_mock);
-
-        result = locator.find_widget(target_mock);
-
-        inorder.verify(actions_mock).moveToElement(target_mock);
-        inorder.verify(actions_mock).build();
-        inorder.verify(action_mock).perform();
-
-        assertEquals(childs_list.get(2), result);
-    }
-
-    @Test
-    public void test_widget_locator_should_return_return_newly_visible_element_without_looking_in_child_elements () {
-        WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        Action action_mock = mock(Action.class);
-        WebElement target_mock = mock(WebElement.class),
-                   result;
-        Dimension dimension_mock = mock(Dimension.class);
-        when(target_mock.getSize()).thenReturn(dimension_mock);
-        when(dimension_mock.getWidth()).thenReturn(200);
-        Point point_mock = new Point(0, 0);
-        when(target_mock.getLocation()).thenReturn(point_mock);
-        doReturn(null).when(executor).executeScript(anyString());
-
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor, actions_mock);
-        List <WebElement> childs_list = new ArrayList <WebElement> ();
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-        childs_list.add(mock(WebElement.class));
-
-        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(false);
-        when(childs_list.get(0).findElements(By.cssSelector("*"))).thenReturn(childs_list.subList(1, 2));
-        //when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(false);
-        when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(true);
-        when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("some html");
-        when(childs_list.get(2).findElements(By.cssSelector("*"))).thenReturn(new ArrayList <WebElement> ());
-        when(childs_list.get(3).isDisplayed()).thenReturn(false).thenReturn(false);
-        when(childs_list.get(3).findElements(By.cssSelector("*"))).thenReturn(childs_list.subList(4, 6));
-        //when(childs_list.get(4).isDisplayed()).thenReturn(false).thenReturn(false);
-        //when(childs_list.get(5).isDisplayed()).thenReturn(false).thenReturn(false);
-
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
-        when(actions_mock.build()).thenReturn(action_mock);
-
-        result = locator.find_widget(target_mock);
-
-        verify(childs_list.get(1), never()).isDisplayed();
-        verify(childs_list.get(4), never()).isDisplayed();
-        verify(childs_list.get(5), never()).isDisplayed();
-
-        assertEquals(childs_list.get(2), result);
     }
 
     @Test
@@ -432,75 +314,36 @@ public class WidgetLocatorTest {
                    mutation_widget = mock(WebElement.class),
                    result;
         Dimension dimension_mock = mock(Dimension.class);
-        when(target_mock.getSize()).thenReturn(dimension_mock);
-        when(dimension_mock.getWidth()).thenReturn(200);
-        Point point_mock = new Point(0, 0);
-        when(target_mock.getLocation()).thenReturn(point_mock);
-        doReturn(null).when(executor_mock).executeScript(anyString());
-
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         childs_list.add(mock(WebElement.class));
-        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
-        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("<div><div>Some very cool thing</div></div>");
+        when(target_mock.getSize()).thenReturn(dimension_mock);
+        when(dimension_mock.getWidth()).thenReturn(200);
+        when(dimension_mock.getHeight()).thenReturn(50);
+
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
         mutations_list.add(mock(WebElement.class));
-        when(mutations_list.get(0).isDisplayed()).thenReturn(true);
-        when(mutations_list.get(0).getAttribute("outerHTML")).thenReturn("<div>nothing</div>");
+        when(mutations_list.get(0).getAttribute("outerHTML"))
+            .thenReturn("<div>nothing</div>");
         mutations_list.add(mock(WebElement.class));
-        when(mutations_list.get(1).isDisplayed()).thenReturn(true);
-        when(mutations_list.get(1).getAttribute("outerHTML")).thenReturn("<div>small</div>");
+        when(mutations_list.get(1).getAttribute("outerHTML"))
+            .thenReturn("<div>small</div>");
         mutations_list.add(mock(WebElement.class));
-        when(mutations_list.get(2).isDisplayed()).thenReturn(true);
-        when(mutations_list.get(2).getAttribute("outerHTML")).thenReturn("<div>not so cool</div>");
+        when(mutations_list.get(2).getAttribute("outerHTML"))
+            .thenReturn("<div>not so cool</div>");
 
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
+        when(executor_mock.executeScript(anyString()))
+            .thenReturn(childs_list)
+            .thenReturn(null);
+        when(driver_mock.findElements(By
+                    .cssSelector(".mutation_widget:not(.old_mutation)")))
+                    .thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
         result = locator.find_widget(target_mock);
 
         assertEquals(mutations_list.get(2), result);
-    }
-
-    @Test
-    public void test_widget_locator_should_return_only_the_biggest_changed_element_from_the_visibles () {
-        WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        Action action_mock = mock(Action.class);
-        WebElement target_mock = mock(WebElement.class),
-                   mutation_widget = mock(WebElement.class),
-                   result;
-        Dimension dimension_mock = mock(Dimension.class);
-        when(target_mock.getSize()).thenReturn(dimension_mock);
-        when(dimension_mock.getWidth()).thenReturn(200);
-        Point point_mock = new Point(0, 0);
-        when(target_mock.getLocation()).thenReturn(point_mock);
-        doReturn(null).when(executor_mock).executeScript(anyString());
-
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
-        List <WebElement> childs_list = new ArrayList <WebElement> ();
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
-        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("<div>Some cool thing</div>");
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(true);
-        when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("<div><div>Some cool thing</div></div>");
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(false);
-        when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("<div><div>Some very cool thing</div></div>");
-        List <WebElement> mutations_list = new ArrayList <WebElement> ();
-
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
-        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
-        when(actions_mock.build()).thenReturn(action_mock);
-
-        result = locator.find_widget(target_mock);
-
-        assertEquals(childs_list.get(1), result);
     }
 
     @Test
@@ -619,190 +462,41 @@ public class WidgetLocatorTest {
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
         List <WebElement> childs_list = new ArrayList <WebElement> ();
         childs_list.add(mock(WebElement.class));
-        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(true);
-        when(childs_list.get(0).getAttribute("outerHTML")).thenThrow(new StaleElementReferenceException("oops"));
         childs_list.add(mock(WebElement.class));
-        when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(true);
-        when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("<div><div>Some cool thing</div></div>");
         childs_list.add(mock(WebElement.class));
-        when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(false);
-        when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("insignificant content");
         List <WebElement> mutations_list = new ArrayList <WebElement> ();
         mutations_list.add(mock(WebElement.class));
-        when(mutations_list.get(0).isDisplayed()).thenReturn(true);
         when(mutations_list.get(0).getAttribute("outerHTML"))
-                                  .thenThrow(new StaleElementReferenceException("oops 2"));
+                                  .thenThrow(new StaleElementReferenceException("oops2"));
 
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
+        doReturn(childs_list).when(executor_mock).executeScript(
+            "        window.invisibles = [];" +
+            "        window.all = document.querySelectorAll('body *');" +
+            "        for (var i = 0; i < window.all.length; i++) {" +
+            "            if (window.all[i].isVisible())" +
+            "                window.invisibles.push(window.all[i]);" +
+            "        }" +
+            "        return window.invisibles;");
+        doReturn(childs_list.get(1)).when(executor_mock).executeScript(
+        "        window.potential_widget = null;" +
+        "        for (var i = 0; i < window.invisibles.length; i++) {" +
+        "            if (window.potential_widget == null && window.invisibles[i].isVisible()) {" +
+        "                window.potential_widget = window.invisibles[i];" +
+        "            } else if (window.invisibles[i].isVisible() &&" +
+        "                       window.invisibles[i].outerHTML.length > window.potential_widget.outerHTML.length) {" +
+        "                window.potential_widget = window.invisibles[i];" +
+        "            }" +
+        "        }" +
+        "        return window.potential_widget;");
+        when(driver_mock.findElements(By
+                        .cssSelector(".mutation_widget:not(.old_mutation)")))
+                        .thenReturn(mutations_list);
         when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
         when(actions_mock.build()).thenReturn(action_mock);
 
         result = locator.find_widget(target_mock);
 
         assertEquals(childs_list.get(1), result);
-    }
-
-    @Test
-    public void test_widget_locator_should_deal_with_stale_exception_in_invisibles_list () {
-        WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        Action action_mock = mock(Action.class);
-        WebElement target_mock = mock(WebElement.class),
-                   mutation_widget = mock(WebElement.class),
-                   result;
-        Dimension dimension_mock = mock(Dimension.class);
-        when(target_mock.getSize()).thenReturn(dimension_mock);
-        when(dimension_mock.getWidth()).thenReturn(200);
-        Point point_mock = new Point(0, 0);
-        when(target_mock.getLocation()).thenReturn(point_mock);
-        doReturn(null).when(executor_mock).executeScript(anyString());
-
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
-        List <WebElement> childs_list = new ArrayList <WebElement> ();
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenThrow(new StaleElementReferenceException("should not come here"));
-        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("<div>Some cool thing</div>");
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(false);
-        when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("<div><div>Some cool thing</div></div>");
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(true);
-        when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("<div><div>Some very cool thing</div></div>");
-        List <WebElement> mutations_list = new ArrayList <WebElement> ();
-
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(mutations_list);
-        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
-        when(actions_mock.build()).thenReturn(action_mock);
-
-        result = locator.find_widget(target_mock);
-
-        assertEquals(childs_list.get(2).getAttribute("outerHTML"), result.getAttribute("outerHTML"));
-    }
-
-    @Test
-    public void test_widget_locator_should_cache_invisibles_list_in_multiple_calls_to_find_widget () {
-        WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        Action action_mock = mock(Action.class);
-        WebElement target_mock = mock(WebElement.class),
-                   mutation_widget = mock(WebElement.class),
-                   result;
-        Dimension dimension_mock = mock(Dimension.class);
-        when(target_mock.getSize()).thenReturn(dimension_mock);
-        when(dimension_mock.getWidth()).thenReturn(200);
-        Point point_mock = new Point(0, 0);
-        when(target_mock.getLocation()).thenReturn(point_mock);
-        doReturn(null).when(executor_mock).executeScript(anyString());
-
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
-        List <WebElement> childs_list = new ArrayList <WebElement> ();
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(false).thenReturn(false).thenThrow(new RuntimeException());
-        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("abobrinha");
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(true).thenReturn(false).thenThrow(new RuntimeException());
-        when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("abo");
-
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(new ArrayList <WebElement> ());
-
-        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
-        when(actions_mock.build()).thenReturn(action_mock);
-
-        result = locator.find_widget(target_mock);
-        assertEquals(childs_list.get(1), result);
-        result = locator.find_widget(target_mock);
-        assertEquals(null, result);
-
-        verify(driver_mock, times(1)).findElements(By.cssSelector("body *"));
-    }
-
-    @Test
-    public void test_widget_locator_should_remove_previously_potential_widgets_from_cache_list () {
-        WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        Action action_mock = mock(Action.class);
-        WebElement target_mock = mock(WebElement.class),
-                   mutation_widget = mock(WebElement.class),
-                   result;
-        Dimension dimension_mock = mock(Dimension.class);
-        when(target_mock.getSize()).thenReturn(dimension_mock);
-        when(dimension_mock.getWidth()).thenReturn(200);
-        Point point_mock = new Point(0, 0);
-        when(target_mock.getLocation()).thenReturn(point_mock);
-        doReturn(null).when(executor_mock).executeScript(anyString());
-
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
-        List <WebElement> childs_list = new ArrayList <WebElement> ();
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(false).thenReturn(false).thenThrow(new RuntimeException());
-        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("abobrinha");
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(true)
-            .thenThrow(new RuntimeException("The second element should be removed from cache list..."));
-        when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("abo");
-
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(new ArrayList <WebElement> ());
-
-        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
-        when(actions_mock.build()).thenReturn(action_mock);
-
-        result = locator.find_widget(target_mock);
-        assertEquals(childs_list.get(1), result);
-        result = locator.find_widget(target_mock);
-        assertEquals(null, result);
-
-        verify(driver_mock, times(1)).findElements(By.cssSelector("body *"));
-    }
-
-    @Test
-    public void test_widget_locator_should_remove_multiple_potential_widgets_from_cache_list () {
-        WebDriver driver_mock = mock(WebDriver.class);
-        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
-        Actions actions_mock = mock(Actions.class);
-        Action action_mock = mock(Action.class);
-        WebElement target_mock = mock(WebElement.class),
-                   mutation_widget = mock(WebElement.class),
-                   result;
-        Dimension dimension_mock = mock(Dimension.class);
-        when(target_mock.getSize()).thenReturn(dimension_mock);
-        when(dimension_mock.getWidth()).thenReturn(200);
-        Point point_mock = new Point(0, 0);
-        when(target_mock.getLocation()).thenReturn(point_mock);
-        doReturn(null).when(executor_mock).executeScript(anyString());
-
-        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
-        List <WebElement> childs_list = new ArrayList <WebElement> ();
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(0).isDisplayed()).thenReturn(false).thenReturn(false).thenReturn(false).thenThrow(new RuntimeException());
-        when(childs_list.get(0).getAttribute("outerHTML")).thenReturn("abobrinha");
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(1).isDisplayed()).thenReturn(false).thenReturn(true)
-            .thenThrow(new RuntimeException("The second element should be removed from cache list..."));
-        when(childs_list.get(1).getAttribute("outerHTML")).thenReturn("abo");
-        childs_list.add(mock(WebElement.class));
-        when(childs_list.get(2).isDisplayed()).thenReturn(false).thenReturn(true)
-            .thenThrow(new RuntimeException("The second element should be removed from cache list..."));
-        when(childs_list.get(2).getAttribute("outerHTML")).thenReturn("<a href=\"#\">abo</a>");
-
-        when(driver_mock.findElements(By.cssSelector("body *"))).thenReturn(childs_list);
-        when(driver_mock.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"))).thenReturn(new ArrayList <WebElement> ());
-
-        when(actions_mock.moveToElement(target_mock)).thenReturn(actions_mock);
-        when(actions_mock.build()).thenReturn(action_mock);
-
-        result = locator.find_widget(target_mock);
-        assertEquals(childs_list.get(2), result);
-        result = locator.find_widget(target_mock);
-        assertEquals(null, result);
-
-        verify(driver_mock, times(1)).findElements(By.cssSelector("body *"));
     }
 
     @Test
@@ -880,34 +574,15 @@ public class WidgetLocatorTest {
         " * Package URL: https://github.com/UseAllFive/true-visibility" +
         " */" +
         "Element.prototype.isVisible = function() {" +
-        "    'use strict';" +
-        "    /**" +
-        "     * Checks if a DOM element is visible. Takes into" +
-        "     * consideration its parents and overflow." +
-        "     *" +
-        "     * @param (el)      the DOM element to check if is visible" +
-        "     *" +
-        "     * These params are optional that are sent in recursively," +
-        "     * you typically won't use these:" +
-        "     *" +
-        "     * @param (t)       Top corner position number" +
-        "     * @param (r)       Right corner position number" +
-        "     * @param (b)       Bottom corner position number" +
-        "     * @param (l)       Left corner position number" +
-        "     * @param (w)       Element width number" +
-        "     * @param (h)       Element height number" +
-        "     */" +
         "    function _isVisible(el, t, r, b, l, w, h) {" +
         "        var p = el.parentNode," +
         "                VISIBLE_PADDING = 2;" +
         "        if ( !_elementInDocument(el) ) {" +
         "            return false;" +
         "        }" +
-        "        //-- Return true for document node" +
         "        if ( 9 === p.nodeType ) {" +
         "            return true;" +
         "        }" +
-        "        //-- Return false if our element is invisible" +
         "        if (" +
         "             '0' === _getStyle(el, 'opacity') ||" +
         "             'none' === _getStyle(el, 'display') ||" +
@@ -915,6 +590,7 @@ public class WidgetLocatorTest {
         "        ) {" +
         "            return false;" +
         "        }" +
+        "" +
         "        if (" +
         "            'undefined' === typeof(t) ||" +
         "            'undefined' === typeof(r) ||" +
@@ -930,36 +606,26 @@ public class WidgetLocatorTest {
         "            w = el.offsetWidth;" +
         "            h = el.offsetHeight;" +
         "        }" +
-        "        //-- If we have a parent, let's continue:" +
         "        if ( p ) {" +
-        "            //-- Check if the parent can hide its children." +
         "            if ( ('hidden' === _getStyle(p, 'overflow') || 'scroll' === _getStyle(p, 'overflow')) ) {" +
-        "                //-- Only check if the offset is different for the parent" +
         "                if (" +
-        "                    //-- If the target element is to the right of the parent elm" +
         "                    l + VISIBLE_PADDING > p.offsetWidth + p.scrollLeft ||" +
-        "                    //-- If the target element is to the left of the parent elm" +
         "                    l + w - VISIBLE_PADDING < p.scrollLeft ||" +
-        "                    //-- If the target element is under the parent elm" +
         "                    t + VISIBLE_PADDING > p.offsetHeight + p.scrollTop ||" +
-        "                    //-- If the target element is above the parent elm" +
         "                    t + h - VISIBLE_PADDING < p.scrollTop" +
         "                ) {" +
-        "                    //-- Our target element is out of bounds:" +
         "                    return false;" +
         "                }" +
         "            }" +
-        "            //-- Add the offset parent's left/top coords to our element's offset:" +
         "            if ( el.offsetParent === p ) {" +
         "                l += p.offsetLeft;" +
         "                t += p.offsetTop;" +
         "            }" +
-        "            //-- Let's recursively check upwards:" +
         "            return _isVisible(p, t, r, b, l, w, h);" +
         "        }" +
         "        return true;" +
         "    }" +
-        "    //-- Cross browser method to get style properties:" +
+        "" +
         "    function _getStyle(el, property) {" +
         "        if ( window.getComputedStyle ) {" +
         "            return document.defaultView.getComputedStyle(el,null)[property];" +
@@ -968,6 +634,7 @@ public class WidgetLocatorTest {
         "            return el.currentStyle[property];" +
         "        }" +
         "    }" +
+        "" +
         "    function _elementInDocument(element) {" +
         "        while (element = element.parentNode) {" +
         "            if (element == document) {" +
@@ -976,7 +643,9 @@ public class WidgetLocatorTest {
         "        }" +
         "        return false;" +
         "    }" +
+        "" +
         "    return _isVisible(this);" +
+        "" +
         "};");
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
 
@@ -989,34 +658,15 @@ public class WidgetLocatorTest {
         " * Package URL: https://github.com/UseAllFive/true-visibility" +
         " */" +
         "Element.prototype.isVisible = function() {" +
-        "    'use strict';" +
-        "    /**" +
-        "     * Checks if a DOM element is visible. Takes into" +
-        "     * consideration its parents and overflow." +
-        "     *" +
-        "     * @param (el)      the DOM element to check if is visible" +
-        "     *" +
-        "     * These params are optional that are sent in recursively," +
-        "     * you typically won't use these:" +
-        "     *" +
-        "     * @param (t)       Top corner position number" +
-        "     * @param (r)       Right corner position number" +
-        "     * @param (b)       Bottom corner position number" +
-        "     * @param (l)       Left corner position number" +
-        "     * @param (w)       Element width number" +
-        "     * @param (h)       Element height number" +
-        "     */" +
         "    function _isVisible(el, t, r, b, l, w, h) {" +
         "        var p = el.parentNode," +
         "                VISIBLE_PADDING = 2;" +
         "        if ( !_elementInDocument(el) ) {" +
         "            return false;" +
         "        }" +
-        "        //-- Return true for document node" +
         "        if ( 9 === p.nodeType ) {" +
         "            return true;" +
         "        }" +
-        "        //-- Return false if our element is invisible" +
         "        if (" +
         "             '0' === _getStyle(el, 'opacity') ||" +
         "             'none' === _getStyle(el, 'display') ||" +
@@ -1024,6 +674,7 @@ public class WidgetLocatorTest {
         "        ) {" +
         "            return false;" +
         "        }" +
+        "" +
         "        if (" +
         "            'undefined' === typeof(t) ||" +
         "            'undefined' === typeof(r) ||" +
@@ -1039,36 +690,26 @@ public class WidgetLocatorTest {
         "            w = el.offsetWidth;" +
         "            h = el.offsetHeight;" +
         "        }" +
-        "        //-- If we have a parent, let's continue:" +
         "        if ( p ) {" +
-        "            //-- Check if the parent can hide its children." +
         "            if ( ('hidden' === _getStyle(p, 'overflow') || 'scroll' === _getStyle(p, 'overflow')) ) {" +
-        "                //-- Only check if the offset is different for the parent" +
         "                if (" +
-        "                    //-- If the target element is to the right of the parent elm" +
         "                    l + VISIBLE_PADDING > p.offsetWidth + p.scrollLeft ||" +
-        "                    //-- If the target element is to the left of the parent elm" +
         "                    l + w - VISIBLE_PADDING < p.scrollLeft ||" +
-        "                    //-- If the target element is under the parent elm" +
         "                    t + VISIBLE_PADDING > p.offsetHeight + p.scrollTop ||" +
-        "                    //-- If the target element is above the parent elm" +
         "                    t + h - VISIBLE_PADDING < p.scrollTop" +
         "                ) {" +
-        "                    //-- Our target element is out of bounds:" +
         "                    return false;" +
         "                }" +
         "            }" +
-        "            //-- Add the offset parent's left/top coords to our element's offset:" +
         "            if ( el.offsetParent === p ) {" +
         "                l += p.offsetLeft;" +
         "                t += p.offsetTop;" +
         "            }" +
-        "            //-- Let's recursively check upwards:" +
         "            return _isVisible(p, t, r, b, l, w, h);" +
         "        }" +
         "        return true;" +
         "    }" +
-        "    //-- Cross browser method to get style properties:" +
+        "" +
         "    function _getStyle(el, property) {" +
         "        if ( window.getComputedStyle ) {" +
         "            return document.defaultView.getComputedStyle(el,null)[property];" +
@@ -1077,6 +718,7 @@ public class WidgetLocatorTest {
         "            return el.currentStyle[property];" +
         "        }" +
         "    }" +
+        "" +
         "    function _elementInDocument(element) {" +
         "        while (element = element.parentNode) {" +
         "            if (element == document) {" +
@@ -1085,7 +727,9 @@ public class WidgetLocatorTest {
         "        }" +
         "        return false;" +
         "    }" +
+        "" +
         "    return _isVisible(this);" +
+        "" +
         "};");
     }
 
