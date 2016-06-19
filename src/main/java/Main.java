@@ -67,6 +67,16 @@ public class Main implements Runnable {
         profile.setPreference("browser.translation.neverForLanguages", "en-us,pt-br,en");
         profile.setPreference("browser.translation.ui.show", "false");
         FirefoxDriver driver = new FirefoxDriver();
+        driver.get(this.url);
+        try {
+            Thread.sleep(60000);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ;
+        }
+        driver.get(this.url);
+        driver.manage().window().maximize();
+
         ScreenshotWidgetLocatorDecorator screenshot_decorator = new ScreenshotWidgetLocatorDecorator(
             new ActivatorCacheDecorator(
                 new WidgetLocator(
@@ -82,16 +92,6 @@ public class Main implements Runnable {
             screenshot_decorator.set_image_filetype(".png");
         Locator locator = new HTMLLogLocatorDecorator(
                 screenshot_decorator, "captured_widgets/" + this.start + "_");
-        driver.get(this.url);
-        try {
-            Thread.sleep(15000);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ;
-        }
-        driver.get(this.url);
-        driver.manage().window().maximize();
-
         App app = new App(
                 driver, locator, (JavascriptExecutor) driver, true);
         app.find_all_widgets(this.start, this.end);
