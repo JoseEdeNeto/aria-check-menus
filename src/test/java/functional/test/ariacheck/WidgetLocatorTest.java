@@ -3,6 +3,7 @@ package functional.test.ariacheck;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.Ignore;
@@ -184,4 +185,24 @@ public class WidgetLocatorTest {
         driver.quit();
     }
 
+    @Test
+    public void Widget_locator_should_identify_widgets_based_on_visibility_and_viewport () throws IOException {
+        FirefoxDriver driver = new FirefoxDriver();
+        Actions actions = new Actions((WebDriver) driver);
+        WebElement target, result_widget;
+
+        driver.get("file://" + (new File(".").getCanonicalPath()) + "/fixture/viewport_visibility01.html");
+        target = driver.findElement(By.cssSelector("#menu01"));
+
+        WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
+        result_widget = locator.find_widget(target);
+
+        assertNotNull(result_widget);
+        assertEquals("<ul class=\"menu\">\n" +
+"                    <li>Something</li>\n" +
+"                    <li>Some other thing</li>\n" +
+"                </ul>", result_widget.getAttribute("outerHTML"));
+
+        driver.quit();
+    }
 }
