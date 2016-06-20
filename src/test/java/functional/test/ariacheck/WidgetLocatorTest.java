@@ -198,10 +198,7 @@ public class WidgetLocatorTest {
         result_widget = locator.find_widget(target);
 
         assertNotNull(result_widget);
-        assertEquals("<ul class=\"menu\">\n" +
-"                    <li>Something</li>\n" +
-"                    <li>Some other thing</li>\n" +
-"                </ul>", result_widget.getAttribute("outerHTML"));
+        assertEquals("menu", result_widget.getAttribute("className"));
 
         driver.quit();
     }
