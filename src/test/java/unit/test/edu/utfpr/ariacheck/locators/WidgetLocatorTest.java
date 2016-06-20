@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import java.io.File;
+import java.io.FileReader;
 
 @RunWith(JUnit4.class)
 public class WidgetLocatorTest {
@@ -565,172 +566,10 @@ public class WidgetLocatorTest {
         JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
         Actions actions_mock = mock(Actions.class);
 
-        doReturn(null).when(executor_mock).executeScript(
-        "/**" +
-        " * Author: Jason Farrell" +
-        " * Author URI: http://useallfive.com/" +
-        " *" +
-        " * Description: Checks if a DOM element is truly visible." +
-        " * Package URL: https://github.com/UseAllFive/true-visibility" +
-        " */" +
-        "Element.prototype.isVisible = function() {" +
-        "    function _isVisible(el, t, r, b, l, w, h) {" +
-        "        var p = el.parentNode," +
-        "                VISIBLE_PADDING = 2;" +
-        "        if ( !_elementInDocument(el) ) {" +
-        "            return false;" +
-        "        }" +
-        "        if ( 9 === p.nodeType ) {" +
-        "            return true;" +
-        "        }" +
-        "        if (" +
-        "             '0' === _getStyle(el, 'opacity') ||" +
-        "             'none' === _getStyle(el, 'display') ||" +
-        "             'hidden' === _getStyle(el, 'visibility')" +
-        "        ) {" +
-        "            return false;" +
-        "        }" +
-        "" +
-        "        if (" +
-        "            'undefined' === typeof(t) ||" +
-        "            'undefined' === typeof(r) ||" +
-        "            'undefined' === typeof(b) ||" +
-        "            'undefined' === typeof(l) ||" +
-        "            'undefined' === typeof(w) ||" +
-        "            'undefined' === typeof(h)" +
-        "        ) {" +
-        "            t = el.offsetTop;" +
-        "            l = el.offsetLeft;" +
-        "            b = t + el.offsetHeight;" +
-        "            r = l + el.offsetWidth;" +
-        "            w = el.offsetWidth;" +
-        "            h = el.offsetHeight;" +
-        "        }" +
-        "        if ( p ) {" +
-        "            if ( ('hidden' === _getStyle(p, 'overflow') || 'scroll' === _getStyle(p, 'overflow')) ) {" +
-        "                if (" +
-        "                    l + VISIBLE_PADDING > p.offsetWidth + p.scrollLeft ||" +
-        "                    l + w - VISIBLE_PADDING < p.scrollLeft ||" +
-        "                    t + VISIBLE_PADDING > p.offsetHeight + p.scrollTop ||" +
-        "                    t + h - VISIBLE_PADDING < p.scrollTop" +
-        "                ) {" +
-        "                    return false;" +
-        "                }" +
-        "            }" +
-        "            if ( el.offsetParent === p ) {" +
-        "                l += p.offsetLeft;" +
-        "                t += p.offsetTop;" +
-        "            }" +
-        "            return _isVisible(p, t, r, b, l, w, h);" +
-        "        }" +
-        "        return true;" +
-        "    }" +
-        "" +
-        "    function _getStyle(el, property) {" +
-        "        if ( window.getComputedStyle ) {" +
-        "            return document.defaultView.getComputedStyle(el,null)[property];" +
-        "        }" +
-        "        if ( el.currentStyle ) {" +
-        "            return el.currentStyle[property];" +
-        "        }" +
-        "    }" +
-        "" +
-        "    function _elementInDocument(element) {" +
-        "        while (element = element.parentNode) {" +
-        "            if (element == document) {" +
-        "                    return true;" +
-        "            }" +
-        "        }" +
-        "        return false;" +
-        "    }" +
-        "" +
-        "    return _isVisible(this);" +
-        "" +
-        "};");
+        doReturn(null).when(executor_mock).executeScript(anyString());
         WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock);
 
-        verify(executor_mock).executeScript(
-        "/**" +
-        " * Author: Jason Farrell" +
-        " * Author URI: http://useallfive.com/" +
-        " *" +
-        " * Description: Checks if a DOM element is truly visible." +
-        " * Package URL: https://github.com/UseAllFive/true-visibility" +
-        " */" +
-        "Element.prototype.isVisible = function() {" +
-        "    function _isVisible(el, t, r, b, l, w, h) {" +
-        "        var p = el.parentNode," +
-        "                VISIBLE_PADDING = 2;" +
-        "        if ( !_elementInDocument(el) ) {" +
-        "            return false;" +
-        "        }" +
-        "        if ( 9 === p.nodeType ) {" +
-        "            return true;" +
-        "        }" +
-        "        if (" +
-        "             '0' === _getStyle(el, 'opacity') ||" +
-        "             'none' === _getStyle(el, 'display') ||" +
-        "             'hidden' === _getStyle(el, 'visibility')" +
-        "        ) {" +
-        "            return false;" +
-        "        }" +
-        "" +
-        "        if (" +
-        "            'undefined' === typeof(t) ||" +
-        "            'undefined' === typeof(r) ||" +
-        "            'undefined' === typeof(b) ||" +
-        "            'undefined' === typeof(l) ||" +
-        "            'undefined' === typeof(w) ||" +
-        "            'undefined' === typeof(h)" +
-        "        ) {" +
-        "            t = el.offsetTop;" +
-        "            l = el.offsetLeft;" +
-        "            b = t + el.offsetHeight;" +
-        "            r = l + el.offsetWidth;" +
-        "            w = el.offsetWidth;" +
-        "            h = el.offsetHeight;" +
-        "        }" +
-        "        if ( p ) {" +
-        "            if ( ('hidden' === _getStyle(p, 'overflow') || 'scroll' === _getStyle(p, 'overflow')) ) {" +
-        "                if (" +
-        "                    l + VISIBLE_PADDING > p.offsetWidth + p.scrollLeft ||" +
-        "                    l + w - VISIBLE_PADDING < p.scrollLeft ||" +
-        "                    t + VISIBLE_PADDING > p.offsetHeight + p.scrollTop ||" +
-        "                    t + h - VISIBLE_PADDING < p.scrollTop" +
-        "                ) {" +
-        "                    return false;" +
-        "                }" +
-        "            }" +
-        "            if ( el.offsetParent === p ) {" +
-        "                l += p.offsetLeft;" +
-        "                t += p.offsetTop;" +
-        "            }" +
-        "            return _isVisible(p, t, r, b, l, w, h);" +
-        "        }" +
-        "        return true;" +
-        "    }" +
-        "" +
-        "    function _getStyle(el, property) {" +
-        "        if ( window.getComputedStyle ) {" +
-        "            return document.defaultView.getComputedStyle(el,null)[property];" +
-        "        }" +
-        "        if ( el.currentStyle ) {" +
-        "            return el.currentStyle[property];" +
-        "        }" +
-        "    }" +
-        "" +
-        "    function _elementInDocument(element) {" +
-        "        while (element = element.parentNode) {" +
-        "            if (element == document) {" +
-        "                    return true;" +
-        "            }" +
-        "        }" +
-        "        return false;" +
-        "    }" +
-        "" +
-        "    return _isVisible(this);" +
-        "" +
-        "};");
+        verify(executor_mock).executeScript(anyString());
     }
 
 }

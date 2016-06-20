@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -53,89 +55,6 @@ public class WidgetLocator implements Locator {
         "for (var i = 0; i < mutation_widget.length; i++)" +
         "    mutation_widget[i].className = mutation_widget[i].className" +
         "                                           .replace(\"mutation_widget\",\"old_mutation\");";
-    private static String JS_ISVISIBLE_METHOD =
-        "/**" +
-        " * Author: Jason Farrell" +
-        " * Author URI: http://useallfive.com/" +
-        " *" +
-        " * Description: Checks if a DOM element is truly visible." +
-        " * Package URL: https://github.com/UseAllFive/true-visibility" +
-        " */" +
-        "Element.prototype.isVisible = function() {" +
-        "    function _isVisible(el, t, r, b, l, w, h) {" +
-        "        var p = el.parentNode," +
-        "                VISIBLE_PADDING = 2;" +
-        "        if ( !_elementInDocument(el) ) {" +
-        "            return false;" +
-        "        }" +
-        "        if ( 9 === p.nodeType ) {" +
-        "            return true;" +
-        "        }" +
-        "        if (" +
-        "             '0' === _getStyle(el, 'opacity') ||" +
-        "             'none' === _getStyle(el, 'display') ||" +
-        "             'hidden' === _getStyle(el, 'visibility')" +
-        "        ) {" +
-        "            return false;" +
-        "        }" +
-        "" +
-        "        if (" +
-        "            'undefined' === typeof(t) ||" +
-        "            'undefined' === typeof(r) ||" +
-        "            'undefined' === typeof(b) ||" +
-        "            'undefined' === typeof(l) ||" +
-        "            'undefined' === typeof(w) ||" +
-        "            'undefined' === typeof(h)" +
-        "        ) {" +
-        "            t = el.offsetTop;" +
-        "            l = el.offsetLeft;" +
-        "            b = t + el.offsetHeight;" +
-        "            r = l + el.offsetWidth;" +
-        "            w = el.offsetWidth;" +
-        "            h = el.offsetHeight;" +
-        "        }" +
-        "        if ( p ) {" +
-        "            if ( ('hidden' === _getStyle(p, 'overflow') || 'scroll' === _getStyle(p, 'overflow')) ) {" +
-        "                if (" +
-        "                    l + VISIBLE_PADDING > p.offsetWidth + p.scrollLeft ||" +
-        "                    l + w - VISIBLE_PADDING < p.scrollLeft ||" +
-        "                    t + VISIBLE_PADDING > p.offsetHeight + p.scrollTop ||" +
-        "                    t + h - VISIBLE_PADDING < p.scrollTop" +
-        "                ) {" +
-        "                    return false;" +
-        "                }" +
-        "            }" +
-        "            if ( el.offsetParent === p ) {" +
-        "                l += p.offsetLeft;" +
-        "                t += p.offsetTop;" +
-        "            }" +
-        "            return _isVisible(p, t, r, b, l, w, h);" +
-        "        }" +
-        "        return true;" +
-        "    }" +
-        "" +
-        "    function _getStyle(el, property) {" +
-        "        if ( window.getComputedStyle ) {" +
-        "            return document.defaultView.getComputedStyle(el,null)[property];" +
-        "        }" +
-        "        if ( el.currentStyle ) {" +
-        "            return el.currentStyle[property];" +
-        "        }" +
-        "    }" +
-        "" +
-        "    function _elementInDocument(element) {" +
-        "        while (element = element.parentNode) {" +
-        "            if (element == document) {" +
-        "                    return true;" +
-        "            }" +
-        "        }" +
-        "        return false;" +
-        "    }" +
-        "" +
-        "    return _isVisible(this);" +
-        "" +
-        "};";
-
     private static String JS_RECORD_INVISIBLES =
         "        window.invisibles = [];" +
         "        window.all = document.querySelectorAll('body *');" +
@@ -161,7 +80,7 @@ public class WidgetLocator implements Locator {
         this.actions = actions;
         this.executor = executor;
         this.invisibles = null;
-        this.executor.executeScript(WidgetLocator.JS_ISVISIBLE_METHOD);
+        this.executor.executeScript(this.getVisibilityJS());
     }
 
     private List <WebElement> find_invisibles () {
@@ -218,5 +137,24 @@ public class WidgetLocator implements Locator {
 
     private WebElement getVisibilityChanges () {
         return (WebElement) this.executor.executeScript(WidgetLocator.JS_VERIFY_VISIBILITY_CHANGES);
+    }
+
+    private String getVisibilityJS () {
+        try {
+            BufferedReader br = new BufferedReader(
+                    new FileReader(
+                        new File(getClass().getClassLoader()
+                                           .getResource("visibility.js")
+                                           .getPath())));
+            String js_content = "", aux;
+            while ((aux = br.readLine()) != null) {
+                js_content += aux + "\n";
+            }
+            br.close();
+            return js_content;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return "";
+        }
     }
 }
