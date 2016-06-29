@@ -31,7 +31,7 @@ public class WidgetLocator implements Locator {
     private int MAX_TOP = 700;
     private int MAX_WIDTH = 300;
     private int MAX_HEIGHT = 100;
-    private double SIG_DIFFERENCE = 0.05;
+    private double SIG_DIFFERENCE = 0.5;
 
     private static String JS_SET_MUTATION_OBSERVER =
         "if ( ! window.observer) {" +
@@ -206,8 +206,9 @@ public class WidgetLocator implements Locator {
                 diff += Math.abs(b1 - b2);
             }
         }
-        double window_size = (this.driver.manage().window().getSize().getHeight() *
-                              this.driver.manage().window().getSize().getWidth());
+        //double window_size = (this.driver.manage().window().getSize().getHeight() *
+        //                      this.driver.manage().window().getSize().getWidth());
+        double window_size = this.MAX_WIDTH * this.MAX_HEIGHT;
         //double n = width1 * height1 * 3;
         double n = window_size * 3;
         double p = diff / n / 255.0;
