@@ -179,4 +179,38 @@ public class ScreenshotWidgetLocatorTest {
         verify(buf_mock).getSubimage(15, 75, 77, 98);
         verify(locator).imageio_write_wrapper(subimage_buf_stub, file_stub);
     }
+
+    @Test
+    public void test_should_save_1_width_or_height_screenshot_at_least () {
+        Locator locator_mock = mock(Locator.class);
+        TakesScreenshot takes_mock = mock(TakesScreenshot.class);
+        ScreenshotWidgetLocatorDecorator locator = spy(new ScreenshotWidgetLocatorDecorator(
+                    locator_mock, takes_mock, "captured_screens/"));
+        WebElement target_stub = mock(WebElement.class);
+        Point target_location_stub = mock(Point.class);
+        Dimension target_dimension_stub = mock(Dimension.class);
+        File screenshot_stub = mock(File.class);
+        BufferedImage buf_mock = mock(BufferedImage.class),
+                      subimage_buf_stub = mock(BufferedImage.class);
+        File file_stub = mock(File.class);
+
+        doReturn(buf_mock).when(locator).imageio_read_wrapper(screenshot_stub);
+        doReturn(target_location_stub).when(target_stub).getLocation();
+        doReturn(15).when(target_location_stub).getX();
+        doReturn(75).when(target_location_stub).getY();
+        doReturn(target_dimension_stub).when(target_stub).getSize();
+        doReturn(0).when(target_dimension_stub).getWidth();
+        doReturn(0).when(target_dimension_stub).getHeight();
+        doReturn(subimage_buf_stub).when(buf_mock).getSubimage(
+                15, 75, 1, 1);
+        doReturn(file_stub).when(locator).create_file_wrapper("captured_screens/013_widget_activator.jpg");
+        locator.setCounter(13);
+        doNothing().when(locator).imageio_write_wrapper(subimage_buf_stub, file_stub);
+
+        locator.save_element_screenshot(target_stub, screenshot_stub, "widget_activator");
+
+        verify(locator).imageio_read_wrapper(screenshot_stub);
+        verify(buf_mock).getSubimage(15, 75, 1, 1);
+        verify(locator).imageio_write_wrapper(subimage_buf_stub, file_stub);
+    }
 }
