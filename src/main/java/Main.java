@@ -95,11 +95,15 @@ public class Main implements Runnable {
         driver.get(this.url);
         driver.manage().window().maximize();
 
-        App app = new App(
-                driver, locator, (JavascriptExecutor) driver, true,
-                generator.generate(this.url));
-        app.find_all_widgets(this.start, this.end);
-        driver.quit();
+        try {
+            App app = new App(
+                    driver, locator, (JavascriptExecutor) driver, true,
+                    generator.generate(this.url));
+            app.find_all_widgets(this.start, this.end);
+            driver.quit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
