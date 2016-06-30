@@ -30,6 +30,7 @@ page.onInitialized = function () {
         };
     });
 };
+page.settings.webSecurityEnabled = false;
 page.open(system.args[1], function () {
     console.log(page.evaluate(function () {
         // onmouseover listeners
@@ -52,7 +53,8 @@ page.open(system.args[1], function () {
 
         // CSS :hover selectors
         for (var i = 0; i < document.styleSheets.length; i++) {
-            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
+            for (var j = 0; document.styleSheets[i].cssRules &&
+                            j < document.styleSheets[i].cssRules.length; j++) {
                 var rules = document.styleSheets[i].cssRules[j].selectorText.split(",");
                 for (var k = 0; k < rules.length; k++) {
                     if (rules[k].search(":hover") > 0)
