@@ -19,7 +19,7 @@ page.onInitialized = function () {
 
                 while (target.parentElement != null) {
                     selector = (selector.length === 0 ?
-                        target.tagName.toLowerCase() + " " + selector :
+                        target.tagName.toLowerCase() :
                         target.tagName.toLowerCase() + " > " + selector);
                     target = target.parentElement;
                 }
@@ -42,7 +42,7 @@ page.open(system.args[1], function () {
 
                 while (target.parentElement != null) {
                     selector = (selector.length === 0 ?
-                        target.tagName.toLowerCase() + " " + selector :
+                        target.tagName.toLowerCase() :
                         target.tagName.toLowerCase() + " > " + selector);
                     target = target.parentElement;
                 }
@@ -57,8 +57,13 @@ page.open(system.args[1], function () {
                             j < document.styleSheets[i].cssRules.length; j++) {
                 var rules = document.styleSheets[i].cssRules[j].selectorText.split(",");
                 for (var k = 0; k < rules.length; k++) {
-                    if (rules[k].search(":hover") > 0)
-                        window.events.push(rules[k].substring(0, rules[k].search(":hover")));
+                    if (rules[k].search(":hover") > 0) {
+                        var s = rules[k].substring(0, rules[k].search(":hover")).trim();
+                        try {
+                            document.querySelector(s);
+                        } catch (e) { s += " *"; }
+                        window.events.push(s);
+                    }
                 };
             }
         }

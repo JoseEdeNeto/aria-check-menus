@@ -96,9 +96,16 @@ public class Main implements Runnable {
         driver.manage().window().maximize();
 
         try {
+            String css_selector = "";
+            int count = 0;
+            while (css_selector.length() == 0 && count < 10) {
+                System.out.println("tentando css generator");
+                css_selector = generator.generate(this.url).trim();
+                count++;
+            }
+
             App app = new App(
-                    driver, locator, (JavascriptExecutor) driver, true,
-                    generator.generate(this.url));
+                    driver, locator, (JavascriptExecutor) driver, true, css_selector);
             app.find_all_widgets(this.start, this.end);
             driver.quit();
         } catch (Exception e) {
