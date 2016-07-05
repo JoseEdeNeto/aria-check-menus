@@ -6,7 +6,7 @@ if (system.args.length < 2) {
     console.log("Arguments missing...");
     phantom.exit();
 }
-
+page.onError = function () {};
 page.onInitialized = function () {
     page.evaluate(function () {
         var true_addEventListener = HTMLElement.prototype.addEventListener,
@@ -30,6 +30,7 @@ page.onInitialized = function () {
         };
     });
 };
+page.settings.XSSAuditingEnabled = true;
 page.settings.webSecurityEnabled = false;
 page.open(system.args[1], function () {
     console.log(page.evaluate(function () {
@@ -55,16 +56,18 @@ page.open(system.args[1], function () {
         for (var i = 0; i < document.styleSheets.length; i++) {
             for (var j = 0; document.styleSheets[i].cssRules &&
                             j < document.styleSheets[i].cssRules.length; j++) {
-                var rules = document.styleSheets[i].cssRules[j].selectorText.split(",");
-                for (var k = 0; k < rules.length; k++) {
-                    if (rules[k].search(":hover") > 0) {
-                        var s = rules[k].substring(0, rules[k].search(":hover")).trim();
-                        try {
-                            document.querySelector(s);
-                        } catch (e) { s += " *"; }
-                        window.events.push(s);
-                    }
-                };
+                if (document.styleSheets[i].cssRules[j].selectorText) {
+                    var rules = document.styleSheets[i].cssRules[j].selectorText.split(",");
+                    for (var k = 0; k < rules.length; k++) {
+                        if (rules[k].search(":hover") > 0) {
+                            var s = rules[k].substring(0, rules[k].search(":hover")).trim();
+                            try {
+                                document.querySelector(s);
+                            } catch (e) { s += " *"; }
+                            window.events.push(s);
+                        }
+                    };
+                }
             }
         }
         return window.events.join(",");
