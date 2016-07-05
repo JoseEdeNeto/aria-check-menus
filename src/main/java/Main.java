@@ -9,7 +9,6 @@ import org.openqa.selenium.interactions.Actions;
 
 import edu.utfpr.ariacheck.App;
 import edu.utfpr.ariacheck.cache.CacheSingleton;
-import edu.utfpr.ariacheck.cssgenerator.PhantomGenerator;
 import edu.utfpr.ariacheck.locators.decorators.ScreenshotWidgetLocatorDecorator;
 import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
@@ -62,7 +61,6 @@ public class Main implements Runnable {
     }
 
     public void run () {
-        PhantomGenerator generator = new PhantomGenerator(Runtime.getRuntime());
         FirefoxProfile profile = new FirefoxProfile();
         profile.setPreference("intl.accept_languages", "en-us,pt-br,en");
         profile.setPreference("browser.translation.detectLanguage", "false");
@@ -95,16 +93,8 @@ public class Main implements Runnable {
         driver.manage().window().maximize();
 
         try {
-            String css_selector = "";
-            int count = 0;
-            while (css_selector.length() == 0 && count < 10) {
-                System.out.println("tentando css generator");
-                css_selector = generator.generate(this.url).trim();
-                count++;
-            }
-
             App app = new App(
-                    driver, locator, (JavascriptExecutor) driver, true, css_selector);
+                    driver, locator, (JavascriptExecutor) driver, true);
             app.find_all_widgets(this.start, this.end);
             driver.quit();
         } catch (Exception e) {
