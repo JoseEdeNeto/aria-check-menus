@@ -359,6 +359,14 @@ public class WidgetLocatorTest {
             "        });" +
             "    });" +
             "    window.observer.observe(document.body, {childList: true, subtree: true});" +
+            "    document.body.addEventListener('mouseover', function (ev) { " +
+            "      var aux = ev.target; " +
+            "      while(aux != null) { " +
+            "        if (aux.className.search('aria-check-hovered') === -1) " +
+            "          aux.className += ' aria-check-hovered'; " +
+            "        aux = aux.parentElement; " +
+            "      } " +
+            "    }, true); " +
             "}";
 
 
@@ -928,6 +936,23 @@ public class WidgetLocatorTest {
         locator.find_widget(target_mock);
         locator.find_widget(target_mock);
         verify(executor_mock, times(1)).executeScript(anyString());
+    }
+
+    @Test
+    public void test_should_not_hover_if_already_hovered_with_classname () {
+        WebDriver driver_mock = mock(WebDriver.class);
+        JavascriptExecutor executor_mock = mock(JavascriptExecutor.class);
+        Actions actions_mock = mock(Actions.class);
+        TakesScreenshot takes_mock = mock(TakesScreenshot.class);
+        WebElement target_mock = mock(WebElement.class),
+                   result;
+        Dimension dimension_mock = mock(Dimension.class);
+        WidgetLocator locator = new WidgetLocator(driver_mock, executor_mock, actions_mock, takes_mock);
+
+        doReturn("something aria-check-hovered").when(target_mock).getAttribute("className");
+        result = locator.find_widget(target_mock);
+
+        assertEquals(null, result);
     }
 
 }

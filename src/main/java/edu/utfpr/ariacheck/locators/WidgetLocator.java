@@ -47,6 +47,14 @@ public class WidgetLocator implements Locator {
         "        });" +
         "    });" +
         "    window.observer.observe(document.body, {childList: true, subtree: true});" +
+        "    document.body.addEventListener('mouseover', function (ev) { " +
+        "      var aux = ev.target; " +
+        "      while(aux != null) { " +
+        "        if (aux.className.search('aria-check-hovered') === -1) " +
+        "          aux.className += ' aria-check-hovered'; " +
+        "        aux = aux.parentElement; " +
+        "      } " +
+        "    }, true); " +
         "}";
     private static String JS_CLEAN_MUTATION_RECORDS =
         "var mutation_widget = document.querySelectorAll(\".mutation_widget\");" +
@@ -96,6 +104,9 @@ public class WidgetLocator implements Locator {
         if (this.target_cache.indexOf(target) >= 0)
             return null;
         this.target_cache.add(target);
+
+        if (target.getAttribute("className") != null && target.getAttribute("className").contains("aria-check-hovered"))
+            return null;
 
         this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
 

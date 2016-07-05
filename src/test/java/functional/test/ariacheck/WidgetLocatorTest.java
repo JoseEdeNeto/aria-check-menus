@@ -169,7 +169,7 @@ public class WidgetLocatorTest {
         WidgetLocator locator = new WidgetLocator((WebDriver) driver, (JavascriptExecutor) driver, actions);
         result_widget = locator.find_widget(target);
 
-        assertEquals("<ul>\n" +
+        assertEquals("<ul class=\" aria-check-hovered\">\n" +
 "                    <li class=\"gray 1\">Nothing here</li>\n" +
 "                    <li class=\"gray 2\">\n" +
 "                        Aloha 2\n" +

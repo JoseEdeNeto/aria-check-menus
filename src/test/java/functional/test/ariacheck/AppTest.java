@@ -185,7 +185,7 @@ public class AppTest {
 "                    <li class=\"gray 9\">Nothing here</li>\n" +
 "                </ul>\n" +
 "            </li>" ,result_widget.get(0).get("activator"));
-        assertEquals("<ul>\n" +
+        assertEquals("<ul class=\" aria-check-hovered\">\n" +
 "                    <li class=\"gray 1\">Nothing here</li>\n" +
 "                    <li class=\"gray 2\">\n" +
 "                        Aloha 2\n" +
@@ -205,7 +205,7 @@ public class AppTest {
 "                            <li class=\"gray 5\">Something level 2</li>\n" +
 "                        </ul>\n" +
 "                    </li>" ,result_widget.get(1).get("activator"));
-        assertEquals("<ul>\n" +
+        assertEquals("<ul class=\" aria-check-hovered\">\n" +
 "                            <li class=\"gray 3\">Something level 2</li>\n" +
 "                            <li class=\"gray 4\">Something level 2</li>\n" +
 "                            <li class=\"gray 5\">Something level 2</li>\n" +
@@ -217,7 +217,7 @@ public class AppTest {
 "                    <li class=\"gray 11\">Nothing</li>\n" +
 "                </ul>\n" +
 "            </li>", result_widget.get(2).get("activator"));
-        assertEquals("<ul>\n" +
+        assertEquals("<ul class=\" aria-check-hovered\">\n" +
 "                    <li class=\"gray 10\">Nothing</li>\n" +
 "                    <li class=\"gray 11\">Nothing</li>\n" +
 "                </ul>", result_widget.get(2).get("widget"));
