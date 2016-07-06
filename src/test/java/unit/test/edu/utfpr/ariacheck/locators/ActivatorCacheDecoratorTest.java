@@ -39,6 +39,7 @@ public class ActivatorCacheDecoratorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        when(dimension_mock.getHeight()).thenReturn(99);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
 
@@ -87,6 +88,7 @@ public class ActivatorCacheDecoratorTest {
         Dimension dimension_mock = mock(Dimension.class);
         when(target_mock.getSize()).thenReturn(dimension_mock);
         when(dimension_mock.getWidth()).thenReturn(200);
+        when(dimension_mock.getHeight()).thenReturn(99);
         Point point_mock = new Point(0, 0);
         when(target_mock.getLocation()).thenReturn(point_mock);
 

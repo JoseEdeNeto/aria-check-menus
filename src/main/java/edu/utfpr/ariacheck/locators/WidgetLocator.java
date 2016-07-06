@@ -97,7 +97,7 @@ public class WidgetLocator implements Locator {
 
     public WebElement find_widget (WebElement target) {
         List <WebElement> mutation_widgets;
-        WebElement potential_widget = null;
+            WebElement potential_widget = null;
         File before = null,
              later = null;
 
@@ -110,7 +110,8 @@ public class WidgetLocator implements Locator {
 
         this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
 
-        if (target.getSize().getWidth() > this.MAX_WIDTH || target.getSize().getHeight() > this.MAX_HEIGHT)
+        if (target.getSize().getWidth() > this.MAX_WIDTH || target.getSize().getHeight() > this.MAX_HEIGHT ||
+                target.getSize().getWidth() == 0 || target.getSize().getHeight() == 0)
             return null;
 
         if (this.invisibles == null)
@@ -124,14 +125,16 @@ public class WidgetLocator implements Locator {
                         .build()
                         .perform();
         } catch (MoveTargetOutOfBoundsException ex) {
+            ex.printStackTrace();
             return null;
         } catch (StaleElementReferenceException ex) {
+            ex.printStackTrace();
             return null;
         }
 
         if (this.takes != null) {
             later = this.takes.getScreenshotAs(OutputType.FILE);
-            double result = this.compareImages(before, later);
+            long result = this.compareImages(before, later);
             System.out.println("Comparisson with target: " + (result / (target.getSize().getHeight() * target.getSize().getWidth())));
             if ((result / (target.getSize().getHeight() * target.getSize().getWidth())) < this.SIG_DIFFERENCE) {
                 return null;
@@ -174,6 +177,7 @@ public class WidgetLocator implements Locator {
                 }
             } catch (StaleElementReferenceException ex) {
                 System.out.println("stale exception in visible list");
+                ex.printStackTrace();
             }
             System.out.print(".");
         }
@@ -182,7 +186,7 @@ public class WidgetLocator implements Locator {
         return potential_widget;
     }
 
-    public double compareImages (File before, File after) {
+    public long compareImages (File before, File after) {
         BufferedImage img1 = null,
                       img2 = null;
         try {
@@ -199,29 +203,14 @@ public class WidgetLocator implements Locator {
         if ((width1 != width2) || (height1 != height2)) {
             return 100;
         }
-        int last_diff = 0;
+        long diff = 0;
         for (int y = 0; y < height1; y++) {
             for (int x = 0; x < width1; x++) {
                 int rgb1 = img1.getRGB(x, y),
                     rgb2 = img2.getRGB(x, y);
-                if (rgb1 != rgb2) {
-                    if (diff1_x == -1)
-                        diff1_x = x;
-                    if (diff1_y == -1)
-                        diff1_y = y;
-                    last_diff = 1;
-                }
-                if (rgb1 == rgb2 && last_diff == 1) {
-                    diff2_x = x;
-                    diff2_y = y;
-                    last_diff = 0;
-                }
+                if (rgb1 != rgb2) { diff++; }
             }
         }
-        // calculating the size of the element which appeared (possibly) in pixels
-        double p = ((diff2_x - diff1_x) * (diff2_y - diff1_y));
-        System.out.println("Comparisson: " + p);
-        return p;
+        return diff;
     }
-
 }
