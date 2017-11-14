@@ -18,6 +18,8 @@ import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocatorDecorator;
 import java.lang.Runnable;
 import java.lang.Thread;
 import java.util.List;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -28,9 +30,9 @@ public class Main implements Runnable {
             System.out.println("Nothing to do here...");
             return ;
         }*/
-        String url = "";
+        String url = "URL";
         int number_of_threads;
-
+        /*
         System.setProperty("webdriver.gecko.driver","C:\\Users\\Aluno\\Desktop\\github\\aria-check-menus\\geckodriver.exe");
         
         FirefoxOptions options = new FirefoxOptions();
@@ -39,8 +41,15 @@ public class Main implements Runnable {
         DesiredCapabilities capabilities = DesiredCapabilities.firefox();
         capabilities.setCapability("moz:firefoxOptions", options);
 
-        FirefoxDriver driver = new FirefoxDriver(capabilities);
-
+        FirefoxDriver driver = new FirefoxDriver(capabilities);*/
+        
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Aluno\\Desktop\\github\\aria-check-menus\\chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+        options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        WebDriver driver = new ChromeDriver(capabilities);
+        
         driver.get(url);
         int size = driver.findElements(By.cssSelector("body *")).size();
         driver.quit();
@@ -68,7 +77,7 @@ public class Main implements Runnable {
     }
 
     public void run () {
-        System.setProperty("webdriver.gecko.driver","C:\\Users\\Aluno\\Desktop\\github\\aria-check-menus\\geckodriver.exe");
+        /*System.setProperty("webdriver.gecko.driver","C:\\Users\\Aluno\\Desktop\\github\\aria-check-menus\\geckodriver.exe");
         
         FirefoxOptions options = new FirefoxOptions();
         options.setBinary("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
@@ -76,7 +85,15 @@ public class Main implements Runnable {
         DesiredCapabilities capabilities = DesiredCapabilities.firefox();
         capabilities.setCapability("moz:firefoxOptions", options);
 
-        FirefoxDriver driver = new FirefoxDriver(capabilities);
+        FirefoxDriver driver = new FirefoxDriver(capabilities);*/
+        
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Aluno\\Desktop\\github\\aria-check-menus\\chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+        options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        WebDriver driver = new ChromeDriver(capabilities);
+        
         ScreenshotWidgetLocatorDecorator screenshot_decorator = new ScreenshotWidgetLocatorDecorator(
             new ActivatorCacheDecorator(
                 new WidgetLocator(
