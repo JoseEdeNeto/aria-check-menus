@@ -135,7 +135,7 @@ public class App {
 
     public void sleep_wrapper () {
         try {
-            Thread.sleep(this.wait_seconds * 1000);
+            Thread.sleep(this.wait_seconds * 100);
         } catch (InterruptedException e) { e.printStackTrace(); }
     }
 

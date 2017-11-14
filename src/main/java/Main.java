@@ -18,22 +18,29 @@ import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocatorDecorator;
 import java.lang.Runnable;
 import java.lang.Thread;
 import java.util.List;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
 
 public class Main implements Runnable {
     public static void main (String[] args) throws Exception {
-        if (args.length == 0) {
+        /*if (args.length == 0) {
             System.out.println("Nothing to do here...");
             return ;
-        }
-        String url = args[0];
+        }*/
+        String url = "";
         int number_of_threads;
 
-        FirefoxProfile profile = new FirefoxProfile();
-        profile.setPreference("intl.accept_languages", "en-us,pt-br,en");
-        profile.setPreference("browser.translation.detectLanguage", "false");
-        profile.setPreference("browser.translation.ui.show", "false");
-        profile.setPreference("browser.translation.neverForLanguages", "en-us,pt-br,en");
-        FirefoxDriver driver = new FirefoxDriver(profile);
+        System.setProperty("webdriver.gecko.driver","C:\\Users\\Aluno\\Desktop\\github\\aria-check-menus\\geckodriver.exe");
+        
+        FirefoxOptions options = new FirefoxOptions();
+        options.setBinary("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
+
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        capabilities.setCapability("moz:firefoxOptions", options);
+
+        FirefoxDriver driver = new FirefoxDriver(capabilities);
+
         driver.get(url);
         int size = driver.findElements(By.cssSelector("body *")).size();
         driver.quit();
@@ -61,12 +68,15 @@ public class Main implements Runnable {
     }
 
     public void run () {
-        FirefoxProfile profile = new FirefoxProfile();
-        profile.setPreference("intl.accept_languages", "en-us,pt-br,en");
-        profile.setPreference("browser.translation.detectLanguage", "false");
-        profile.setPreference("browser.translation.neverForLanguages", "en-us,pt-br,en");
-        profile.setPreference("browser.translation.ui.show", "false");
-        FirefoxDriver driver = new FirefoxDriver();
+        System.setProperty("webdriver.gecko.driver","C:\\Users\\Aluno\\Desktop\\github\\aria-check-menus\\geckodriver.exe");
+        
+        FirefoxOptions options = new FirefoxOptions();
+        options.setBinary("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
+
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        capabilities.setCapability("moz:firefoxOptions", options);
+
+        FirefoxDriver driver = new FirefoxDriver(capabilities);
         ScreenshotWidgetLocatorDecorator screenshot_decorator = new ScreenshotWidgetLocatorDecorator(
             new ActivatorCacheDecorator(
                 new WidgetLocator(
