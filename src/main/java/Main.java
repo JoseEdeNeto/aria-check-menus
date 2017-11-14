@@ -30,7 +30,7 @@ public class Main implements Runnable {
             System.out.println("Nothing to do here...");
             return ;
         }*/
-        String url = "URL";
+        String url = "https://www.uol.com.br/";
         int number_of_threads;
         /*
         System.setProperty("webdriver.gecko.driver","C:\\Users\\Aluno\\Desktop\\github\\aria-check-menus\\geckodriver.exe");

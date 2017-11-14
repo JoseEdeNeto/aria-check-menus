@@ -114,8 +114,8 @@ public class WidgetLocator implements Locator {
                 target.getSize().getWidth() == 0 || target.getSize().getHeight() == 0)
             return null;
 
-        if (this.invisibles == null)
-            this.invisibles = this.find_invisibles();
+        /*if (this.invisibles == null)
+            this.invisibles = this.find_invisibles();*/
 
         if (this.takes != null)
             before = this.takes.getScreenshotAs(OutputType.FILE);
@@ -157,7 +157,7 @@ public class WidgetLocator implements Locator {
         if (potential_widget != null)
             return potential_widget;
 
-        potential_widget = null;
+        /*potential_widget = null;
         Iterator <WebElement>iterator = this.invisibles.iterator();
         List <WebElement> inv_childs = null;
         while (iterator.hasNext()) {
@@ -181,7 +181,7 @@ public class WidgetLocator implements Locator {
             }
             System.out.print(".");
         }
-        System.out.println("");
+        System.out.println("");*/
 
         return potential_widget;
     }
