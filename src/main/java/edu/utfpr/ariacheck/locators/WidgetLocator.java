@@ -44,9 +44,17 @@ public class WidgetLocator implements Locator {
         "                mutation.addedNodes[0].parentElement.getAttribute(\"role\") !== \"log\") {" +
         "                mutation.addedNodes[0].className += \" mutation_widget\";" +
         "            }" +
+        "            else if (mutation.attributeName === \"class\" &&"+
+        "                mutation.target.className.includes(\"mutation_widget\") == false &&" +
+        "                mutation.target.className.includes(\"old_mutation\") == false) {" +
+        "                mutation.target.className += \" mutation_widget\";" +
+        "                console.log(mutation.type);" +
+        "                console.log(mutation.oldValue);" +
+        "                console.log(mutation.target.className);" +
+        "            }" +
         "        });" +
         "    });" +
-        "    window.observer.observe(document.body, {childList: true, subtree: true});" +
+        "    window.observer.observe(document.body, {childList: true, subtree: true, attributes: true, attributeOldValue: true});" +
         "    document.body.addEventListener('mouseover', function (ev) { " +
         "      var aux = ev.target; " +
         "      while(aux != null) { " +
@@ -114,9 +122,6 @@ public class WidgetLocator implements Locator {
                 target.getSize().getWidth() == 0 || target.getSize().getHeight() == 0)
             return null;
 
-        /*if (this.invisibles == null)
-            this.invisibles = this.find_invisibles();*/
-
         if (this.takes != null)
             before = this.takes.getScreenshotAs(OutputType.FILE);
 
@@ -156,32 +161,6 @@ public class WidgetLocator implements Locator {
         this.executor.executeScript(WidgetLocator.JS_CLEAN_MUTATION_RECORDS);
         if (potential_widget != null)
             return potential_widget;
-
-        /*potential_widget = null;
-        Iterator <WebElement>iterator = this.invisibles.iterator();
-        List <WebElement> inv_childs = null;
-        while (iterator.hasNext()) {
-            WebElement inv = (WebElement) (iterator.next());
-            try {
-                if (inv.isDisplayed()) {
-                    if ((potential_widget == null && inv.getAttribute("outerHTML") != null) ||
-                            potential_widget.getAttribute("outerHTML").length() < inv.getAttribute("outerHTML").length())
-                        potential_widget = inv;
-                    iterator.remove();
-                } else {
-                    inv_childs = inv.findElements(By.cssSelector("*"));
-                    for (int i = 0; i < inv_childs.size() && iterator.hasNext(); i++) {
-                        iterator.next();
-                        System.out.print("S");
-                    }
-                }
-            } catch (StaleElementReferenceException ex) {
-                System.out.println("stale exception in visible list");
-                ex.printStackTrace();
-            }
-            System.out.print(".");
-        }
-        System.out.println("");*/
 
         return potential_widget;
     }
