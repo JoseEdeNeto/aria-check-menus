@@ -38,19 +38,9 @@ public class WidgetLocator implements Locator {
         "    for (var i = 0; i < 10000; i++) { clearTimeout(i); clearInterval(i); };" +
         "    window.observer = new MutationObserver(function (mutations) {" +
         "        mutations.forEach(function (mutation) {" +
-        "            if (mutation.addedNodes && mutation.addedNodes.length > 0 &&" +
-        "                mutation.addedNodes[0].nodeType === 1 &&" +
-        "                mutation.addedNodes[0].parentElement &&" +
-        "                mutation.addedNodes[0].parentElement.getAttribute(\"role\") !== \"log\") {" +
-        "                mutation.addedNodes[0].className += \" mutation_widget\";" +
-        "            }" +
-        "            else if (mutation.attributeName === \"class\" &&"+
-        "                mutation.target.className.includes(\"mutation_widget\") == false &&" +
+        "            if (mutation.target.className.includes(\"mutation_widget\") == false &&" +
         "                mutation.target.className.includes(\"old_mutation\") == false) {" +
         "                mutation.target.className += \" mutation_widget\";" +
-        "                console.log(mutation.type);" +
-        "                console.log(mutation.oldValue);" +
-        "                console.log(mutation.target.className);" +
         "            }" +
         "        });" +
         "    });" +
