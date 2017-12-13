@@ -14,6 +14,7 @@ import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
 import edu.utfpr.ariacheck.locators.decorators.ActivatorCacheDecorator;
 import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocatorDecorator;
+import edu.utfpr.ariacheck.locators.decorators.WidgetInfoDecorator;
 
 import java.lang.Runnable;
 import java.lang.Thread;
@@ -76,13 +77,15 @@ public class Main implements Runnable {
         WebDriver driver = new ChromeDriver(capabilities);
         
         ScreenshotWidgetLocatorDecorator screenshot_decorator = new ScreenshotWidgetLocatorDecorator(
-            new ActivatorCacheDecorator(
-                new WidgetLocator(
-                    (WebDriver) driver,
-                    (JavascriptExecutor) driver,
-                    new Actions(driver),
-                    (TakesScreenshot) driver
-                )
+            new WidgetInfoDecorator(
+                new ActivatorCacheDecorator(
+                    new WidgetLocator(
+                        (WebDriver) driver,
+                        (JavascriptExecutor) driver,
+                        new Actions(driver),
+                        (TakesScreenshot) driver
+                    )
+                ), "captured_widgets/" + this.start + "_"
             ),
             (TakesScreenshot) driver,
             "captured_widgets/" + this.start + "_"
@@ -105,7 +108,7 @@ public class Main implements Runnable {
             App app = new App(
                     driver, locator, (JavascriptExecutor) driver, true);
             app.find_all_widgets(this.start, this.end);
-
+            driver.quit();
         } catch (Exception e) {
             e.printStackTrace();
         }
