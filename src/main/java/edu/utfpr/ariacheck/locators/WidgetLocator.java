@@ -93,7 +93,7 @@ public class WidgetLocator implements Locator {
         return invisibles;
     }
 
-    public WebElement find_widget (WebElement target) {
+    public List<WebElement> find_widget (WebElement target) {
         List <WebElement> mutation_widgets;
             WebElement potential_widget = null;
         File before = null,
@@ -138,21 +138,11 @@ public class WidgetLocator implements Locator {
 
         mutation_widgets = this.driver.findElements(By.cssSelector(".mutation_widget:not(.old_mutation)"));
 
-        for (WebElement mutation : mutation_widgets) {
-            try {
-                if ((potential_widget == null) && (mutation.getAttribute("outerHTML") != null)||
-                        potential_widget.getAttribute("outerHTML").length() <
-                        mutation.getAttribute("outerHTML").length())
-                    potential_widget = mutation;
-            } catch (StaleElementReferenceException ex) {
-                System.out.println("stale exception in mutation list");
-            }
-        }
         this.executor.executeScript(WidgetLocator.JS_CLEAN_MUTATION_RECORDS);
-        if (potential_widget != null)
-            return potential_widget;
+        if (mutation_widgets != null)
+            return mutation_widgets;
 
-        return potential_widget;
+        return mutation_widgets;
     }
 
     public long compareImages (File before, File after) {

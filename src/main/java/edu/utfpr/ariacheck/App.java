@@ -98,17 +98,20 @@ public class App {
             element = elements.get(i);
             if (this.log)
                 System.out.println("Examining " + (++count) + " of " + elements.size() + " remaining elements...");
-            WebElement widget = null;
+            List<WebElement> widget = null;
             String activator_html = null;
+            int j = 0;
             try {
                 if (element.isDisplayed()) {
                     activator_html = element.getAttribute("outerHTML");
                     widget = this.locator.find_widget(element);
-                } if (widget != null) {
+                }
+
+                if (widget != null) {
                     Map <String, String> widget_map = new HashMap <String, String> ();
-                    List <WebElement> possible_new_elements = widget.findElements(By.cssSelector("*"));
+                    List <WebElement> possible_new_elements = widget.get(j).findElements(By.cssSelector("*"));
                     widget_map.put("activator", activator_html);
-                    widget_map.put("widget", widget.getAttribute("outerHTML")
+                    widget_map.put("widget", widget.get(j).getAttribute("outerHTML")
                                                    .replaceAll("old_mutation", "")
                                                    .trim());
                     results.add(widget_map);

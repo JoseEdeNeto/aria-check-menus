@@ -2,6 +2,7 @@ package edu.utfpr.ariacheck.locators.decorators;
 
 import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.cache.CacheSingleton;
+import java.util.List;
 
 import org.openqa.selenium.WebElement;
 
@@ -15,8 +16,8 @@ public class ActivatorCacheDecorator implements Locator {
         this.cache = CacheSingleton.createInstance();
     }
 
-    public WebElement find_widget (WebElement target) {
-        WebElement potential_widget = null;
+    public List<WebElement> find_widget (WebElement target) {
+        List<WebElement> potential_widget = null;
         if (this.cache.is_there(target.getAttribute("outerHTML")))
             return null;
         potential_widget = this.locator.find_widget(target);

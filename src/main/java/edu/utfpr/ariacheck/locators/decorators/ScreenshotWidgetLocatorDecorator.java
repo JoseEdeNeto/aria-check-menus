@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import javax.imageio.ImageIO;
 
 public class ScreenshotWidgetLocatorDecorator implements Locator {
@@ -33,31 +34,33 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
         this.folder = folder;
     }
 
-    public WebElement find_widget (WebElement target) {
+    public List<WebElement> find_widget (WebElement target) {
         File screenshot = this.takes.getScreenshotAs(OutputType.FILE),
              new_file;
-        WebElement widget = null;
+        List<WebElement> widget = null;
         widget = this.decorable.find_widget(target);
         if (widget == null)
             return widget;
-        new_file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter)) +
-                                            "_before_widget" + this.image_filetype);
-        try {
-            this.copy_file_wrapper(screenshot, new_file);
-        } catch (IOException io) {
-            System.out.println("Error copying screenshot file to path: before widget");
+        for(int i = 0; i < widget.size(); i++){
+            new_file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter)) +
+                                                "_before_widget" + this.image_filetype);
+            try {
+                this.copy_file_wrapper(screenshot, new_file);
+            } catch (IOException io) {
+                System.out.println("Error copying screenshot file to path: before widget");
+            }
+            screenshot = this.takes.getScreenshotAs(OutputType.FILE);
+            new_file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter)) +
+                                                "_later_widget" + this.image_filetype);
+            try {
+                this.copy_file_wrapper(screenshot, new_file);
+            } catch (IOException io) {
+                System.out.println("Error copying screenshot file to path: later widget");
+            }
+            this.save_element_screenshot(target, screenshot, "widget_activator");
+            this.save_element_screenshot(widget.get(i), screenshot, "widget");
+            this.counter++;
         }
-        screenshot = this.takes.getScreenshotAs(OutputType.FILE);
-        new_file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter)) +
-                                            "_later_widget" + this.image_filetype);
-        try {
-            this.copy_file_wrapper(screenshot, new_file);
-        } catch (IOException io) {
-            System.out.println("Error copying screenshot file to path: later widget");
-        }
-        this.save_element_screenshot(target, screenshot, "widget_activator");
-        this.save_element_screenshot(widget, screenshot, "widget");
-        this.counter++;
         return widget;
     }
 
