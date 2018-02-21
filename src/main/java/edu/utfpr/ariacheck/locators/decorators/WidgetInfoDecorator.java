@@ -1,10 +1,12 @@
 package edu.utfpr.ariacheck.locators.decorators;
 
 import edu.utfpr.ariacheck.locators.Locator;
+import java.io.BufferedWriter;
 import org.openqa.selenium.WebElement;
-
 import java.io.PrintWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class WidgetInfoDecorator implements Locator {
@@ -23,9 +25,12 @@ public class WidgetInfoDecorator implements Locator {
         List<WebElement> result = this.locator.find_widget(target);
         if (result == null)
             return null;
-        for(int i = 0; i < result.size(); i++){
-            try {
-                PrintWriter writer = this.new_writer_wrapper(this.directory + (String.format("%03d", this.counter)) + "_widget_position_dimension.csv");
+        try {
+            System.out.println(this.directory);
+            FileWriter fw = new FileWriter(this.directory + "widget_position_dimension.csv", true);
+            BufferedWriter writer = new BufferedWriter(fw);
+            
+            for(int i = 0; i < result.size(); i++){
                 int pX = result.get(i).getLocation().getX();
                 int pY = result.get(i).getLocation().getY();
                 int width = result.get(i).getSize().getWidth();
@@ -34,8 +39,7 @@ public class WidgetInfoDecorator implements Locator {
                 String result_html = result.get(i).getAttribute("outerHTML");
                 
                 StringBuilder builder = new StringBuilder();
-                String columnNames = "Position X,Position Y,Width,Height,Table tag,List tag,Textbox tag,Widget name";
-                builder.append(columnNames+'\n');
+                builder.append(String.format("%03d", this.counter)+",");
                 builder.append(pX+",");
                 builder.append(pY+",");
                 builder.append(width+",");
@@ -45,15 +49,18 @@ public class WidgetInfoDecorator implements Locator {
                 builder.append(textboxPresence(result.get(i), result_html)+",");
                 builder.append(widgetNamePresence(result.get(i), result_html)+",");
                 builder.append('\n');
-
-                writer.print(builder.toString());
-                writer.close();
-            } catch (FileNotFoundException e) {
-                System.out.println("File " + this.directory + (String.format("%03d", this.counter)) +
-                        "_widget_position_dimension.csv was not found or cannot be writer...");
+                writer.write(builder.toString());
             }
-            this.counter++;
+            
+            writer.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File " + this.directory + 
+                    "widget_position_dimension.csv was not found or cannot be writer...");
+        } catch (IOException e){
+            System.out.println("File " + this.directory + 
+                    "widget_position_dimension.csv was not found or cannot be writer...");
         }
+        this.counter++;
         return result;
     }
     

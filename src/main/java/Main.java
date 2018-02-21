@@ -15,6 +15,9 @@ import edu.utfpr.ariacheck.locators.WidgetLocator;
 import edu.utfpr.ariacheck.locators.decorators.ActivatorCacheDecorator;
 import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocatorDecorator;
 import edu.utfpr.ariacheck.locators.decorators.WidgetInfoDecorator;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import java.lang.Runnable;
 import java.lang.Thread;
@@ -95,6 +98,19 @@ public class Main implements Runnable {
         Locator locator = new HTMLLogLocatorDecorator(
                 screenshot_decorator, "captured_widgets/" + this.start + "_");
         driver.get(this.url);
+        
+        try{
+            FileWriter fw = new FileWriter("captured_widgets/" + this.start 
+                    + "_" + "widget_position_dimension.csv", true);
+            BufferedWriter writer = new BufferedWriter(fw);
+            String columnNames = "Widget number,Position X,Position Y,Width,"
+                    + "Height,Table tag,List tag,Textbox tag,Widget class\n";
+            writer.write(columnNames);
+            writer.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        
         try {
             Thread.sleep(5000);
         } catch (Exception e) {
