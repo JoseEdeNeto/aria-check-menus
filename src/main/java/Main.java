@@ -14,6 +14,7 @@ import edu.utfpr.ariacheck.locators.Locator;
 import edu.utfpr.ariacheck.locators.WidgetLocator;
 import edu.utfpr.ariacheck.locators.decorators.ActivatorCacheDecorator;
 import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocatorDecorator;
+import edu.utfpr.ariacheck.locators.decorators.SubComponentDecorator;
 import edu.utfpr.ariacheck.locators.decorators.WidgetInfoDecorator;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -78,17 +79,21 @@ public class Main implements Runnable {
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         WebDriver driver = new ChromeDriver(capabilities);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        
         
         ScreenshotWidgetLocatorDecorator screenshot_decorator = new ScreenshotWidgetLocatorDecorator(
-            new WidgetInfoDecorator(
-                new ActivatorCacheDecorator(
-                    new WidgetLocator(
-                        (WebDriver) driver,
-                        (JavascriptExecutor) driver,
-                        new Actions(driver),
-                        (TakesScreenshot) driver
-                    )
-                ), "captured_widgets/" + this.start + "_"
+            new SubComponentDecorator(
+                new WidgetInfoDecorator(
+                    new ActivatorCacheDecorator(
+                        new WidgetLocator(
+                            (WebDriver) driver,
+                            (JavascriptExecutor) driver,
+                            new Actions(driver),
+                            (TakesScreenshot) driver
+                        )
+                    ), "captured_widgets/" + this.start + "_", js
+                ), "captured_widgets/" + this.start + "_", js
             ),
             (TakesScreenshot) driver,
             "captured_widgets/" + this.start + "_"
@@ -98,18 +103,6 @@ public class Main implements Runnable {
         Locator locator = new HTMLLogLocatorDecorator(
                 screenshot_decorator, "captured_widgets/" + this.start + "_");
         driver.get(this.url);
-        
-        try{
-            FileWriter fw = new FileWriter("captured_widgets/" + this.start 
-                    + "_" + "widget_position_dimension.csv", true);
-            BufferedWriter writer = new BufferedWriter(fw);
-            String columnNames = "Widget number,Position X,Position Y,Width,"
-                    + "Height,Table tag,List tag,Textbox tag,Widget class\n";
-            writer.write(columnNames);
-            writer.close();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
         
         try {
             Thread.sleep(5000);
