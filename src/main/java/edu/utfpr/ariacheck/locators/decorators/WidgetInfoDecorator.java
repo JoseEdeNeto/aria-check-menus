@@ -51,20 +51,26 @@ public class WidgetInfoDecorator implements Locator {
                 Long numberChildNodes =(Long) js.executeScript("return arguments[0].childElementCount", result.get(i));
 
                 String result_html = result.get(i).getAttribute("outerHTML");
+                
+                if (pX < 0 || pY < 0 || width < 1 || height < 1){
+                    result.remove(i);
+                    i--;
+                } else {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append(String.format("%03d", this.counter)+",");
+                    builder.append(pX+",");
+                    builder.append(pY+",");
+                    builder.append(width+",");
+                    builder.append(height+",");
+                    builder.append(tablePresence(result.get(i), result_html)+",");
+                    builder.append(listPresence(result.get(i), result_html)+",");
+                    builder.append(textboxPresence(result.get(i), result_html)+",");
+                    builder.append(widgetNamePresence(result.get(i), result_html)+",");
+                    builder.append(numberChildNodes+",");
+                    builder.append('\n');
+                    writer.write(builder.toString());
+                }
 
-                StringBuilder builder = new StringBuilder();
-                builder.append(String.format("%03d", this.counter)+",");
-                builder.append(pX+",");
-                builder.append(pY+",");
-                builder.append(width+",");
-                builder.append(height+",");
-                builder.append(tablePresence(result.get(i), result_html)+",");
-                builder.append(listPresence(result.get(i), result_html)+",");
-                builder.append(textboxPresence(result.get(i), result_html)+",");
-                builder.append(widgetNamePresence(result.get(i), result_html)+",");
-                builder.append(numberChildNodes+",");
-                builder.append('\n');
-                writer.write(builder.toString());
             }
             writer.close();
         } catch (FileNotFoundException e) {
