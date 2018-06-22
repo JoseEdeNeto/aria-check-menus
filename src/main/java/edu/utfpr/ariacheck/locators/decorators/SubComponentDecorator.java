@@ -46,23 +46,29 @@ public class SubComponentDecorator implements Locator {
                 FileWriter fw = new FileWriter(file, true);
                 BufferedWriter writer = new BufferedWriter(fw);
 
-                    List<WebElement> childs = result.get(i).findElements(By.xpath(".//*"));
-                    for (int j = 0; j < childs.size(); j++){
-                        int pX = childs.get(j).getLocation().getX();
-                        int pY = childs.get(j).getLocation().getY();
-                        int width = childs.get(j).getSize().getWidth();
-                        int height = childs.get(j).getSize().getHeight();
-                        Long tipo = (Long) js.executeScript("return arguments[0].nodeType", childs.get(j));
-                        StringBuilder builder = new StringBuilder();
-                        builder.append(String.format("%03d", i + 1)+",");
-                        builder.append(pX+",");
-                        builder.append(pY+",");
-                        builder.append(width+",");
-                        builder.append(height+",");
-                        builder.append(tipo+",");
-                        builder.append('\n');
-                        writer.write(builder.toString());
+                List<WebElement> childs = result.get(i).findElements(By.xpath(".//*"));
+                for (int j = 0; j < childs.size(); j++){
+                    int pX = childs.get(j).getLocation().getX();
+                    int pY = childs.get(j).getLocation().getY();
+                    int width = childs.get(j).getSize().getWidth();
+                    int height = childs.get(j).getSize().getHeight();
+                    String text = childs.get(j).getText();
+                    String tipo;
+                    if (text.equals("")){
+                        tipo = "not text";
+                    } else {
+                        tipo = "text";
                     }
+                    StringBuilder builder = new StringBuilder();
+                    builder.append(String.format("%03d", i + 1)+",");
+                    builder.append(pX+",");
+                    builder.append(pY+",");
+                    builder.append(width+",");
+                    builder.append(height+",");
+                    builder.append(tipo+",");
+                    builder.append('\n');
+                    writer.write(builder.toString());
+                }
 
                 writer.close();
             } catch (FileNotFoundException e) {

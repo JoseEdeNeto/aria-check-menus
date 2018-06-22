@@ -35,16 +35,19 @@ public class Main implements Runnable {
             System.out.println("Nothing to do here...");
             return ;
         }*/
-        String url = "C:\\github\\aria-check-menus\\fixture\\multi-level-menu-01.html";
+        String url = "file:///Users/laboratoriop003-mac006/Documents/GitHub/aria-check-menus/fixture/multi-level-menu-01.html";
         int number_of_threads;
         
-        System.setProperty("webdriver.chrome.driver", "C:\\github\\aria-check-menus\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/Users/laboratoriop003-mac006/Documents/GitHub/aria-check-menus/chromedriver");
+//        System.setProperty("webdriver.chrome.driver", "C:\\github\\aria-check-menus\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
-        options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+//        options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        options.setBinary("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         WebDriver driver = new ChromeDriver(capabilities);
         
+        System.out.println(url);
         driver.get(url);
         int size = driver.findElements(By.cssSelector("body *")).size();
         driver.quit();
@@ -69,13 +72,16 @@ public class Main implements Runnable {
         this.start = start;
         this.end = end;
         this.url = url;
+        System.out.println(url);
     }
 
     public void run () {
   
-        System.setProperty("webdriver.chrome.driver", "C:\\github\\aria-check-menus\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/Users/laboratoriop003-mac006/Documents/GitHub/aria-check-menus/chromedriver");
+//        System.setProperty("webdriver.chrome.driver", "C:\\github\\aria-check-menus\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
-        options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+//        options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        options.setBinary("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         WebDriver driver = new ChromeDriver(capabilities);

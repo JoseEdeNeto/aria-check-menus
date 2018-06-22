@@ -65,7 +65,7 @@ public class WidgetInfoDecorator implements Locator {
                     builder.append(tablePresence(result.get(i), result_html)+",");
                     builder.append(listPresence(result.get(i), result_html)+",");
                     builder.append(textboxPresence(result.get(i), result_html)+",");
-                    builder.append(widgetNamePresence(result.get(i), result_html)+",");
+                    builder.append(widgetNamePresence(result.get(i), result.get(i).getAttribute("class"))+",");
                     builder.append(numberChildNodes+",");
                     builder.append('\n');
                     writer.write(builder.toString());
@@ -111,7 +111,7 @@ public class WidgetInfoDecorator implements Locator {
     }
     
     public boolean widgetNamePresence(WebElement e, String className){
-        if (className.equalsIgnoreCase("menu")/* or other widgets*/)
+        if (className.contains("menu")/* or other widgets*/)
             return true;
         else
             return false;
