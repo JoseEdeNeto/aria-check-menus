@@ -84,7 +84,8 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
             height = target.getSize().getHeight(),
             width = target.getSize().getWidth();
         sub_image = full_image.getSubimage(
-                left, top,
+                (left < 0 ? 0 : left),
+                (top < 0 ? 0 : top),
                 (width == 0 ? 1 : width),
                 (height == 0 ? 1 : height));
         File file = this.create_file_wrapper(this.folder + (String.format("%03d", this.counter)) +

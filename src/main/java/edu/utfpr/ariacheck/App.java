@@ -107,7 +107,7 @@ public class App {
                     widget = this.locator.find_widget(element);
                 }
 
-                if (widget != null) {
+                if (widget != null && widget.size() > 0) {
                     Map <String, String> widget_map = new HashMap <String, String> ();
                     List <WebElement> possible_new_elements = widget.get(j).findElements(By.cssSelector("*"));
                     widget_map.put("activator", activator_html);

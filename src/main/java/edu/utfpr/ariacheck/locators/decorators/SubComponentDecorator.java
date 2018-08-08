@@ -39,7 +39,7 @@ public class SubComponentDecorator implements Locator {
                 if (!file.exists()){
                     FileWriter fw = new FileWriter(file, true);
                     BufferedWriter writer = new BufferedWriter(fw);
-                    String columnNames = "Widget number,Position X,Position Y,Width,Height,NodeType\n";
+                    String columnNames = "Widget number,Position X,Position Y,Width,Height,NodeType,AverageWidth,AverageHeight\n";
                     writer.write(columnNames);
                     writer.close();
                 }
@@ -47,25 +47,37 @@ public class SubComponentDecorator implements Locator {
                 BufferedWriter writer = new BufferedWriter(fw);
 
                 List<WebElement> childs = result.get(i).findElements(By.xpath(".//*"));
+                int averageWidth = 0;
+                int averageHeight = 0;
+                int average = 0;
                 for (int j = 0; j < childs.size(); j++){
                     int pX = childs.get(j).getLocation().getX();
                     int pY = childs.get(j).getLocation().getY();
                     int width = childs.get(j).getSize().getWidth();
                     int height = childs.get(j).getSize().getHeight();
                     String text = childs.get(j).getText();
-                    String tipo;
+                    String type;
                     if (text.equals("")){
-                        tipo = "not text";
+                        type = "not text";
                     } else {
-                        tipo = "text";
-                    }
+                        type = "text";
+                        averageWidth += width;
+                        averageHeight += height;
+                        average++;
+                    }      
                     StringBuilder builder = new StringBuilder();
                     builder.append(String.format("%03d", i + 1)+",");
-                    builder.append(pX+",");
-                    builder.append(pY+",");
-                    builder.append(width+",");
-                    builder.append(height+",");
-                    builder.append(tipo+",");
+                    builder.append(pX + ",");
+                    builder.append(pY + ",");
+                    builder.append(width + ",");
+                    builder.append(height + ",");
+                    builder.append(type + ",");
+                    if (average != 0){
+                        builder.append(averageWidth / average + ",");
+                        builder.append(averageHeight / average + ",");
+                    } else {
+                        builder.append("," + ",");
+                    }
                     builder.append('\n');
                     writer.write(builder.toString());
                 }
