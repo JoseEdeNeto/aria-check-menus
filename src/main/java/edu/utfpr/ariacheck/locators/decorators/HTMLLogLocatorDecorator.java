@@ -26,7 +26,7 @@ public class HTMLLogLocatorDecorator implements Locator {
             return null;
         for (int i = 0; i < result.size(); i++){
             try {
-                PrintWriter writer = this.new_writer_wrapper(this.directory + (String.format("%03d", this.counter)) + "_widget_activator.txt");
+                PrintWriter writer = this.new_writer_wrapper(this.directory + this.counter + "widgets/_" + i + "_widget_activator.txt");
                 writer.print(target.getAttribute("outerHTML"));
                 writer.close();
             } catch (FileNotFoundException e) {
@@ -34,15 +34,16 @@ public class HTMLLogLocatorDecorator implements Locator {
                         "_widget_activator.txt was not found or cannot be writer...");
             }
             try {
-                PrintWriter writer = this.new_writer_wrapper(this.directory + (String.format("%03d", this.counter)) + "_widget_element.txt");
+                PrintWriter writer = this.new_writer_wrapper(this.directory + this.counter + "widgets/_" + i + "_widget_element.txt");
                 writer.print(result.get(i).getAttribute("outerHTML"));
                 writer.close();
             } catch (FileNotFoundException e) {
                 System.out.println("File " + this.directory + (String.format("%03d", this.counter)) +
                         "_widget_element.txt was not found or cannot be writer...");
             }
-            this.counter++;
+            
         }
+        this.counter++;
         return result;
     }
 

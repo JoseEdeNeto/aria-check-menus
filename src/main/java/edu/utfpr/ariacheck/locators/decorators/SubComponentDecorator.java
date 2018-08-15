@@ -33,7 +33,7 @@ public class SubComponentDecorator implements Locator {
             return null;
         for(int i = 0; i < result.size(); i++){
             try{
-                File dir = new File(this.directory + this.counter + "widget_components/_");
+                File dir = new File(this.directory + this.counter + "widgets/_");
                 dir.getParentFile().mkdirs();
                 File file = new File(dir + "subcomponents.csv");
                 if (!file.exists()){
