@@ -35,7 +35,7 @@ public class Main implements Runnable {
             System.out.println("Nothing to do here...");
             return ;
         }*/
-        String url = "file:///Users/laboratoriop003-mac006/Documents/GitHub/aria-check-menus/fixture/multi-level-menu-01.html";
+        String url = "file:////Users/laboratoriop003-mac006/Documents/GitHub/aria-check-menus/fixture/multi-level-menu-01.html";
         int number_of_threads;
         
         System.setProperty("webdriver.chrome.driver", "/Users/laboratoriop003-mac006/Documents/GitHub/aria-check-menus/chromedriver");

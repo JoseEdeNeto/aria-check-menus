@@ -1,6 +1,7 @@
 package edu.utfpr.ariacheck.locators.decorators;
 
 import edu.utfpr.ariacheck.locators.Locator;
+import java.awt.Color;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
@@ -83,14 +84,41 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
             top = target.getLocation().getY(),
             height = target.getSize().getHeight(),
             width = target.getSize().getWidth();
-        sub_image = full_image.getSubimage(
-                (left < 0 ? 0 : left),
-                (top < 0 ? 0 : top),
+        System.out.println(left);
+        System.out.println(top);
+        System.out.println(height);
+        System.out.println(width);
+        if (top < 0) {
+            height = height + top;
+            top = 0;
+        }
+        if (left < 0) {
+            width = width + left;
+            left = 0;
+        }
+        if (top >= full_image.getHeight())
+            top = full_image.getHeight() - 2;
+        if (left >= full_image.getWidth())
+            left = full_image.getWidth() - 2;
+        if (top + height >= full_image.getHeight())
+            height = full_image.getHeight() - top - 1;
+        if (left + width >= full_image.getWidth())
+            width = full_image.getWidth() - left - 1;
+        
+        System.out.println(left);
+        System.out.println(top);
+        System.out.println(height);
+        System.out.println(width);
+        
+        BufferedImage targetScreenshot = full_image.getSubimage(
+                left,
+                top,
                 (width == 0 ? 1 : width),
                 (height == 0 ? 1 : height));
+
         File file = this.create_file_wrapper(this.folder + this.counter + "widgets/_" +
                                             "_" + filename + this.image_filetype);
-        this.imageio_write_wrapper(sub_image, file);
+        this.imageio_write_wrapper(targetScreenshot, file);
     }
 
     public BufferedImage imageio_read_wrapper (File screenshot) {
