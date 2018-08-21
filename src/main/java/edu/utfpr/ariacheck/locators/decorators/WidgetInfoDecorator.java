@@ -37,7 +37,7 @@ public class WidgetInfoDecorator implements Locator {
                 FileWriter fw = new FileWriter(file, true);
                 BufferedWriter writer = new BufferedWriter(fw);
                 String columnNames = "Widget number,Position X,Position Y,Width,"
-                    + "Height,Table tag,List tag,Textbox tag,Widget class,Number of Elements, Number of Child Nodes,numberOfWordsTextNodes,numberOfTextNodes,links80percent\n";
+                    + "Height,Table tag,List tag,Textbox tag,Widget class,Number of Elements,Number of Child Nodes,numberOfWordsTextNodes,numberOfTextNodes,links80percent\n";
                 writer.write(columnNames);
                 writer.close();
             }
@@ -94,28 +94,6 @@ public class WidgetInfoDecorator implements Locator {
         return new PrintWriter(filename);
     }
     
-    public boolean tablePresence(WebElement e, String html){
-        if(html.contains("table"))
-            return true;
-        else
-            return false;
-    }
-    
-    public boolean listPresence(WebElement e, String html){
-        if(html.contains("ul") || html.contains("li") || html.contains("ol") || 
-                html.contains("dl") || html.contains("dt") || html.contains("dd"))
-            return true;
-        else
-            return false;
-    }
-    
-    public boolean textboxPresence(WebElement e, String html){
-        if(html.contains("input type =\"text\""))
-            return true;
-        else
-            return false;
-    }
-    
     public Long widgetNamePresence(WebElement e){
         String script =  "var target = arguments[0]," +
                             "    childElements = target.querySelectorAll(\"*\")," +
@@ -130,13 +108,6 @@ public class WidgetInfoDecorator implements Locator {
                             "};" +
                             "return 0;";
         return (Long) js.executeScript(script, e);
-    }
-    
-    public boolean datePresence(WebElement e, String html){
-        if(html.contains("type =\"date\""))
-            return true;
-        else
-            return false;
     }
 
     private Long getWordsTextNodes(WebElement e) {

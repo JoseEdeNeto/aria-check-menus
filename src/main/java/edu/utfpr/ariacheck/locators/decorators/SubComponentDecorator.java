@@ -39,17 +39,21 @@ public class SubComponentDecorator implements Locator {
                 if (!file.exists()){
                     FileWriter fw = new FileWriter(file, true);
                     BufferedWriter writer = new BufferedWriter(fw);
-                    String columnNames = "Widget number,Position X,Position Y,Width,Height,NodeType,AverageWidth,AverageHeight\n";
+                    String columnNames = "Widget number,Position X,Position Y,Width,Height,NodeType,Number of Child Nodes,AverageWidth,AverageHeight,Average posX,Average posY\n";
                     writer.write(columnNames);
                     writer.close();
                 }
                 FileWriter fw = new FileWriter(file, true);
                 BufferedWriter writer = new BufferedWriter(fw);
 
-                List<WebElement> childs = result.get(i).findElements(By.xpath(".//*"));
-                int averageWidth = 0;
-                int averageHeight = 0;
-                int average = 0;
+                List<WebElement> childs = (List<WebElement>) js.executeScript("return arguments[0].children", result.get(i));
+                        
+                        //result.get(i).findElements(By.xpath(".//*"));
+                int averageWidth = 0,
+                    averageHeight = 0,
+                    averagepX = 0,
+                    averagepY = 0,
+                    nItems = 0;
                 for (int j = 0; j < childs.size(); j++){
                     int pX = childs.get(j).getLocation().getX();
                     int pY = childs.get(j).getLocation().getY();
@@ -58,25 +62,32 @@ public class SubComponentDecorator implements Locator {
                     String text = childs.get(j).getText();
                     String type;
                     if (text.equals("")){
-                        type = "not text";
-                    } else {
                         type = "text";
+                    } else {
+                        type = "element";
                         averageWidth += width;
                         averageHeight += height;
-                        average++;
-                    }      
+                        averagepX += pX;
+                        averagepY += pY;
+                        nItems++;
+                    }
+                    Long numberChildNodes =(Long) js.executeScript("return arguments[0].childElementCount", result.get(j));
+                    
                     StringBuilder builder = new StringBuilder();
-                    builder.append(String.format("%03d", i + 1)+",");
-                    builder.append(pX + ",");
-                    builder.append(pY + ",");
-                    builder.append(width + ",");
-                    builder.append(height + ",");
-                    builder.append(type + ",");
-                    if (average != 0){
-                        builder.append(averageWidth / average + ",");
-                        builder.append(averageHeight / average + ",");
+                    builder .append(String.format("%03d", i + 1)+",")
+                            .append(pX + ",")
+                            .append(pY + ",")
+                            .append(width + ",")
+                            .append(height + ",")
+                            .append(type + ",")
+                            .append(numberChildNodes + ",");
+                    if (nItems != 0){
+                        builder .append(averageWidth / nItems + ",")
+                                .append(averageHeight / nItems + ",")
+                                .append(averagepX / nItems + ",")
+                                .append(averagepY / nItems + ",");
                     } else {
-                        builder.append("," + ",");
+                        builder.append("," + "," + "," + ",");
                     }
                     builder.append('\n');
                     writer.write(builder.toString());
@@ -94,5 +105,5 @@ public class SubComponentDecorator implements Locator {
         this.counter++;
         return result;
     }
-
+    
 }
