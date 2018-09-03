@@ -118,6 +118,7 @@ public class Main implements Runnable {
         }
         driver.get(this.url);
         driver.manage().window().maximize();
+        //driver.manage().window().fullscreen();
 
         try {
             App app = new App(

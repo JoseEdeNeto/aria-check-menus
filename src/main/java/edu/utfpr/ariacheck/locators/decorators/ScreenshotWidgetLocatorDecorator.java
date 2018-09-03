@@ -42,8 +42,7 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
         widget = this.decorable.find_widget(target);
         if (widget == null)
             return widget;
-        for(int i = 0; i < widget.size(); i++){
-            new_file = this.create_file_wrapper(this.folder + this.counter + "widgets/_" + i +
+            new_file = this.create_file_wrapper(this.folder + this.counter + "widgets/_" +
                                                 "_before_widget" + this.image_filetype);
             try {
                 this.copy_file_wrapper(screenshot, new_file);
@@ -51,13 +50,14 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
                 System.out.println("Error copying screenshot file to path: before widget");
             }
             screenshot = this.takes.getScreenshotAs(OutputType.FILE);
-            new_file = this.create_file_wrapper(this.folder + this.counter + "widgets/_" + i +
+            new_file = this.create_file_wrapper(this.folder + this.counter + "widgets/_" +
                                                 "_later_widget" + this.image_filetype);
             try {
                 this.copy_file_wrapper(screenshot, new_file);
             } catch (IOException io) {
                 System.out.println("Error copying screenshot file to path: later widget");
             }
+        for(int i = 0; i < widget.size(); i++){
             this.save_element_screenshot(target, screenshot, "widget_activator"+ i);
             this.save_element_screenshot(widget.get(i), screenshot, "widget" + i);
         }
@@ -84,10 +84,7 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
             top = target.getLocation().getY(),
             height = target.getSize().getHeight(),
             width = target.getSize().getWidth();
-        System.out.println(left);
-        System.out.println(top);
-        System.out.println(height);
-        System.out.println(width);
+        
         if (top < 0) {
             height = height + top;
             top = 0;
@@ -105,16 +102,11 @@ public class ScreenshotWidgetLocatorDecorator implements Locator {
         if (left + width >= full_image.getWidth())
             width = full_image.getWidth() - left - 1;
         
-        System.out.println(left);
-        System.out.println(top);
-        System.out.println(height);
-        System.out.println(width);
-        
         BufferedImage targetScreenshot = full_image.getSubimage(
                 left,
                 top,
-                (width == 0 ? 1 : width),
-                (height == 0 ? 1 : height));
+                (width <= 0 ? 1 : width),
+                (height <= 0 ? 1 : height));
 
         File file = this.create_file_wrapper(this.folder + this.counter + "widgets/_" +
                                             "_" + filename + this.image_filetype);

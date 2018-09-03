@@ -71,7 +71,7 @@ public class SubComponentDecorator implements Locator {
                         averagepY += pY;
                         nItems++;
                     }
-                    Long numberChildNodes =(Long) js.executeScript("return arguments[0].childElementCount", result.get(j));
+                    Long numberChildNodes =(Long) js.executeScript("return arguments[0].childElementCount", childs.get(j));
                     
                     StringBuilder builder = new StringBuilder();
                     builder .append(String.format("%03d", i + 1)+",")
