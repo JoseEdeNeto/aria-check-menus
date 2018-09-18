@@ -1,5 +1,7 @@
 package edu.utfpr.ariacheck.locators.decorators;
 
+import edu.utfpr.ariacheck.Calculator;
+import com.google.common.io.Files;
 import edu.utfpr.ariacheck.locators.Locator;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -19,6 +22,7 @@ public class SubComponentDecorator implements Locator {
     private String directory;
     private int counter;
     private JavascriptExecutor js;
+    private Calculator c = new Calculator();
     
     public SubComponentDecorator(Locator locator, String directory, JavascriptExecutor js){
         this.locator = locator;
@@ -39,7 +43,7 @@ public class SubComponentDecorator implements Locator {
                 if (!file.exists()){
                     FileWriter fw = new FileWriter(file, true);
                     BufferedWriter writer = new BufferedWriter(fw);
-                    String columnNames = "Widget number,Position X,Position Y,Width,Height,NodeType,Number of Child Nodes,AverageWidth,AverageHeight,Average posX,Average posY\n";
+                    String columnNames = "Widget number,Position X,Position Y,Width,Height,Number of Child Nodes,AverageWidth,AverageHeight,Average posX,Average posY,DeviationWidth, DeviationHeight, DeviationX, DeviationY\n";
                     writer.write(columnNames);
                     writer.close();
                 }
@@ -47,31 +51,24 @@ public class SubComponentDecorator implements Locator {
                 BufferedWriter writer = new BufferedWriter(fw);
 
                 List<WebElement> childs = (List<WebElement>) js.executeScript("return arguments[0].children", result.get(i));
-                        
-                        //result.get(i).findElements(By.xpath(".//*"));
-                int averageWidth = 0,
-                    averageHeight = 0,
-                    averagepX = 0,
-                    averagepY = 0,
-                    nItems = 0;
-                for (int j = 0; j < childs.size(); j++){
-                    int pX = childs.get(j).getLocation().getX();
-                    int pY = childs.get(j).getLocation().getY();
-                    int width = childs.get(j).getSize().getWidth();
-                    int height = childs.get(j).getSize().getHeight();
-                    String text = childs.get(j).getText();
-                    String type;
-                    if (text.equals("")){
-                        type = "text";
-                    } else {
-                        type = "element";
-                        averageWidth += width;
-                        averageHeight += height;
-                        averagepX += pX;
-                        averagepY += pY;
-                        nItems++;
+                for (WebElement child : childs){
+                    List<Double> vetorWidth = new ArrayList(),
+                        vetorHeight = new ArrayList(),
+                        vetorX = new ArrayList(),
+                        vetorY = new ArrayList();
+                    int pX = child.getLocation().getX(),
+                        pY = child.getLocation().getY(),
+                        width = child.getSize().getWidth(),
+                        height = child.getSize().getHeight();
+                    Long numberChildNodes = (Long) js.executeScript("return arguments[0].childElementCount", child);
+                    List<WebElement> childsInChild = (List<WebElement>) js.executeScript("return arguments[0].children", child);
+                    
+                    for (WebElement secondChild : childsInChild){
+                        vetorWidth.add((double)secondChild.getSize().getWidth());
+                        vetorHeight.add((double)secondChild.getSize().getHeight());
+                        vetorX.add((double)secondChild.getLocation().getX());
+                        vetorY.add((double)secondChild.getLocation().getY());
                     }
-                    Long numberChildNodes =(Long) js.executeScript("return arguments[0].childElementCount", childs.get(j));
                     
                     StringBuilder builder = new StringBuilder();
                     builder .append(String.format("%03d", i + 1)+",")
@@ -79,17 +76,16 @@ public class SubComponentDecorator implements Locator {
                             .append(pY + ",")
                             .append(width + ",")
                             .append(height + ",")
-                            .append(type + ",")
-                            .append(numberChildNodes + ",");
-                    if (nItems != 0){
-                        builder .append(averageWidth / nItems + ",")
-                                .append(averageHeight / nItems + ",")
-                                .append(averagepX / nItems + ",")
-                                .append(averagepY / nItems + ",");
-                    } else {
-                        builder.append("," + "," + "," + ",");
-                    }
-                    builder.append('\n');
+                            .append(numberChildNodes + ",")
+                            .append(c.calculaMedia(vetorWidth) + ",")
+                            .append(c.calculaMedia(vetorHeight) + ",")
+                            .append(c.calculaMedia(vetorX) + ",")
+                            .append(c.calculaMedia(vetorY) + ",")
+                            .append(c.calculaDesvioPadrao(vetorWidth) + ",")
+                            .append(c.calculaDesvioPadrao(vetorHeight) + ",")
+                            .append(c.calculaDesvioPadrao(vetorX) + ",")
+                            .append(c.calculaDesvioPadrao(vetorY) + ",")
+                            .append('\n');
                     writer.write(builder.toString());
                 }
 
@@ -105,5 +101,4 @@ public class SubComponentDecorator implements Locator {
         this.counter++;
         return result;
     }
-    
 }

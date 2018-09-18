@@ -1,5 +1,6 @@
 package edu.utfpr.ariacheck.locators.decorators;
 
+import edu.utfpr.ariacheck.Calculator;
 import edu.utfpr.ariacheck.locators.Locator;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -18,6 +20,7 @@ public class WidgetInfoDecorator implements Locator {
     private String directory;
     private int counter;
     private JavascriptExecutor js;
+    private Calculator c = new Calculator();
     
     public WidgetInfoDecorator(Locator locator, String directory, JavascriptExecutor js){
         this.locator = locator;
@@ -37,7 +40,7 @@ public class WidgetInfoDecorator implements Locator {
                 FileWriter fw = new FileWriter(file, true);
                 BufferedWriter writer = new BufferedWriter(fw);
                 String columnNames = "Widget number,Position X,Position Y,Width,"
-                    + "Height,Table tag,List tag,Textbox tag,Widget class,Number of Elements,Number of Child Nodes,numberOfWordsTextNodes,numberOfTextNodes,links80percent\n";
+                    + "Height,Table tag,List tag,Textbox tag,Widget class,Number of Elements,Number of Child Nodes,numberOfWordsTextNodes,numberOfTextNodes,links80percent,AverageWidth,AverageHeight,Average posX,Average posY,DeviationWidth, DeviationHeight, DeviationX, DeviationY\n";
                 writer.write(columnNames);
                 writer.close();
             }
@@ -58,6 +61,18 @@ public class WidgetInfoDecorator implements Locator {
                     numberOfTextNodes = getNumberOfTextNodes(result.get(i)).intValue(),
                     links80percent = tableUl80Percent(result.get(i)).intValue();
                 Long numberChildNodes =(Long) js.executeScript("return arguments[0].childElementCount", result.get(i));
+                
+                List<WebElement> childs = (List<WebElement>) js.executeScript("return arguments[0].children", result.get(i));
+                List<Double> vetorWidth = new ArrayList(),
+                        vetorHeight = new ArrayList(),
+                        vetorX = new ArrayList(),
+                        vetorY = new ArrayList();
+                for (WebElement child : childs){
+                    vetorWidth.add((double)child.getSize().getWidth() < 0.0 ? 1.0 : (double)child.getSize().getWidth());
+                    vetorHeight.add((double)child.getSize().getHeight() < 0.0 ? 1.0 : (double)child.getSize().getHeight());
+                    vetorX.add((double)child.getLocation().getX() < 0.0 ? 1.0 : (double)child.getLocation().getX());
+                    vetorY.add((double)child.getLocation().getY() < 0.0 ? 1.0 : (double)child.getLocation().getY());
+                }
 
                 StringBuilder builder = new StringBuilder();
                 builder .append(String.format("%03d", this.counter) + ",")
@@ -73,7 +88,15 @@ public class WidgetInfoDecorator implements Locator {
                         .append(numberChildNodes + ",")
                         .append(numberOfWordsTextNodes + ",")
                         .append(numberOfTextNodes + ",")
-                        .append(links80percent)
+                        .append(links80percent + ",")
+                        .append(c.calculaMedia(vetorWidth) + ",")
+                        .append(c.calculaMedia(vetorHeight) + ",")
+                        .append(c.calculaMedia(vetorX) + ",")
+                        .append(c.calculaMedia(vetorY) + ",")
+                        .append(c.calculaDesvioPadrao(vetorWidth) + ",")
+                        .append(c.calculaDesvioPadrao(vetorHeight) + ",")
+                        .append(c.calculaDesvioPadrao(vetorX) + ",")
+                        .append(c.calculaDesvioPadrao(vetorY) + ",")
                         .append('\n');
                 writer.write(builder.toString());
 
