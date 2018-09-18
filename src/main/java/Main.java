@@ -16,6 +16,7 @@ import edu.utfpr.ariacheck.locators.decorators.ActivatorCacheDecorator;
 import edu.utfpr.ariacheck.locators.decorators.HTMLLogLocatorDecorator;
 import edu.utfpr.ariacheck.locators.decorators.SubComponentDecorator;
 import edu.utfpr.ariacheck.locators.decorators.WidgetInfoDecorator;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -35,19 +36,16 @@ public class Main implements Runnable {
             System.out.println("Nothing to do here...");
             return ;
         }*/
-        String url = "file:////Users/laboratoriop003-mac006/Documents/GitHub/aria-check-menus/fixture/multi-level-menu-01.html";
+        
+        String url = "file://///home/utfpr/Documentos/aria-check-menus/fixture/multi-level-menu-01.html";
         int number_of_threads;
+        WebDriverManager.chromedriver().proxy("10.20.10.50:3128").setup();
         
-        System.setProperty("webdriver.chrome.driver", "/Users/laboratoriop003-mac006/Documents/GitHub/aria-check-menus/chromedriver");
-//        System.setProperty("webdriver.chrome.driver", "C:\\github\\aria-check-menus\\chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-//        options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-        options.setBinary("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        WebDriver driver = new ChromeDriver(capabilities);
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("headless");
+        chromeOptions.addArguments("start-maximized");
+        WebDriver driver = new ChromeDriver(chromeOptions);
         
-        System.out.println(url);
         driver.get(url);
         int size = driver.findElements(By.cssSelector("body *")).size();
         driver.quit();
@@ -77,14 +75,11 @@ public class Main implements Runnable {
 
     public void run () {
   
-        System.setProperty("webdriver.chrome.driver", "/Users/laboratoriop003-mac006/Documents/GitHub/aria-check-menus/chromedriver");
-//        System.setProperty("webdriver.chrome.driver", "C:\\github\\aria-check-menus\\chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-//        options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-        options.setBinary("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        WebDriver driver = new ChromeDriver(capabilities);
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("headless");
+        chromeOptions.addArguments("start-maximized");
+        WebDriver driver = new ChromeDriver(chromeOptions);
+        
         JavascriptExecutor js = (JavascriptExecutor) driver;
         
         
@@ -117,7 +112,7 @@ public class Main implements Runnable {
             return ;
         }
         driver.get(this.url);
-        driver.manage().window().maximize();
+
         //driver.manage().window().fullscreen();
 
         try {
