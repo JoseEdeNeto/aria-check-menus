@@ -75,24 +75,6 @@ public class WidgetLocator implements Locator {
         this.takes = takes;
     }
 
-    private List <WebElement> find_invisibles () {
-        List <WebElement> child_elements = this.driver.findElements(By.cssSelector("body *"));
-        List <WebElement> invisibles = new ArrayList <WebElement> ();
-        List <WebElement> inv_childs;
-        WebElement child;
-
-        for (int i = 0; i < child_elements.size(); i++) {
-            child = child_elements.get(i);
-            if ( ! child.isDisplayed()) {
-                invisibles.add(child);
-                inv_childs = child.findElements(By.cssSelector("*"));
-                invisibles.addAll(inv_childs);
-                i += inv_childs.size();
-            }
-        }
-        return invisibles;
-    }
-
     public List<WebElement> find_widget (WebElement target) {
         List <WebElement> mutation_widgets;
             WebElement potential_widget = null;
@@ -108,8 +90,7 @@ public class WidgetLocator implements Locator {
 
         this.executor.executeScript(WidgetLocator.JS_SET_MUTATION_OBSERVER);
 
-        if (target.getSize().getWidth() > this.MAX_WIDTH || target.getSize().getHeight() > this.MAX_HEIGHT ||
-                target.getSize().getWidth() == 0 || target.getSize().getHeight() == 0)
+        if (target.getSize().getWidth() == 0 || target.getSize().getHeight() == 0)
             return null;
 
         if (this.takes != null)
